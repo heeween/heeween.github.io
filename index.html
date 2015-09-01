@@ -9,7 +9,7 @@
   <meta name="author" content="Heew">
 
   
-  <meta name="description" content="小引 随着穿戴设备和智能家居的热情不断，app蓝牙的开发也很火热，基于iOS蓝牙的开发资料有不少，但是最最值得学习的必然是apple自家的文档啦，我之前的项目基于蓝牙4.0，开发过程中用到Core Bluetooth框架，算是我学习的笔记吧！涉及到几个部分，我打算分开把他们整理出来， &hellip;">
+  <meta name="description" content="XMPP的现状 XMPP是用来做即时通讯的一套即时通讯技术－IM 常见的应用如:QQ，微信，陌陌，比邻 目前国内的即时通讯领域，有向"垂直"发展的趋势 未来移动互联网应用，即时通讯有潜力的可发展的市场相对比较小，比较聚焦，聚集在某一个领域。 例如，淘宝－阿里旺旺, &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -71,7 +71,7 @@
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2015-05-29-ioslan-ya-4-dot-0kai-fa/">iOS蓝牙4.0开发</a></h1>
+      <h1 class="entry-title"><a href="/blog/2015-09-15-ji-shi-tong-xun-ji-zhu/">即时通讯技术</a></h1>
     
     
       <p class="meta">
@@ -80,90 +80,206 @@
 
 
 
-<time class='entry-date' datetime='2015-05-29T13:19:08+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>29</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>1:19 pm</span></time>
+<time class='entry-date' datetime='2015-09-15T15:33:41+08:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>15</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>3:33 pm</span></time>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><h4>小引</h4>
+  <div class="entry-content"><h3>XMPP的现状</h3>
 
-<p>随着穿戴设备和智能家居的热情不断，app蓝牙的开发也很火热，基于iOS蓝牙的开发资料有不少，但是最最值得学习的必然是apple自家的文档啦，我之前的项目基于蓝牙4.0，开发过程中用到Core Bluetooth框架，算是我学习的笔记吧！涉及到几个部分，我打算分开把他们整理出来，本篇文章通过对Core Bluetooth Programming Guide的翻译，为大家介绍iOS蓝牙4.0编程的一些术语和概念，后续文章将会简单介绍下代码的流程。本人实力有限，了解的深度不是很广，还请各位看官轻点拍砖！</p>
+<p>XMPP是用来做即时通讯的一套即时通讯技术－IM</p>
 
-<p>话不多说说，让我们进入正题吧：</p>
+<p>常见的应用如:QQ，微信，陌陌，比邻</p>
 
-<h4>核心蓝牙概述</h4>
+<p>目前国内的即时通讯领域，有向"垂直"发展的趋势</p>
 
-<p>Core Bluetooth 框架使你的 Mac/iOS app 能够与低功耗蓝牙设备进行通讯。例如，你的app能够搜寻，探索低功耗蓝牙设备，并与之互动，如心率监听器，数字恒温器，甚至能够与其它iOS设备进行交互。</p>
+<p>未来移动互联网应用，即时通讯有潜力的可发展的市场相对比较小，比较聚焦，聚集在某一个领域。</p>
 
-<p>该框架基于BLE4.0规范，直接适用于蓝牙低功率设备的使用。也就是说，该框架隐藏了很多开发规范的底层实现细节，使您更容易开发出与蓝牙低功耗设备进行交互的app。因为该说明中涉及到蓝牙框架的一些概念和术语在本说明中已经被广泛采用，本文将向你介绍这个 Core Bluetooth 框架中的一些关键术语和概念。</p>
+<p>例如，淘宝－阿里旺旺,特别针对淘宝的特定人群提供卖家和买家的即时通讯－》讨价还价</p>
 
-<p>Central 和 Peripheral 在蓝牙交互中的角色
-所有涉及蓝牙低功耗的交互中有两个主要的角色：中心Central和外围设备Perpheral。根据一些传统的客户端-服务端结构，Peripheral通常具有其他设备所需要的数据，而Central通常通过使用Perpheral的信息来实现一些特定的功能。如下图所示，例如，一个心率监听器可能含有一些有用的信息，你的 Mac/iOS app 可能需要以用户友好的方式显示用户的心率。</p>
+<h3>XMPP的意义</h3>
 
-<p><img src="/images/figure1-1.png" alt="" /></p>
+<p>XMPP诞生源于一个伟大的想法1998，让所有的即时通讯软件统一通讯协议，意味着所有的IM软件都能够互通！</p>
 
-<h4>Central 发现并连接广播中的 Peripheral</h4>
+<p>学习XMPP的意义</p>
 
-<p>Peripheral向外广播一些广告包形式的数据，广告包是一个相对较小的束，可能包含Peripheral提供的有用信息资料，如外设的名称和主要功能。例如，一个数字恒温器可以广告包含其中的一个房间的即时温度。在低功耗蓝牙中，广播是Peripheral被获知的主要方式。</p>
+<ol>
+<li>XMPP确实是可用的，google都用过，GTalk！</li>
+<li>XMPP的协议定义中，几乎包含了所有的IM软件需要的功能
+ 注册，登录，发送文本消息，发送图片，发送语音，发送视频，管理名片，管理群组&hellip;</li>
+<li>学习XMPP的开发，可以了解绝大多数IM软件应该包含哪些功能！</li>
+</ol>
 
-<p>从另一方面说，Central可以扫描和监听任何对广播内容感兴趣的Peripheral。如下图，Central可以请求连接任何已对外广播内容的Peripheral。</p>
 
-<p><img src="/images/figure1-2.png" alt="" /></p>
+<p>－绝大多数掌握核心技术的，都不太愿意开源！</p>
 
-<h4>数据在 Peripheral 中如何构成</h4>
+<ol>
+<li>如果自己要开发一个IM软件，学习XMPP框架是一个非常好的起点</li>
+<li><p>目前国内开发IM的公司非常多
+－新软件：内容取胜
+－有了一定用户积累之后，需要做User Generate Content（用户生成内容）
+－用户间的交流，针对某一个领域的交流</p></li>
+<li><p>目前国内还有哪些解决方案
+－环信，第三方框架，封装了非常多即时通讯的功能，使用起来比XMPP要方便很多！
+＊是按照用户量来算钱的</p></li>
+</ol>
 
-<p>连接到Peripheral的目的是为了对它所提供的数据进行探索和交互。在此之前，理解数据在Peripheral中是怎样构成的将会对我们有所帮助。</p>
 
-<p>Peripheral包含一个或者多个Service以及有关其连接信号强度的有用信息。Service是指实现一个函数或者功能的设备（或者设备的一部分）的数据采集和相关行为的集合。例如，一个心率监听器的Service可能包含从监听心率传感器采集的心率数据。</p>
+<h3>利用推送做IM的特点：</h3>
 
-<p>而Service本身由Characteristic或者其他被包含的Service所组成。Characteristic提供了更多有关Peripheral的Service中的详细内容。例如，刚才描述的心率service中可以包含一个用来描述该设备的心率传感器所记录身体位置的characteristic或者包含发送测量心率数据的Characteristic。如下图，表示了一个心率监听器可能包含的Service和Characteristic。</p>
+<ol>
+<li>及时性不好，消息会在服务器停留，通过APNs通知接收方，接收方连接服务器获取消息</li>
+<li><p>所有的客户端都不需要跟服务器建立长连接
+ 例如：一个服务器能够支持的长连接1000，一个服务器上最多只能同时登录1000个人</p>
 
-<p><img src="/images/figure1-3.png" alt="" /></p>
+<p> 而使用推送方式，用户不需要和服务器建立长连接，服务器能够支持的用户数会大增
+ 意味着公司的硬件成本会急剧降低！</p></li>
+</ol>
 
-<h4>Central 在 Peripheral 上的数据探索及交互</h4>
 
-<p>在Central成功与Peripheral建立连接后，就能发现到Peripheral提供的所有的Service和Characteristic。(广播数据可能只包含一部分可见的Service)</p>
+<p>利用推送而产生的即时通讯可以说是一种伪即时通讯！</p>
 
-<p>Central可以通过读取或者写入Service中Characteristic的value与Peripheral进行交互。例如，你的 app 可能从数字恒温器上请求当前的室内温度，或者为恒温器提供一个数值以设置室内温度。</p>
+<h3>XMPP的数据格式</h3>
 
-<h4>Central,Peripherals 以及 Peripheral数据如何表示</h4>
+<p>XMPP －以发送"XML"格式的数据为基础的一套及时通讯协议</p>
 
-<p>有关低功耗蓝牙交互中的主要角色和数据在Core Bluetooth中以简单明了的方式表示。</p>
+<p>主要发送三类数据</p>
 
-<h4>Central 端的对象</h4>
+<p>1>  请求：用户登录，用户注册，添加好友
+2>  展现：用户上线，用户下线
+3>  消息：用户之间交流的信息（文本，图片，视频，语音&hellip;）</p>
 
-<p>当你使用本地Central和远程Peripheral进行交互，您将在低功耗蓝牙Central侧执行操作。除非你是建立一个本地Peripheral设备，并使它由一个Central端请求响应，大多数的蓝牙交互由Central端完成。</p>
+<p>网络上传输的数据都是二进制的数据，二进制数据是以流的方式在网络上传输的！</p>
 
-<h4>本地 Central 和远程 Peripheral</h4>
+<p>在XMPP中，数据的传递，统一由XMPPStream来负责</p>
 
-<p>在Central端，本地Central设备表示为CBCentralManager。这些对象用来管理发现或连接远程Peripheral设备(表示为CBPeripheral)，包括扫描，发现和连接广播中的Peripheral。如下图所示：</p>
+<h3>XMPP如何搭建服务器</h3>
 
-<p><img src="/images/figure1-4.png" alt="" /></p>
+<p>为什么要安装服务器？
+1. Openfire->XMPP的服务器，基于java</p>
 
-<h4>远程 Peripheral 数据表示为 CBService 和CBCharacteristic</h4>
+<p>负责用户登录，注册，发送消息。。。XMPP日常的功能</p>
 
-<p>当你与远程Peripheral(表示为CBPeripheral)进行数据交互时，你将处理它的Service和Characteristic。在Core Bluetooth框架中，远程Peripheral的Service表示为CBService。相类似的，远程Peripheral中Service的Characteritic表示为CBCharacteristic。如下图所示：</p>
+<p>1>  首先安装JDK，因为java的程序是运行在虚拟机上的，没有jdk，就没有虚拟机
+2>  安装Openfire
+3>  打开管理控制器，进入管理页面 <a href="http://localhost:9090">http://localhost:9090</a></p>
 
-<p><img src="/images/figure1-5.png" alt="" /></p>
+<p>===> 告一段落</p>
 
-<h4>Peripheral 端的对象</h4>
+<ol>
+<li>数据库->MySQL</li>
+</ol>
 
-<p>OS X v10.9和iOS6以上的Mac/iOS设备能够可以设置成低功耗蓝牙的Peripheral，为其他Mac/iPhone/iPad 传输数据。当你设置好你的设备使其能够实现Peripheral的角色，你就可以完成低功耗蓝牙交互的Peripheral端功能。</p>
 
-<h4>本地 Peripheral 和远程 Central</h4>
+<p>负责保存用户记录</p>
 
-<p>在Peripheral端，一个Peripheral设备表示为CBPeripheralManager
-。该对象用于管理那些包含本地Peripheral设备的Service和Characteristic数据的Service，通过广播这些服务的方式发布到远程Central设备(表示为CBCentral)。Peripheral manager对象同样可以响应远程Central的读取和写入请求。如下图所示：</p>
+<p>1>  安装MySQL
+2>  重新打开系统偏要面板，能够看到MySQL的图标
+3>  启动服务器
+4>  设置MySQL的“管理员密码”
+    原因：MySQL安装完成后，没有管理员密码，同时禁止从网络访问MySQL</p>
 
-<p><img src="/images/figure1-6.png" alt="" /></p>
+<p>终端</p>
 
-<h4>本地 Peripheral 数据表示为 CBMutableService 和 CBMutableCharacteristic</h4>
+<p>$ cd 数据库的目录（从Finder拖）
+$ ./alias</p>
 
-<p>当你设置好和本地Peripheral(表示为CBPeripheralManager)数据交互，就可以处理Service和Characteristic的可变版本。在Core Bluetooth框架中，本地Peripheral的Service表示为CBMutableService。同样地，本地Peripheral中Service的Characteristic表示为CBMutableCharacteristic。如下图所示：</p>
+<p>重新启动终端，输入ls，如果发现目录变蓝，通常说明配置正确</p>
 
-<p><img src="/images/figure1-7.png" alt="" /></p>
+<p>郑重提示：脚本只需要运行一次就OK，一旦ls看到蓝色的目录，就不要再重复执行！</p>
+
+<p>5>  配置phpMyadmin</p>
+
+<p>1]  复制到Apache根目录
+2］    将目录名修改为phpMyAdmin
+3］ 将 config.sample.inc.php 复制，重命名为：config.inc.php
+4］    打开config.inc.php
+    将 localhost 改为 127.0.0.1</p>
+
+<p>5]  启动apache服务器
+$ sudo apachectl -k start</p>
+
+<p>6]  打开浏览器，输入<a href="http://localhost">http://localhost</a>
+7]  选择 phpMyAdmin，进入phpadmin的登录页面</p>
+
+<p>8］    用户名：root
+    口令：123456</p>
+
+<p>9]  新建一个数据库
+    名字：openfire
+    排序规则：utf8_general_ci</p>
+
+<p>10] 点击openfire（刚刚新建的空数据库）－》SQL（准备执行脚本，openfire所需要的脚本）</p>
+
+<p>11］ 打开finder，进入目录 /usr/local</p>
+
+<p>12] 允许管理员访问openfire文件夹
+        在文件夹上，点击右键，选择“显示简介”在“共享与权限”
+    －点锁头，输入密码
+    －添加本机账号具有“读与写”的权限</p>
+
+<p>13］ 进入 /usr/local/openfire/resources/database
+        找到openfire_mysql.sql，并用Xcode 打开，cmd＋A， cmd ＋C</p>
+
+<p>14］   回到safari，确认在SQL输入框中，cmd ＋v
+        点击“执行”创建openfire服务器所需要的数据表</p>
+
+<p>15］   点击左侧的openfire，确认数据库安装正确！</p>
+
+<ol>
+<li>配置openfire服务器</li>
+</ol>
+
+
+<p><em>1］   选择“简体中文”
+2］    域"teacher.local"，非常非常重要！默认是自己"计算机的名称.local"
+    提示：在系统偏好－共享中可以看到自己的计算机名称
+3］    数据库设置“标准数据库连接”
+</em>4］ <br/>
+        －数据库驱动选项：MySQL
+        －数据库的URL：jdbc:mysql://127.0.0.1:3306/openfire?rewriteBatchedStatements=true
+        提示：修改主机名为127.0.0.1，数据库名称为：openfire
+        －用户名：root(mysql的管理员用户名)
+        －密码：123456
+5］    直接继续
+6］    输入xmpp管理员的初始密码：123456
+    提示：千万不要点“跳过这一步”</p>
+
+<p>……</p>
+
+<p>登录到管理页面</p>
+
+<p>用户名：admin
+密码：123456(xmpp管理员的密码)</p>
+
+<p>如果能够登录成功，说明服务器安装完成！</p>
+
+<ol>
+<li>新增用户</li>
+</ol>
+
+
+<p>1］    点击“用户／组”
+2］    “新建用户”，设置带星号的内容即可</p>
+
+<ol>
+<li>配置客户端 iChat(iMessage)</li>
+</ol>
+
+
+<p>1］    添加用户，选择“其他”类型
+2］ 账户类型：jabber
+3］ 用户名：<a href="&#x6d;&#x61;&#105;&#108;&#x74;&#x6f;&#x3a;&#x61;&#x64;&#109;&#105;&#x6e;&#x40;&#116;&#x65;&#97;&#x63;&#104;&#101;&#x72;&#46;&#108;&#x6f;&#99;&#97;&#x6c;">&#x61;&#100;&#109;&#105;&#110;&#x40;&#x74;&#101;&#97;&#99;&#x68;&#x65;&#114;&#46;&#x6c;&#111;&#x63;&#97;&#108;</a> 123456
+4］    信任证书</p>
+
+<ol>
+<li>小鸭子Adium_1.5.10</li>
+</ol>
+
+
+<p>客户端软件是开发XMPP应用时必备的工具！</p>
 </div>
   
   
@@ -2217,7 +2333,7 @@ CADisplayLink 不能被继承。</p>
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2015-05-29-ioslan-ya-4-dot-0kai-fa/">iOS蓝牙4.0开发</a>
+        <a href="/blog/2015-09-15-ji-shi-tong-xun-ji-zhu/">即时通讯技术</a>
       </li>
     
       <li class="post">
