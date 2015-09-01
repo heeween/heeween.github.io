@@ -9,7 +9,7 @@
   <meta name="author" content="Heew">
 
   
-  <meta name="description" content="webView加载进度的实现&mdash;APP所有加载进度都是假象 1
+  <meta name="description" content="modal出来的控制器再modal一个控制器的问题 1
 2
 3
 4
@@ -18,16 +18,7 @@
 7
 8
 9
-10
-11
-12
-13
-14
-15
-16
-17
-// 将第三方框架设置为webView代理
-self.progress = [[NJKWebViewProgress alloc] init &hellip;">
+// 如果是先弹出再消失当前控制器 !completionBlock ? : completionBlock(); [self dismissViewControllerAnimated:NO &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -83,87 +74,6 @@ self.progress = [[NJKWebViewProgress alloc] init &hellip;">
     <div id="content">
       <div class="blog-index">
   
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014-08-05-webviewjia-zai-jin-du-tiao-de-bu-kai-fang-he-chang-jian-jie-jue-fang-an/">webView加载进度条的不开放和常见解决方案</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-08-05T11:32:37+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>11:32 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>webView加载进度的实现&mdash;APP所有加载进度都是假象</h2>
-
-<p><img src="/images/Snip20150803_10.png" alt="" /></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// 将第三方框架设置为webView代理</span>
-</span><span class='line'><span class="nb">self</span><span class="p">.</span><span class="n">progress</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NJKWebViewProgress</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
-</span><span class='line'><span class="nb">self</span><span class="p">.</span><span class="n">webView</span><span class="p">.</span><span class="n">delegate</span> <span class="o">=</span> <span class="nb">self</span><span class="p">.</span><span class="n">progress</span><span class="p">;</span>
-</span><span class='line'><span class="k">__weak</span> <span class="k">typeof</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span> <span class="n">weakSelf</span> <span class="o">=</span> <span class="nb">self</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// 通过给代理的blcok赋值,拿到progress进度进行赋值</span>
-</span><span class='line'><span class="nb">self</span><span class="p">.</span><span class="n">progress</span><span class="p">.</span><span class="n">progressBlock</span> <span class="o">=</span> <span class="o">^</span><span class="p">(</span><span class="kt">float</span> <span class="n">progress</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="n">weakSelf</span><span class="p">.</span><span class="n">progressView</span><span class="p">.</span><span class="n">progress</span> <span class="o">=</span> <span class="n">progress</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">weakSelf</span><span class="p">.</span><span class="n">progressView</span><span class="p">.</span><span class="n">hidden</span> <span class="o">=</span> <span class="p">(</span><span class="n">progress</span> <span class="o">==</span> <span class="mf">1.0</span><span class="p">);</span>
-</span><span class='line'><span class="p">};</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// 再设置第三方框架的代理为控制器,以便控制器还可以正常监听webview的代理方法</span>
-</span><span class='line'><span class="nb">self</span><span class="p">.</span><span class="n">progress</span><span class="p">.</span><span class="n">webViewProxyDelegate</span> <span class="o">=</span> <span class="nb">self</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// webview加载网络请求</span>
-</span><span class='line'><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">webView</span> <span class="nl">loadRequest</span><span class="p">:[</span><span class="bp">NSURLRequest</span> <span class="nl">requestWithURL</span><span class="p">:[</span><span class="bp">NSURL</span> <span class="nl">URLWithString</span><span class="p">:</span><span class="nb">self</span><span class="p">.</span><span class="n">url</span><span class="p">]]];</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Button通过网络加载图片不能使用SDWebimage的&lt;UIImageView+WebCache.h>方法,否则图片不显示</h2>
-
-<p><img src="/images/Snip20150803_13.png" alt="" /></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// 使用UIButton的分类方法,附近状态参数</span>
-</span><span class='line'><span class="p">[</span><span class="nb">self</span> <span class="nl">sd_setImageWithURL</span><span class="p">:[</span><span class="bp">NSURL</span> <span class="nl">URLWithString</span><span class="p">:</span><span class="n">square</span><span class="p">.</span><span class="n">icon</span><span class="p">]</span> <span class="nl">forState</span><span class="p">:</span><span class="n">UIControlStateNormal</span><span class="p">];</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><img src="/images/Snip20150803_11.png" alt="" /></p>
-</div>
-  
-  
-
-
-    </article>
   
   
     <article>
@@ -1420,6 +1330,73 @@ self.progress = [[NJKWebViewProgress alloc] init &hellip;">
 
     </article>
   
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014-07-19-shi-yong-svnxie-tong-kai-fa-xcodexiang-mu/">使用SVN协同开发Xcode项目</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-07-19T16:05:57+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>19</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>4:05 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>使用Cornerstone创建代码仓库,协同开发</h3>
+
+<ul>
+<li>使用Cornerstone提交代码</li>
+</ul>
+
+
+<p><img src="/images/Snip20150719_30.png" alt="" /></p>
+
+<ul>
+<li>使用Xcode提交代码</li>
+</ul>
+
+
+<p><img src="/images/Snip20150719_31.png" alt="" /></p>
+
+<ul>
+<li>Xcode提交会提交很多额外的,不需要提交给同事的内容</li>
+</ul>
+
+
+<p><img src="/images/Snip20150719_32.png" alt="" /></p>
+
+<ul>
+<li><p>Cornerstone可以选择提交</p></li>
+<li><p>Xcode需要忽略的文件和不可以忽略的文件</p></li>
+</ul>
+
+
+<p><img src="/images/Snip20150719_33.png" alt="" />
+<img src="/images/Snip20150719_34.png" alt="" /></p>
+
+<ul>
+<li>Xcode的冲突</li>
+</ul>
+
+
+<p><img src="/images/Snip20150719_35.png" alt="" />
+<img src="/images/Snip20150719_36.png" alt="" /></p>
+</div>
+  
+  
+
+
+    </article>
+  
   <div class="pagination">
     
       <a class="prev" href="/posts/3">&larr; Older</a>
@@ -1440,10 +1417,6 @@ self.progress = [[NJKWebViewProgress alloc] init &hellip;">
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
-    
-      <li class="post">
-        <a href="/blog/2015-05-11-nsscannerchu-li-fu-wu-qi-shu-ju-yi-chang-,-shu-ju-chu-li/">NSScanner处理服务器数据异常、数据处理</a>
-      </li>
     
       <li class="post">
         <a href="/blog/2015-04-07-gcdde-di-ceng-yi-ji-gcdde-miao-yong/">GCD的底层以及GCD的妙用</a>
@@ -1519,6 +1492,10 @@ self.progress = [[NJKWebViewProgress alloc] init &hellip;">
     
       <li class="post">
         <a href="/blog/2014-07-22-bai-si-bu-de-qi-jie-xiang-mu-zong-jie/">主流框架搭建常用技巧</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-07-19-shi-yong-svnxie-tong-kai-fa-xcodexiang-mu/">使用SVN协同开发Xcode项目</a>
       </li>
     
   </ul>

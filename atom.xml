@@ -4,7 +4,7 @@
   <title><![CDATA[Heew’s iOS Blog]]></title>
   <link href="http://heeween.github.io/atom.xml" rel="self"/>
   <link href="http://heeween.github.io/"/>
-  <updated>2015-09-02T00:30:16+08:00</updated>
+  <updated>2015-09-02T00:34:57+08:00</updated>
   <id>http://heeween.github.io/</id>
   <author>
     <name><![CDATA[Heew]]></name>
@@ -12,175 +12,6 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
-  
-  <entry>
-    <title type="html"><![CDATA[NSScanner处理服务器数据异常、数据处理]]></title>
-    <link href="http://heeween.github.io/blog/2015-05-11-nsscannerchu-li-fu-wu-qi-shu-ju-yi-chang-,-shu-ju-chu-li/"/>
-    <updated>2015-05-11T14:53:13+08:00</updated>
-    <id>http://heeween.github.io/blog/nsscannerchu-li-fu-wu-qi-shu-ju-yi-chang-,-shu-ju-chu-li</id>
-    <content type="html"><![CDATA[<p>今天来介绍一下NSScanner, 并讲述一下如何使用这个东西来避免服务器传回的数组类型的数据错误的问题。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">@class</span> <span class="bp">NSString</span>, <span class="bp">NSCharacterSet</span>, <span class="bp">NSDictionary</span>;
-</span><span class='line'>
-</span><span class='line'><span class="k">@interface</span> <span class="bp">NSScanner</span> : <span class="bp">NSObject</span> <span class="o">&lt;</span><span class="bp">NSCopying</span><span class="o">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="k">readonly</span><span class="p">,</span> <span class="k">copy</span><span class="p">)</span> <span class="bp">NSString</span> <span class="o">*</span><span class="n">string</span><span class="p">;</span>
-</span><span class='line'><span class="k">@property</span> <span class="bp">NSUInteger</span> <span class="n">scanLocation</span><span class="p">;</span>
-</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="k">copy</span><span class="p">)</span> <span class="bp">NSCharacterSet</span> <span class="o">*</span><span class="n">charactersToBeSkipped</span><span class="p">;</span>
-</span><span class='line'><span class="k">@property</span> <span class="kt">BOOL</span> <span class="n">caseSensitive</span><span class="p">;</span>
-</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="k">retain</span><span class="p">)</span> <span class="kt">id</span> <span class="n">locale</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">instancetype</span><span class="p">)</span><span class="nf">initWithString:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">string</span> <span class="n">NS_DESIGNATED_INITIALIZER</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">@end</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">@interface</span> <span class="bp">NSScanner</span> <span class="nl">(NSExtendedScanner)</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// On overflow, the below methods will return success and clamp</span>
-</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">scanInt:</span><span class="p">(</span><span class="kt">int</span> <span class="o">*</span><span class="p">)</span><span class="nv">result</span><span class="p">;</span>
-</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">scanInteger:</span><span class="p">(</span><span class="bp">NSInteger</span> <span class="o">*</span><span class="p">)</span><span class="nv">result</span> <span class="n">NS_AVAILABLE</span><span class="p">(</span><span class="mi">10</span><span class="n">_5</span><span class="p">,</span> <span class="mi">2</span><span class="n">_0</span><span class="p">);</span>
-</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">scanLongLong:</span><span class="p">(</span><span class="kt">long</span> <span class="kt">long</span> <span class="o">*</span><span class="p">)</span><span class="nv">result</span><span class="p">;</span>
-</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">scanUnsignedLongLong:</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span> <span class="o">*</span><span class="p">)</span><span class="nv">result</span> <span class="n">NS_AVAILABLE</span><span class="p">(</span><span class="mi">10</span><span class="n">_9</span><span class="p">,</span> <span class="mi">7</span><span class="n">_0</span><span class="p">);</span>
-</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">scanFloat:</span><span class="p">(</span><span class="kt">float</span> <span class="o">*</span><span class="p">)</span><span class="nv">result</span><span class="p">;</span>
-</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">scanDouble:</span><span class="p">(</span><span class="kt">double</span> <span class="o">*</span><span class="p">)</span><span class="nv">result</span><span class="p">;</span>
-</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">scanHexInt:</span><span class="p">(</span><span class="kt">unsigned</span> <span class="o">*</span><span class="p">)</span><span class="nv">result</span><span class="p">;</span>                                          <span class="c1">// Optionally prefixed with &quot;0x&quot; or &quot;0X&quot;</span>
-</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">scanHexLongLong:</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span> <span class="o">*</span><span class="p">)</span><span class="nv">result</span> <span class="n">NS_AVAILABLE</span><span class="p">(</span><span class="mi">10</span><span class="n">_5</span><span class="p">,</span> <span class="mi">2</span><span class="n">_0</span><span class="p">);</span>   <span class="c1">// Optionally prefixed with &quot;0x&quot; or &quot;0X&quot;</span>
-</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">scanHexFloat:</span><span class="p">(</span><span class="kt">float</span> <span class="o">*</span><span class="p">)</span><span class="nv">result</span> <span class="n">NS_AVAILABLE</span><span class="p">(</span><span class="mi">10</span><span class="n">_5</span><span class="p">,</span> <span class="mi">2</span><span class="n">_0</span><span class="p">);</span>                   <span class="c1">// Corresponding to %a or %A formatting. Requires &quot;0x&quot; or &quot;0X&quot; prefix.</span>
-</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">scanHexDouble:</span><span class="p">(</span><span class="kt">double</span> <span class="o">*</span><span class="p">)</span><span class="nv">result</span> <span class="n">NS_AVAILABLE</span><span class="p">(</span><span class="mi">10</span><span class="n">_5</span><span class="p">,</span> <span class="mi">2</span><span class="n">_0</span><span class="p">);</span>                 <span class="c1">// Corresponding to %a or %A formatting. Requires &quot;0x&quot; or &quot;0X&quot; prefix.</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">scanString:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">string</span> <span class="nf">intoString:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">**</span><span class="p">)</span><span class="nv">result</span><span class="p">;</span>
-</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">scanCharactersFromSet:</span><span class="p">(</span><span class="bp">NSCharacterSet</span> <span class="o">*</span><span class="p">)</span><span class="nv">set</span> <span class="nf">intoString:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">**</span><span class="p">)</span><span class="nv">result</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">scanUpToString:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">string</span> <span class="nf">intoString:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">**</span><span class="p">)</span><span class="nv">result</span><span class="p">;</span>
-</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">scanUpToCharactersFromSet:</span><span class="p">(</span><span class="bp">NSCharacterSet</span> <span class="o">*</span><span class="p">)</span><span class="nv">set</span> <span class="nf">intoString:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">**</span><span class="p">)</span><span class="nv">result</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">@property</span> <span class="p">(</span><span class="k">getter</span><span class="o">=</span><span class="n">isAtEnd</span><span class="p">,</span> <span class="k">readonly</span><span class="p">)</span> <span class="kt">BOOL</span> <span class="n">atEnd</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">+</span> <span class="p">(</span><span class="kt">instancetype</span><span class="p">)</span><span class="nf">scannerWithString:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">string</span><span class="p">;</span>
-</span><span class='line'><span class="p">+</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nf">localizedScannerWithString:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">string</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">@end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>首先, 上边的NSScanner 主要的作用就是初始化一个NSScanner， 下边的扩展呢, 就是一些扫描的方式方法。 顾明思意的, 我们重点使用下边的scanUpToCharactersFromSet 还有主类中的属性charactersToBeSkipped.</p>
-
-<h4>下边我们开实际的案例。</h4>
-
-<p>1、在项目开发中, 很多数据都是用数组方式传输, 本地也使用数组方式添加, 通常我们避免添加出错会为数组加扩展SafeAdd等
-但在实际开发中, 这种扩展反而不是很好使用, 我们推荐使用NSScanner来做这件事情。</p>
-
-<p>e.g： 应该返回数据</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>实际返回错误的数据</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="p">]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>明显的看到后边多一个, 因为服务器数据没有做兼容。 所以我们在本地处理的时候就要很小心。</p>
-
-<p>使用NSScanner + 服务器解决办法, 服务器传字串, 比如： &ldquo;100,2,3,4,5&rdquo;, 本地接数据使用NSScanner处理。</p>
-
-<p>E.g</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="bp">NSMutableCharacterSet</span> <span class="o">*</span><span class="n">whitespaceAndPunctuationSet</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSMutableCharacterSet</span> <span class="n">punctuationCharacterSet</span><span class="p">];</span>
-</span><span class='line'><span class="p">[</span><span class="n">whitespaceAndPunctuationSet</span> <span class="nl">formUnionWithCharacterSet</span><span class="p">:[</span><span class="bp">NSCharacterSet</span> <span class="n">whitespaceAndNewlineCharacterSet</span><span class="p">]];</span>
-</span><span class='line'>
-</span><span class='line'><span class="bp">NSScanner</span> <span class="o">*</span><span class="n">stringScanner</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">NSScanner</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithString</span><span class="p">:</span><span class="s">@&quot;John &amp; Paul &amp; Ringo &amp; George.&quot;</span><span class="p">];</span>
-</span><span class='line'><span class="n">stringScanner</span><span class="p">.</span><span class="n">charactersToBeSkipped</span> <span class="o">=</span> <span class="n">whitespaceAndPunctuationSet</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="bp">NSString</span> <span class="o">*</span><span class="n">name</span><span class="p">;</span>
-</span><span class='line'><span class="k">while</span> <span class="p">([</span><span class="n">stringScanner</span> <span class="nl">scanUpToCharactersFromSet</span><span class="p">:</span><span class="n">whitespaceAndPunctuationSet</span> <span class="nl">intoString</span><span class="p">:</span><span class="o">&amp;</span><span class="n">name</span><span class="p">])</span> <span class="p">{</span>
-</span><span class='line'>    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%@&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">);</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>这样我们就可以通过NSScanner方便的处理我们接到的服务器数据。</p>
-
-<p>同样 NSScanner还有很多使用的场景, 他可以方便我们处理很多固定类型的数据。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="kt">double</span> <span class="n">price</span><span class="p">;</span>
-</span><span class='line'><span class="bp">NSScanner</span> <span class="o">*</span><span class="n">gasPriceScanner</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">NSScanner</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithString</span><span class="p">:</span><span class="s">@&quot;2.09 per gallon&quot;</span><span class="p">];</span>
-</span><span class='line'><span class="p">[</span><span class="n">gasPriceScanner</span> <span class="nl">scanDouble</span><span class="p">:</span><span class="o">&amp;</span><span class="n">price</span><span class="p">];</span>
-</span><span class='line'><span class="c1">// 2.09</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// use a german locale instead of the default</span>
-</span><span class='line'><span class="bp">NSScanner</span> <span class="o">*</span><span class="n">benzinPriceScanner</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">NSScanner</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithString</span><span class="p">:</span><span class="s">@&quot;1,38 pro Liter&quot;</span><span class="p">];</span>
-</span><span class='line'><span class="p">[</span><span class="n">benzinPriceScanner</span> <span class="nl">setLocale</span><span class="p">:[</span><span class="bp">NSLocale</span> <span class="nl">localeWithLocaleIdentifier</span><span class="p">:</span><span class="s">@&quot;de-DE&quot;</span><span class="p">]];</span>
-</span><span class='line'><span class="p">[</span><span class="n">benzinPriceScanner</span> <span class="nl">scanDouble</span><span class="p">:</span><span class="o">&amp;</span><span class="n">price</span><span class="p">];</span>
-</span><span class='line'><span class="c1">// 1.38</span>
-</span></code></pre></td></tr></table></div></figure>
-
-]]></content>
-  </entry>
   
   <entry>
     <title type="html"><![CDATA[GCD的底层以及GCD的妙用]]></title>
@@ -3061,6 +2892,53 @@ CADisplayLink 不能被继承。</p>
 <h2>在navigation控制器的push方法可以统一设置子控制器某些特性</h2>
 
 <p><img src="http://heeween.github.io/images/Snip20150722_8.png" alt="" /></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[使用SVN协同开发Xcode项目]]></title>
+    <link href="http://heeween.github.io/blog/2014-07-19-shi-yong-svnxie-tong-kai-fa-xcodexiang-mu/"/>
+    <updated>2014-07-19T16:05:57+08:00</updated>
+    <id>http://heeween.github.io/blog/shi-yong-svnxie-tong-kai-fa-xcodexiang-mu</id>
+    <content type="html"><![CDATA[<h3>使用Cornerstone创建代码仓库,协同开发</h3>
+
+<ul>
+<li>使用Cornerstone提交代码</li>
+</ul>
+
+
+<p><img src="http://heeween.github.io/images/Snip20150719_30.png" alt="" /></p>
+
+<ul>
+<li>使用Xcode提交代码</li>
+</ul>
+
+
+<p><img src="http://heeween.github.io/images/Snip20150719_31.png" alt="" /></p>
+
+<ul>
+<li>Xcode提交会提交很多额外的,不需要提交给同事的内容</li>
+</ul>
+
+
+<p><img src="http://heeween.github.io/images/Snip20150719_32.png" alt="" /></p>
+
+<ul>
+<li><p>Cornerstone可以选择提交</p></li>
+<li><p>Xcode需要忽略的文件和不可以忽略的文件</p></li>
+</ul>
+
+
+<p><img src="http://heeween.github.io/images/Snip20150719_33.png" alt="" />
+<img src="http://heeween.github.io/images/Snip20150719_34.png" alt="" /></p>
+
+<ul>
+<li>Xcode的冲突</li>
+</ul>
+
+
+<p><img src="http://heeween.github.io/images/Snip20150719_35.png" alt="" />
+<img src="http://heeween.github.io/images/Snip20150719_36.png" alt="" /></p>
 ]]></content>
   </entry>
   

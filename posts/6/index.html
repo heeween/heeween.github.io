@@ -9,9 +9,11 @@
   <meta name="author" content="Heew">
 
   
-  <meta name="description" content="app有很多界面,如果A界面修改了数据某个值,如何保证B界面的数据也能被修改 通常想法如下: 给A控制器增加一个成员变量指向B
-创建B界面的时候就赋值给这个变量
-当A修改了数据以后,调用成员变量的方法更新B界面的数据 搭建界面如下 在A界面HYWAddController.h文件中增加变量指向B &hellip;">
+  <meta name="description" content="如何修改tabBar控制器中tabBar的布局 常见的方法如下: 自定义一个tabBar继承自UITabBar
+用xib布局子控件(注意要绑定对应控件的tag)
+给外界提供一个类方法快速构造一个对象
+在controller中添加为属性tabBar的子控件
+tabBar的按钮监听点击, &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -67,247 +69,6 @@
     <div id="content">
       <div class="blog-index">
   
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013-06-12-duo-kong-zhi-qi-zhi-jian-shu-ju-chuan-di/">多控制器之间数据传递</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2013-06-12T18:26:47+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>12</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>6:26 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>app有很多界面,如果A界面修改了数据某个值,如何保证B界面的数据也能被修改</h3>
-
-<p>通常想法如下:</p>
-
-<ul>
-<li>给A控制器增加一个成员变量指向B</li>
-<li>创建B界面的时候就赋值给这个变量</li>
-<li>当A修改了数据以后,调用成员变量的方法更新B界面的数据</li>
-</ul>
-
-
-<p><strong>搭建界面如下</strong></p>
-
-<p><img src="../../images/addressList3.png" alt="通讯录界面跳转" /><img src="/images/addressList1.png" alt="通讯录界面跳转" /><img src="/images/addressList2.png" alt="通讯录界面跳转" /></p>
-
-<p><strong>在A界面HYWAddController.h文件中增加变量指向B</strong></p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>@class HYWContact,HYWContactController;
-</span><span class='line'>/**拥有联系人控制器,以便传递模型 */
-</span><span class='line'>@property (nonatomic, strong) HYWContactController *contactVc;</span></code></pre></td></tr></table></div></figure>
-
-
-<p><strong>在B界面HYWContactController.h文件中,增加模型属性,重写set方法,接收A传过来得数据</strong></p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>/**模型 */
-</span><span class='line'>@property (nonatomic, strong) HYWContact *contact;</span></code></pre></td></tr></table></div></figure>
-
-
-<p><strong>在B界面HYWContactController.m文件中,创建B界面push的时候,将A赋值给B界面的变量,并且重写set方法</strong></p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>- (void)add
-</span><span class='line'>{
-</span><span class='line'>    HYWAddController *addVc = [[HYWAddController alloc] init];
-</span><span class='line'>    addVc.title = @"添加通讯录";
-</span><span class='line'>    addVc.contactVc = self;
-</span><span class='line'>    [self.navigationController pushViewController:addVc animated:YES];
-</span><span class='line'>}
-</span><span class='line'>- (void)setContact:(HYWContact *)contact
-</span><span class='line'>{
-</span><span class='line'>    _contact = contact;
-</span><span class='line'>    [self.contacts addObject:contact];
-</span><span class='line'>    [self.tableView reloadData];
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
-
-<p><strong>A界面跳转的时候,修改模型,并通过成员变量调取B界面,并且调用set方法,进行赋值</strong></p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>- (IBAction)addContact:(id)sender {
-</span><span class='line'>  // 修改数据
-</span><span class='line'>    HYWContact *contact = [[HYWContact alloc] init];
-</span><span class='line'>    contact.name = self.nameTextField.text;
-</span><span class='line'>    contact.phone = self.phoneTextField.text;
-</span><span class='line'>    contact.icon = @"180008225874";
-</span><span class='line'>    
-</span><span class='line'>    // 调取B界面,调用set方法更新数据
-</span><span class='line'>    self.contactVc.contact = contact;
-</span><span class='line'>
-</span><span class='line'>  从A界面跳到B界面
-</span><span class='line'>    [self.navigationController popViewControllerAnimated:YES];
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
-
-<p><img src="../../images/addressList4.png" alt="通讯录传递数据" /><img src="/images/addressList5.png" alt="通讯录传递数据" /></p>
-
-<h3>这种想法比较简单,但是实现复杂,而且A界面和B界面耦合性太强,利用代理传递数据进行解耦</h3>
-
-<ul>
-<li>A界面增加代理属性,代理方法</li>
-<li>当数据更新后,通知代理更新了数据</li>
-<li>任何一个对象只要成为A的代理,就可以获得A传过来的数据</li>
-</ul>
-
-
-<p><strong>在A界面HYWAddController.h中增加代理属性和代理方法</strong></p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>#import &lt;UIKit/UIKit.h&gt;
-</span><span class='line'>@class HYWAddController,HYWContact;
-</span><span class='line'>
-</span><span class='line'>@protocol HYWAddControllerDelegate &lt;NSObject&gt;
-</span><span class='line'>
-</span><span class='line'>@optional
-</span><span class='line'>
-</span><span class='line'>- (void)addControllerDidClickAddButton:(HYWAddController *)addVc withContact:(HYWContact *)contact;
-</span><span class='line'>@end
-</span><span class='line'>
-</span><span class='line'>@interface HYWAddController : UIViewController
-</span><span class='line'>
-</span><span class='line'>/**代理 */
-</span><span class='line'>@property (nonatomic, weak) id &lt;HYWAddControllerDelegate&gt; delegate;
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>@end</span></code></pre></td></tr></table></div></figure>
-
-
-<p><strong>当A跳转的时候,更新数据,并通知代理,数据作为参数传递出去</strong></p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>- (IBAction)addContact:(id)sender {
-</span><span class='line'>    HYWContact *contact = [[HYWContact alloc] init];
-</span><span class='line'>    contact.name = self.nameTextField.text;
-</span><span class='line'>    contact.phone = self.phoneTextField.text;
-</span><span class='line'>    contact.icon = @"180008225874";
-</span><span class='line'>    
-</span><span class='line'>    if ([self.delegate respondsToSelector:@selector(addControllerDidClickAddButton:withContact:)]) {
-</span><span class='line'>        [self.delegate addControllerDidClickAddButton:self withContact:contact];
-</span><span class='line'>    }
-</span><span class='line'>    [self.navigationController popViewControllerAnimated:YES];
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
-
-<p><strong>在B界面HYWContactController.m文件中,设置为A的代理,并实现A的代理方法,后去传过来的数据</strong></p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>
-</span><span class='line'>@interface HYWContactController () &lt;HYWAddControllerDelegate&gt;
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>- (void)add
-</span><span class='line'>{
-</span><span class='line'>    HYWAddController *addVc = [[HYWAddController alloc] init];
-</span><span class='line'>    addVc.delegate = self;
-</span><span class='line'>    addVc.title = @"添加通讯录";
-</span><span class='line'>    [self.navigationController pushViewController:addVc animated:YES];
-</span><span class='line'>}
-</span><span class='line'>
-</span><span class='line'>#pragma mark - HYWAddControllerDelegate 代理方法
-</span><span class='line'>
-</span><span class='line'>- (void)addControllerDidClickAddButton:(HYWAddController *)addVc withContact:(HYWContact *)contact
-</span><span class='line'>{
-</span><span class='line'>    [self.contacts addObject:contact];
-</span><span class='line'>    [self.tableView reloadData];
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
-
-<p><img src="../../images/addressList6.png" alt="通讯录数据传递" /><img src="/images/addressList7.png" alt="通讯录数据传递" /></p>
-
-<h2>代理方法更简单,A传递数据,B成为代理就可以接受,不成为代理就与A没有关系,就算成为A的代理,不实现代理方法还是与A没有关系.成功地接触了A和B的耦合性</h2>
-</div>
-  
-  
-
-
-    </article>
   
   
     <article>
@@ -2954,6 +2715,140 @@
 
     </article>
   
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013-06-02-iOS%E7%9A%84%E5%9F%BA%E7%A1%80%E6%8E%A7%E4%BB%B6/">iOS的基础控件</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2013-06-02T23:48:39+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2013</span></span> <span class='time'>11:48 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>九宫格计算思路</h2>
+
+<ul>
+<li>利用控件的索引index计算出控件所在的行号和列号</li>
+<li>利用列号计算控件的x值</li>
+<li>利用行号计算控件的y值</li>
+</ul>
+
+
+<h2>HUD</h2>
+
+<ul>
+<li>其他说法：指示器、遮盖、蒙板</li>
+<li>半透明HUD的做法
+
+<ul>
+<li>背景色设置为半透明颜色</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>定时任务</h2>
+
+<ul>
+<li>方法1：performSelector</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>// 1.5s后自动调用self的hideHUD方法
+</span><span class='line'>[self performSelector:@selector(hideHUD) withObject:nil afterDelay:1.5];</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>方法2：GCD</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+</span><span class='line'>    // 1.5s后自动执行这个block里面的代码
+</span><span class='line'>    self.hud.alpha = 0.0;
+</span><span class='line'>});</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>方法3：NSTimer</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>// 1.5s后自动调用self的hideHUD方法
+</span><span class='line'>[NSTimer scheduledTimerWithTimeInterval:1.5 target:self selector:@selector(hideHUD) userInfo:nil repeats:NO];
+</span><span class='line'>// repeats如果为YES，意味着每隔1.5s都会调用一次self的hidHUD方法</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>常见问题</h2>
+
+<ul>
+<li>项目里面的某个.m文件无法使用
+
+<ul>
+<li>检查：Build Phases -> Compile Sources</li>
+</ul>
+</li>
+<li>项目里面的某个资源文件（比如plist、音频等）无法使用
+
+<ul>
+<li>检查：Build Phases -> Copy Bundle Resources</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>模型</h2>
+
+<ul>
+<li>什么是模型？
+
+<ul>
+<li>专门用来存放数据的对象</li>
+<li>一般都是一些直接继承自NSObject的纯对象</li>
+<li>内部会提供一些属性来存放数据</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>一个控件看不见有哪些可能？</h2>
+
+<ul>
+<li>宽度或者高度其实为0</li>
+<li>位置不对（比如是个负数或者超大的数，已经超出屏幕）</li>
+<li>hidden == YES</li>
+<li>alpha &lt;= 0.01</li>
+<li>没有设置背景色、没有设置内容</li>
+<li>可能是文字颜色和背景色一样</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
   <div class="pagination">
     
       <a class="prev" href="/posts/7">&larr; Older</a>
@@ -2974,10 +2869,6 @@
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
-    
-      <li class="post">
-        <a href="/blog/2015-05-11-nsscannerchu-li-fu-wu-qi-shu-ju-yi-chang-,-shu-ju-chu-li/">NSScanner处理服务器数据异常、数据处理</a>
-      </li>
     
       <li class="post">
         <a href="/blog/2015-04-07-gcdde-di-ceng-yi-ji-gcdde-miao-yong/">GCD的底层以及GCD的妙用</a>
@@ -3053,6 +2944,10 @@
     
       <li class="post">
         <a href="/blog/2014-07-22-bai-si-bu-de-qi-jie-xiang-mu-zong-jie/">主流框架搭建常用技巧</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-07-19-shi-yong-svnxie-tong-kai-fa-xcodexiang-mu/">使用SVN协同开发Xcode项目</a>
       </li>
     
   </ul>
