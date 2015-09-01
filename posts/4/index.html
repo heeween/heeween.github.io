@@ -9,10 +9,10 @@
   <meta name="author" content="Heew">
 
   
-  <meta name="description" content="进程 正在进行的程序,就叫程序
-从内存中杀掉的,就变成了程序,不叫进程 线程 一个进程要执行任务,必须得有线程(每个进程至少要有一个线程) 单线程的串行 一个线程的任务的执行是串行的
-同一时间内,一个线程只能执行一个任务
-所以一个线程执行多个任务,只能一个一个按顺序执行这些任务 &hellip;">
+  <meta name="description" content="什么是GCD 全称是Grand Central Dispatch，可译为“牛逼的中枢调度器”
+纯C语言，提供了非常多强大的函数 GCD的优势 GCD是苹果公司为多核的并行运算提出的解决方案
+GCD会自动利用更多的CPU内核（比如双核、四核）
+GCD会自动管理线程的生命周期（创建线程、调度任务、 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -68,6 +68,610 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014-07-08-gcdhe-nsoperation/">GCD</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-07-08T14:39:23+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>8</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>2:39 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/GCD.png" alt="GCD结构图" /></p>
+
+<h6>什么是GCD</h6>
+
+<ul>
+<li>全称是Grand Central Dispatch，可译为“牛逼的中枢调度器”</li>
+<li>纯C语言，提供了非常多强大的函数</li>
+</ul>
+
+
+<h5>GCD的优势</h5>
+
+<ul>
+<li>GCD是苹果公司为多核的并行运算提出的解决方案</li>
+<li>GCD会自动利用更多的CPU内核（比如双核、四核）</li>
+<li>GCD会自动管理线程的生命周期（创建线程、调度任务、销毁线程）</li>
+<li>程序员只需要告诉GCD想要执行什么任务，不需要编写任何线程管理代码</li>
+</ul>
+
+
+<h5>GCD中有2个核心概念</h5>
+
+<ul>
+<li>任务：执行什么操作</li>
+<li>队列：用来存放任务</li>
+</ul>
+
+
+<h5>GCD的使用就2个步骤</h5>
+
+<ul>
+<li>定制任务</li>
+<li>确定想做的事情</li>
+</ul>
+
+
+<h5>将任务添加到队列中</h5>
+
+<ul>
+<li>GCD会自动将队列中的任务取出，放到对应的线程中执行</li>
+<li>任务的取出遵循队列的FIFO原则：先进先出，后进后出</li>
+</ul>
+
+
+<h5>同步和异步主要影响：能不能开启新的线程</h5>
+
+<ul>
+<li>同步：只是在当前线程中执行任务，不具备开启新线程的能力</li>
+<li>异步：可以在新的线程中执行任务，具备开启新线程的能力</li>
+</ul>
+
+
+<h5>并发和串行主要影响：任务的执行方式</h5>
+
+<ul>
+<li>并发：允许多个任务并发（同时）执行</li>
+<li>串行：一个任务执行完毕后，再执行下一个任务
+<img src="/images/Snip20150708_1.png" alt="各种队列的执行效果" /></li>
+</ul>
+
+
+<h4>手动创建并发队列</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>dispatch_queue_t queue = dispatch_queue_create("com.520it.queue", DISPATCH_QUEUE_CONCURRENT);
+</span><span class='line'>dispatch_queue_t
+</span><span class='line'>dispatch_queue_create(const char *label, // 队列名称 
+</span><span class='line'>dispatch_queue_attr_t attr); // 队列的类型</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>获得全局并发队列</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0); 
+</span><span class='line'>使用dispatch_get_global_queue函数获得全局的并发队列
+</span><span class='line'>dispatch_queue_t dispatch_get_global_queue(
+</span><span class='line'>dispatch_queue_priority_t priority, // 队列的优先级
+</span><span class='line'>unsigned long flags); // 此参数暂时无用，用0即可
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>手动创建串行队列</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>使用dispatch_queue_create函数创建串行队列
+</span><span class='line'>// 创建串行队列（队列类型传递NULL或者DISPATCH_QUEUE_SERIAL）
+</span><span class='line'>dispatch_queue_t queue = dispatch_queue_create("com.520it.queue", NULL); 
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>获得GCD自带的串行队列(主队列)</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>主队列是GCD自带的一种特殊的串行队列
+</span><span class='line'>放在主队列中的任务，都会放到主线程中执行
+</span><span class='line'>使用dispatch_get_main_queue()获得主队列
+</span><span class='line'>dispatch_queue_t queue = dispatch_get_main_queue();
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>同步sync函数,以同步方式执行队列中的任务(不具备开线程能力)</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>用同步的方式执行任务
+</span><span class='line'>dispatch_sync(dispatch_queue_t queue, dispatch_block_t block);
+</span><span class='line'>queue：队列
+</span><span class='line'>block：任务
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>异步async函数,以异步方式执行队列中的任务(具备开线程能力)</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>用异步的方式执行任务
+</span><span class='line'>dispatch_async(dispatch_queue_t queue, dispatch_block_t block);
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>使用sync函数往当前串行队列中添加任务，会卡住当前的串行队列</h4>
+
+<h4>同步异步是函数,串行并行是参数,任务是block(可以是C语言代码,也可以是OC代码)</h4>
+
+<h5>同步函数执行必须是按照顺序来,绝对不等线程中排在它后面的任务先执行,也绝对不会前面任务没执行自己就先执行,所以当自己的任务放在前面任务里面,那么就会造成死锁</h5>
+
+<h5>异步函数执行是回等待主线程空闲后在调度队列中其他任务,所以当自己的任务放在前面的任务里面,也会等待前面任务先完成,然后自己的任务再执行.成功解锁.</h5>
+
+<h5>barrier函数是可以做到把前面的任务的后面的任务分开,一定要等到前面全部做完,才做后面的任务</h5>
+
+<h5>延时执行</h5>
+
+<ul>
+<li>调用NSObject的方法</li>
+<li>调用NSTimer的方法</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>调用NSObject的方法
+</span><span class='line'>[self performSelector:@selector(run) withObject:nil afterDelay:2.0];
+</span><span class='line'>// 2秒后再调用self的run方法
+</span><span class='line'>
+</span><span class='line'>使用NSTimer
+</span><span class='line'>[NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(test) userInfo:nil repeats:NO];
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>GCD方法</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>使用GCD函数
+</span><span class='line'>dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+</span><span class='line'>    // 2秒后执行这里的代码...
+</span><span class='line'>});</span></code></pre></td></tr></table></div></figure>
+
+
+<h5>GCD的一次性代码</h5>
+
+<ul>
+<li>比较适合程序中加载资源的操作</li>
+<li>和懒加载是不一样的</li>
+<li>懒加载的意思是每个对象的属性get方法,只初始化一次</li>
+<li>一次性代码是整个运行过程只运行一次,再创建的对象,get方法时,就相当于没有初始化,就位空值</li>
+<li>一次性代码也不用担心多条线程同时执行,导致被执行多次,一次性代码是自动加锁的</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>使用dispatch_once函数能保证某段代码在程序运行过程中只被执行1次
+</span><span class='line'>static dispatch_once_t onceToken;
+</span><span class='line'>dispatch_once(&onceToken, ^{
+</span><span class='line'>    // 只执行1次的代码(这里面默认是线程安全的)
+</span><span class='line'>});
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h5>GCD的快速迭代</h5>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>使用dispatch_apply函数能进行快速迭代遍历
+</span><span class='line'>dispatch_apply(10, dispatch_get_global_queue(0, 0), ^(size_t index){
+</span><span class='line'>    // 执行10次代码，index顺序不确定
+</span><span class='line'>});
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>利用GCD快速迭代 快速将一个文件夹的文件,剪切到另一个文件夹</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+</span><span class='line'>NSString *from = @"/Users/xiaomage/Desktop/From";
+</span><span class='line'>NSString *to = @"/Users/xiaomage/Desktop/To";
+</span><span class='line'>
+</span><span class='line'>NSFileManager *mgr = [NSFileManager defaultManager];
+</span><span class='line'>NSArray *subpaths = [mgr subpathsAtPath:from];
+</span><span class='line'>
+</span><span class='line'>dispatch_apply(subpaths.count, queue, ^(size_t index) {
+</span><span class='line'>    NSString *subpath = subpaths[index];
+</span><span class='line'>    NSString *fromFullpath = [from stringByAppendingPathComponent:subpath];
+</span><span class='line'>    NSString *toFullpath = [to stringByAppendingPathComponent:subpath];
+</span><span class='line'>    // 剪切
+</span><span class='line'>    [mgr moveItemAtPath:fromFullpath toPath:toFullpath error:nil];
+</span><span class='line'>    
+</span><span class='line'>    NSLog(@"%@---%@", [NSThread currentThread], subpath);
+</span><span class='line'>});</span></code></pre></td></tr></table></div></figure>
+
+
+<h5>GCD的队列组</h5>
+
+<ul>
+<li>获得全局并发队列去下载两张图片,调用异步函数执行,同时下载效率更高</li>
+<li>并且使这两个队列以组的形式执行</li>
+<li>合成图片用group_notify函数执行,就会等group的两个函数执行完,才执行合成图片</li>
+<li>然后在group_notify函数中,回到主线程异步或者同步执行,显示图片</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+</span><span class='line'>// 创建一个队列组
+</span><span class='line'>dispatch_group_t group = dispatch_group_create();
+</span><span class='line'>
+</span><span class='line'>// 1.下载图片1
+</span><span class='line'>dispatch_group_async(group, queue, ^{
+</span><span class='line'>    // 图片的网络路径
+</span><span class='line'>    NSURL *url = [NSURL URLWithString:@"http://img.pconline.com.cn/images/photoblog/9/9/8/1/9981681/200910/11/1255259355826.jpg"];
+</span><span class='line'>    
+</span><span class='line'>    // 加载图片
+</span><span class='line'>    NSData *data = [NSData dataWithContentsOfURL:url];
+</span><span class='line'>    
+</span><span class='line'>    // 生成图片
+</span><span class='line'>    self.image1 = [UIImage imageWithData:data];
+</span><span class='line'>});
+</span><span class='line'>
+</span><span class='line'>// 2.下载图片2
+</span><span class='line'>dispatch_group_async(group, queue, ^{
+</span><span class='line'>    // 图片的网络路径
+</span><span class='line'>    NSURL *url = [NSURL URLWithString:@"http://pic38.nipic.com/20140228/5571398_215900721128_2.jpg"];
+</span><span class='line'>    
+</span><span class='line'>    // 加载图片
+</span><span class='line'>    NSData *data = [NSData dataWithContentsOfURL:url];
+</span><span class='line'>    
+</span><span class='line'>    // 生成图片
+</span><span class='line'>    self.image2 = [UIImage imageWithData:data];
+</span><span class='line'>});
+</span><span class='line'>
+</span><span class='line'>// 3.将图片1、图片2合成一张新的图片
+</span><span class='line'>dispatch_group_notify(group, queue, ^{
+</span><span class='line'>    // 开启新的图形上下文
+</span><span class='line'>    UIGraphicsBeginImageContext(CGSizeMake(100, 100));
+</span><span class='line'>    
+</span><span class='line'>    // 绘制图片
+</span><span class='line'>    [self.image1 drawInRect:CGRectMake(0, 0, 50, 100)];
+</span><span class='line'>    [self.image2 drawInRect:CGRectMake(50, 0, 50, 100)];
+</span><span class='line'>    
+</span><span class='line'>    // 取得上下文中的图片
+</span><span class='line'>    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+</span><span class='line'>    
+</span><span class='line'>    // 结束上下文
+</span><span class='line'>    UIGraphicsEndImageContext();
+</span><span class='line'>    
+</span><span class='line'>    // 回到主线程显示图片
+</span><span class='line'>    dispatch_async(dispatch_get_main_queue(), ^{
+</span><span class='line'>        // 4.将新图片显示出来
+</span><span class='line'>        self.imageView.image = image;
+</span><span class='line'>    });
+</span><span class='line'>});</span></code></pre></td></tr></table></div></figure>
+
+
+<h5>GCD实现单例模式</h5>
+
+<ul>
+<li>单例是一种设计模式,保证在程序中一个类,只有一个对象,这个对象的属性都只有一份,实现共享同一份资源</li>
+</ul>
+
+
+<h4>ARC中，单例模式的实现</h4>
+
+<ul>
+<li>在内存中先定义一个只在当前文件访问的指针,默认是强指针</li>
+<li>再顶一个不可修改的dispatch_once_t变量,只有一份内存的变量</li>
+<li>调用dispatch_once,使得代码在整个程序中只执行一次</li>
+<li>创建的对象只存在一份代码,以后每次allocWithZone:都直接返回上次创建的对象</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>// 在.m中保留一个全局的static的实例
+</span><span class='line'>static id _instance;
+</span><span class='line'>
+</span><span class='line'>// 重写allocWithZone:方法，在这里创建唯一的实例（注意线程安全）
+</span><span class='line'>+ (instancetype)allocWithZone:(struct _NSZone *)zone
+</span><span class='line'>{
+</span><span class='line'>    static dispatch_once_t onceToken;
+</span><span class='line'>    dispatch_once(&onceToken, ^{
+</span><span class='line'>        _instance = [super allocWithZone:zone];
+</span><span class='line'>    });
+</span><span class='line'>    return _instance;
+</span><span class='line'>}
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>严谨起见,一把会提供一个类方法让外界直接访问唯一的实例</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>// 提供1个类方法让外界访问唯一的实例
+</span><span class='line'>+ (instancetype)sharedInstance
+</span><span class='line'>{
+</span><span class='line'>    static dispatch_once_t onceToken;
+</span><span class='line'>    dispatch_once(&onceToken, ^{
+</span><span class='line'>        _instance = [[self alloc] init];
+</span><span class='line'>    });
+</span><span class='line'>    return _instance;
+</span><span class='line'>}
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>并且单例写法都相同,直接定义为宏,定义多行代码为宏,需要在每一行结尾加'\&lsquo;,这样宏就认为\后面一行也属于宏的内容</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>// .h文件
+</span><span class='line'>/ #define HYWSingletonH + (instancetype)sharedInstance;
+</span><span class='line'>
+</span><span class='line'>// .m文件
+</span><span class='line'>/ #define HYWSingletonM \
+</span><span class='line'>static id _instace; \
+</span><span class='line'> \
+</span><span class='line'>+ (instancetype)allocWithZone:(struct _NSZone *)zone \
+</span><span class='line'>{ \
+</span><span class='line'>    static dispatch_once_t onceToken; \
+</span><span class='line'>    dispatch_once(&onceToken, ^{ \
+</span><span class='line'>        _instace = [super allocWithZone:zone]; \
+</span><span class='line'>    }); \
+</span><span class='line'>    return _instace; \
+</span><span class='line'>} \
+</span><span class='line'> \
+</span><span class='line'>+ (instancetype)sharedInstance \
+</span><span class='line'>{ \
+</span><span class='line'>    static dispatch_once_t onceToken; \
+</span><span class='line'>    dispatch_once(&onceToken, ^{ \
+</span><span class='line'>        _instace = [[self alloc] init]; \
+</span><span class='line'>    }); \
+</span><span class='line'>    return _instace; \
+</span><span class='line'>} \
+</span><span class='line'> \
+</span><span class='line'>- (id)copyWithZone:(NSZone *)zone \
+</span><span class='line'>{ \
+</span><span class='line'>    return _instace; \
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>如果想让每个类提供的类方法后缀个性化一点,需要带参数的宏</li>
+<li>带参数的宏是在需要参数的位置输入'##'</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>// .h文件
+</span><span class='line'>/ #define HYWSingletonH(name) + (instancetype)shared##name;
+</span><span class='line'>
+</span><span class='line'>// .m文件
+</span><span class='line'>/ #define HYWSingletonM(name) \
+</span><span class='line'>static id _instace; \
+</span><span class='line'> \
+</span><span class='line'>+ (instancetype)allocWithZone:(struct _NSZone *)zone \
+</span><span class='line'>{ \
+</span><span class='line'>    static dispatch_once_t onceToken; \
+</span><span class='line'>    dispatch_once(&onceToken, ^{ \
+</span><span class='line'>        _instace = [super allocWithZone:zone]; \
+</span><span class='line'>    }); \
+</span><span class='line'>    return _instace; \
+</span><span class='line'>} \
+</span><span class='line'> \
+</span><span class='line'>+ (instancetype)shared##name \
+</span><span class='line'>{ \
+</span><span class='line'>    static dispatch_once_t onceToken; \
+</span><span class='line'>    dispatch_once(&onceToken, ^{ \
+</span><span class='line'>        _instace = [[self alloc] init]; \
+</span><span class='line'>    }); \
+</span><span class='line'>    return _instace; \
+</span><span class='line'>} \
+</span><span class='line'> \
+</span><span class='line'>- (id)copyWithZone:(NSZone *)zone \
+</span><span class='line'>{ \
+</span><span class='line'>    return _instace; \
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li><h5>单例模式是不能继承的,否则以后创建的对象类型都是第一次创建的对象的类型,意味着只能创建一种类型的单例</h5></li>
+<li><h5>主要原因是static id _instance这个强指针是唯一的</h5></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1739,217 +2343,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013-06-26-wang-yi-cai-piao-xiang-mu-shi-xian-bu-zou/">网易彩票项目实现步骤</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2013-06-26T14:45:50+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>26</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>2:45 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>下面两种方法都可以获取导航控制器的导航栏</h3>
-
-<ul>
-<li>这种方法获取的是本应用全部控制器的导航栏,包括调用系统照片选择器,而系统的照片选择器不希望被修改</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>UINavigationBar *bar = [UINavigationBar appearance];</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>因此推荐下面这种方法,只获取自定义这个类的导航栏</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>UINavigationBar *bar = [UINavigationBar appearanceWhenContainedIn:self, nil];</span></code></pre></td></tr></table></div></figure>
-
-
-<p><img src="/images/Snip20150626_6.png" alt="导航栏设置" /></p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>// 设置导航条属性
-</span><span class='line'>[bar setBackgroundImage:[UIImage imageNamed:@"NavBar64"] forBarMetrics:UIBarMetricsDefault];
-</span><span class='line'>bar.tintColor = [UIColor whiteColor];
-</span><span class='line'>NSMutableDictionary *titleAttr = [NSMutableDictionary dictionary];
-</span><span class='line'>titleAttr[NSFontAttributeName] = [UIFont systemFontOfSize:16];
-</span><span class='line'>titleAttr[NSForegroundColorAttributeName] = [UIColor whiteColor];
-</span><span class='line'>[bar setTitleTextAttributes:titleAttr];
-</span><span class='line'>
-</span><span class='line'>// 设置导航条上部件的属性
-</span><span class='line'>
-</span><span class='line'>NSMutableDictionary *barButtonAttr = [NSMutableDictionary dictionary];
-</span><span class='line'>barButtonAttr[NSFontAttributeName] = [UIFont systemFontOfSize:16];
-</span><span class='line'>barButtonAttr[NSForegroundColorAttributeName] = [UIColor whiteColor];
-</span><span class='line'>UIBarButtonItem *barButtonItem = [UIBarButtonItem appearance];
-</span><span class='line'>[barButtonItem setTitleTextAttributes:barButtonAttr forState:UIControlStateNormal];</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>tabBar的图片是包含文字高度为64,而系统tabBar图片尺寸不能超过44,因此自定义tabBar</h3>
-
-<ul>
-<li>tabBar的按钮是写死的所以可以用xib描述,并且设置约束,既可以适配不同屏幕,又省去不少代码</li>
-</ul>
-
-
-<p><img src="/images/Snip20150626_7.png" alt="tabBar子控件描述" /></p>
-
-<ul>
-<li>tabBar子控件图片通过添加一个item的模型数组,由控制器设置,</li>
-<li>tabBar内部改写set方法,这样按钮图片顺序和图片都交给控制器,控制器怎么设置,tabBar就怎么显示</li>
-</ul>
-
-
-<p><img src="/images/Snip20150626_8.png" alt="tabBar子控件图片设置" /></p>
-
-<h6>控制器设置tabBar的模型数组</h6>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>- (void)viewDidLoad {
-</span><span class='line'>    
-</span><span class='line'>    [super viewDidLoad];
-</span><span class='line'>    [self.tabBar removeFromSuperview];
-</span><span class='line'>    
-</span><span class='line'>    HYWTabBar *myTabBar = [HYWTabBar tabBar];
-</span><span class='line'>    myTabBar.HYWTabBardelegate = self;
-</span><span class='line'>    [self.view addSubview:myTabBar];
-</span><span class='line'>    
-</span><span class='line'>    myTabBar.frame = self.tabBar.frame;
-</span><span class='line'>    
-</span><span class='line'>    
-</span><span class='line'>    [self setUpAllChildController];
-</span><span class='line'>    
-</span><span class='line'>    myTabBar.tabBaritems = self.items;
-</span><span class='line'>    
-</span><span class='line'>}
-</span><span class='line'>- (void)setUpAllChildController
-</span><span class='line'>{
-</span><span class='line'>    [self addOneChildViewController:[ArenaController class] title:@"购彩大厅" image:@"TabBar_LotteryHall_new" selectedImage:@"TabBar_LotteryHall_selected_new"];
-</span><span class='line'>    [self addOneChildViewController:[ArenaController class] title:@"竞技场" image:@"TabBar_Arena_new" selectedImage:@"TabBar_Arena_selected_new"];
-</span><span class='line'>    [self addOneChildViewController:[DiscoverController class] title:@"发现" image:@"TabBar_Discovery_new" selectedImage:@"TabBar_Discovery_selected_new"];
-</span><span class='line'>    [self addOneChildViewController:[HistoryController class] title:@"开奖信息" image:@"TabBar_History_new" selectedImage:@"TabBar_History_selected_new"];
-</span><span class='line'>    [self addOneChildViewController:[ArenaController class] title:@"我的信息" image:@"TabBar_MyLottery_new" selectedImage:@"TabBar_MyLottery_selected_new"];
-</span><span class='line'>    
-</span><span class='line'>}
-</span><span class='line'>
-</span><span class='line'>- (void)addOneChildViewController:(Class)VcClass title:(NSString *)title image:(NSString *)image selectedImage:(NSString *)selectedImage
-</span><span class='line'>{
-</span><span class='line'>    UIViewController *childVc = [[VcClass alloc] init];
-</span><span class='line'>    HYWNavigationController *nav = [[HYWNavigationController alloc] initWithRootViewController:childVc];
-</span><span class='line'>    [self addChildViewController:nav];
-</span><span class='line'>    childVc.navigationItem.title = title;
-</span><span class='line'>    
-</span><span class='line'>    childVc.tabBarItem.image = [[UIImage imageNamed:image] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-</span><span class='line'>    
-</span><span class='line'>    childVc.view.backgroundColor = HYWRandomColor;
-</span><span class='line'>    
-</span><span class='line'>    childVc.tabBarItem.selectedImage = [[UIImage imageNamed:selectedImage] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-</span><span class='line'>    
-</span><span class='line'>    [self.items addObject:childVc.tabBarItem];
-</span><span class='line'>}
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h6>tabBar内部set方法</h6>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>-(void)setTabBaritems:(NSArray *)tabBaritems
-</span><span class='line'>{
-</span><span class='line'>    _tabBaritems = tabBaritems;
-</span><span class='line'>    for (int i = 0; i &lt; tabBaritems.count; i++) {
-</span><span class='line'>        UITabBarItem *item = tabBaritems[i];
-</span><span class='line'>        UIButton *btn = self.subviews[i];
-</span><span class='line'>        [btn setImage:item.image forState:UIControlStateNormal];
-</span><span class='line'>        [btn setImage:item.selectedImage forState:UIControlStateSelected];
-</span><span class='line'>    }
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/5">&larr; Older</a>
@@ -1965,6 +2358,10 @@
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015-05-29-ioslan-ya-4-dot-0kai-fa/">iOS蓝牙4.0开发</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2015-05-11-nsscannerchu-li-fu-wu-qi-shu-ju-yi-chang-,-shu-ju-chu-li/">NSScanner处理服务器数据异常、数据处理</a>
@@ -2040,10 +2437,6 @@
     
       <li class="post">
         <a href="/blog/2014-07-22-bai-si-bu-de-qi-jie-xiang-mu-zong-jie/">主流框架搭建常用技巧</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014-07-19-shi-yong-svnxie-tong-kai-fa-xcodexiang-mu/">使用SVN协同开发Xcode项目</a>
       </li>
     
   </ul>

@@ -4,7 +4,7 @@
   <title><![CDATA[Heew’s iOS Blog]]></title>
   <link href="http://heeween.github.io/atom.xml" rel="self"/>
   <link href="http://heeween.github.io/"/>
-  <updated>2015-09-02T00:07:14+08:00</updated>
+  <updated>2015-09-02T00:10:47+08:00</updated>
   <id>http://heeween.github.io/</id>
   <author>
     <name><![CDATA[Heew]]></name>
@@ -12,6 +12,91 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[iOS蓝牙4.0开发]]></title>
+    <link href="http://heeween.github.io/blog/2015-05-29-ioslan-ya-4-dot-0kai-fa/"/>
+    <updated>2015-05-29T13:19:08+08:00</updated>
+    <id>http://heeween.github.io/blog/ioslan-ya-4-dot-0kai-fa</id>
+    <content type="html"><![CDATA[<h4>小引</h4>
+
+<p>随着穿戴设备和智能家居的热情不断，app蓝牙的开发也很火热，基于iOS蓝牙的开发资料有不少，但是最最值得学习的必然是apple自家的文档啦，我之前的项目基于蓝牙4.0，开发过程中用到Core Bluetooth框架，算是我学习的笔记吧！涉及到几个部分，我打算分开把他们整理出来，本篇文章通过对Core Bluetooth Programming Guide的翻译，为大家介绍iOS蓝牙4.0编程的一些术语和概念，后续文章将会简单介绍下代码的流程。本人实力有限，了解的深度不是很广，还请各位看官轻点拍砖！</p>
+
+<p>话不多说说，让我们进入正题吧：</p>
+
+<h4>核心蓝牙概述</h4>
+
+<p>Core Bluetooth 框架使你的 Mac/iOS app 能够与低功耗蓝牙设备进行通讯。例如，你的app能够搜寻，探索低功耗蓝牙设备，并与之互动，如心率监听器，数字恒温器，甚至能够与其它iOS设备进行交互。</p>
+
+<p>该框架基于BLE4.0规范，直接适用于蓝牙低功率设备的使用。也就是说，该框架隐藏了很多开发规范的底层实现细节，使您更容易开发出与蓝牙低功耗设备进行交互的app。因为该说明中涉及到蓝牙框架的一些概念和术语在本说明中已经被广泛采用，本文将向你介绍这个 Core Bluetooth 框架中的一些关键术语和概念。</p>
+
+<p>Central 和 Peripheral 在蓝牙交互中的角色
+所有涉及蓝牙低功耗的交互中有两个主要的角色：中心Central和外围设备Perpheral。根据一些传统的客户端-服务端结构，Peripheral通常具有其他设备所需要的数据，而Central通常通过使用Perpheral的信息来实现一些特定的功能。如下图所示，例如，一个心率监听器可能含有一些有用的信息，你的 Mac/iOS app 可能需要以用户友好的方式显示用户的心率。</p>
+
+<p><img src="http://heeween.github.io/images/figure1-1.png" alt="" /></p>
+
+<h4>Central 发现并连接广播中的 Peripheral</h4>
+
+<p>Peripheral向外广播一些广告包形式的数据，广告包是一个相对较小的束，可能包含Peripheral提供的有用信息资料，如外设的名称和主要功能。例如，一个数字恒温器可以广告包含其中的一个房间的即时温度。在低功耗蓝牙中，广播是Peripheral被获知的主要方式。</p>
+
+<p>从另一方面说，Central可以扫描和监听任何对广播内容感兴趣的Peripheral。如下图，Central可以请求连接任何已对外广播内容的Peripheral。</p>
+
+<p><img src="http://heeween.github.io/images/figure1-2.png" alt="" /></p>
+
+<h4>数据在 Peripheral 中如何构成</h4>
+
+<p>连接到Peripheral的目的是为了对它所提供的数据进行探索和交互。在此之前，理解数据在Peripheral中是怎样构成的将会对我们有所帮助。</p>
+
+<p>Peripheral包含一个或者多个Service以及有关其连接信号强度的有用信息。Service是指实现一个函数或者功能的设备（或者设备的一部分）的数据采集和相关行为的集合。例如，一个心率监听器的Service可能包含从监听心率传感器采集的心率数据。</p>
+
+<p>而Service本身由Characteristic或者其他被包含的Service所组成。Characteristic提供了更多有关Peripheral的Service中的详细内容。例如，刚才描述的心率service中可以包含一个用来描述该设备的心率传感器所记录身体位置的characteristic或者包含发送测量心率数据的Characteristic。如下图，表示了一个心率监听器可能包含的Service和Characteristic。</p>
+
+<p><img src="http://heeween.github.io/images/figure1-3.png" alt="" /></p>
+
+<h4>Central 在 Peripheral 上的数据探索及交互</h4>
+
+<p>在Central成功与Peripheral建立连接后，就能发现到Peripheral提供的所有的Service和Characteristic。(广播数据可能只包含一部分可见的Service)</p>
+
+<p>Central可以通过读取或者写入Service中Characteristic的value与Peripheral进行交互。例如，你的 app 可能从数字恒温器上请求当前的室内温度，或者为恒温器提供一个数值以设置室内温度。</p>
+
+<h4>Central,Peripherals 以及 Peripheral数据如何表示</h4>
+
+<p>有关低功耗蓝牙交互中的主要角色和数据在Core Bluetooth中以简单明了的方式表示。</p>
+
+<h4>Central 端的对象</h4>
+
+<p>当你使用本地Central和远程Peripheral进行交互，您将在低功耗蓝牙Central侧执行操作。除非你是建立一个本地Peripheral设备，并使它由一个Central端请求响应，大多数的蓝牙交互由Central端完成。</p>
+
+<h4>本地 Central 和远程 Peripheral</h4>
+
+<p>在Central端，本地Central设备表示为CBCentralManager。这些对象用来管理发现或连接远程Peripheral设备(表示为CBPeripheral)，包括扫描，发现和连接广播中的Peripheral。如下图所示：</p>
+
+<p><img src="http://heeween.github.io/images/figure1-4.png" alt="" /></p>
+
+<h4>远程 Peripheral 数据表示为 CBService 和CBCharacteristic</h4>
+
+<p>当你与远程Peripheral(表示为CBPeripheral)进行数据交互时，你将处理它的Service和Characteristic。在Core Bluetooth框架中，远程Peripheral的Service表示为CBService。相类似的，远程Peripheral中Service的Characteritic表示为CBCharacteristic。如下图所示：</p>
+
+<p><img src="http://heeween.github.io/images/figure1-5.png" alt="" /></p>
+
+<h4>Peripheral 端的对象</h4>
+
+<p>OS X v10.9和iOS6以上的Mac/iOS设备能够可以设置成低功耗蓝牙的Peripheral，为其他Mac/iPhone/iPad 传输数据。当你设置好你的设备使其能够实现Peripheral的角色，你就可以完成低功耗蓝牙交互的Peripheral端功能。</p>
+
+<h4>本地 Peripheral 和远程 Central</h4>
+
+<p>在Peripheral端，一个Peripheral设备表示为CBPeripheralManager
+。该对象用于管理那些包含本地Peripheral设备的Service和Characteristic数据的Service，通过广播这些服务的方式发布到远程Central设备(表示为CBCentral)。Peripheral manager对象同样可以响应远程Central的读取和写入请求。如下图所示：</p>
+
+<p><img src="http://heeween.github.io/images/figure1-6.png" alt="" /></p>
+
+<h4>本地 Peripheral 数据表示为 CBMutableService 和 CBMutableCharacteristic</h4>
+
+<p>当你设置好和本地Peripheral(表示为CBPeripheralManager)数据交互，就可以处理Service和Characteristic的可变版本。在Core Bluetooth框架中，本地Peripheral的Service表示为CBMutableService。同样地，本地Peripheral中Service的Characteristic表示为CBMutableCharacteristic。如下图所示：</p>
+
+<p><img src="http://heeween.github.io/images/figure1-7.png" alt="" /></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[NSScanner处理服务器数据异常、数据处理]]></title>
@@ -2558,53 +2643,6 @@ CADisplayLink 不能被继承。</p>
 <h2>在navigation控制器的push方法可以统一设置子控制器某些特性</h2>
 
 <p><img src="http://heeween.github.io/images/Snip20150722_8.png" alt="" /></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[使用SVN协同开发Xcode项目]]></title>
-    <link href="http://heeween.github.io/blog/2014-07-19-shi-yong-svnxie-tong-kai-fa-xcodexiang-mu/"/>
-    <updated>2014-07-19T16:05:57+08:00</updated>
-    <id>http://heeween.github.io/blog/shi-yong-svnxie-tong-kai-fa-xcodexiang-mu</id>
-    <content type="html"><![CDATA[<h3>使用Cornerstone创建代码仓库,协同开发</h3>
-
-<ul>
-<li>使用Cornerstone提交代码</li>
-</ul>
-
-
-<p><img src="http://heeween.github.io/images/Snip20150719_30.png" alt="" /></p>
-
-<ul>
-<li>使用Xcode提交代码</li>
-</ul>
-
-
-<p><img src="http://heeween.github.io/images/Snip20150719_31.png" alt="" /></p>
-
-<ul>
-<li>Xcode提交会提交很多额外的,不需要提交给同事的内容</li>
-</ul>
-
-
-<p><img src="http://heeween.github.io/images/Snip20150719_32.png" alt="" /></p>
-
-<ul>
-<li><p>Cornerstone可以选择提交</p></li>
-<li><p>Xcode需要忽略的文件和不可以忽略的文件</p></li>
-</ul>
-
-
-<p><img src="http://heeween.github.io/images/Snip20150719_33.png" alt="" />
-<img src="http://heeween.github.io/images/Snip20150719_34.png" alt="" /></p>
-
-<ul>
-<li>Xcode的冲突</li>
-</ul>
-
-
-<p><img src="http://heeween.github.io/images/Snip20150719_35.png" alt="" />
-<img src="http://heeween.github.io/images/Snip20150719_36.png" alt="" /></p>
 ]]></content>
   </entry>
   

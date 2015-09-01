@@ -9,41 +9,7 @@
   <meta name="author" content="Heew">
 
   
-  <meta name="description" content="今天来介绍一下NSScanner, 并讲述一下如何使用这个东西来避免服务器传回的数组类型的数据错误的问题。 1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35 &hellip;">
+  <meta name="description" content="小引 随着穿戴设备和智能家居的热情不断，app蓝牙的开发也很火热，基于iOS蓝牙的开发资料有不少，但是最最值得学习的必然是apple自家的文档啦，我之前的项目基于蓝牙4.0，开发过程中用到Core Bluetooth框架，算是我学习的笔记吧！涉及到几个部分，我打算分开把他们整理出来， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -99,6 +65,111 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015-05-29-ioslan-ya-4-dot-0kai-fa/">iOS蓝牙4.0开发</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-05-29T13:19:08+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>29</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>1:19 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h4>小引</h4>
+
+<p>随着穿戴设备和智能家居的热情不断，app蓝牙的开发也很火热，基于iOS蓝牙的开发资料有不少，但是最最值得学习的必然是apple自家的文档啦，我之前的项目基于蓝牙4.0，开发过程中用到Core Bluetooth框架，算是我学习的笔记吧！涉及到几个部分，我打算分开把他们整理出来，本篇文章通过对Core Bluetooth Programming Guide的翻译，为大家介绍iOS蓝牙4.0编程的一些术语和概念，后续文章将会简单介绍下代码的流程。本人实力有限，了解的深度不是很广，还请各位看官轻点拍砖！</p>
+
+<p>话不多说说，让我们进入正题吧：</p>
+
+<h4>核心蓝牙概述</h4>
+
+<p>Core Bluetooth 框架使你的 Mac/iOS app 能够与低功耗蓝牙设备进行通讯。例如，你的app能够搜寻，探索低功耗蓝牙设备，并与之互动，如心率监听器，数字恒温器，甚至能够与其它iOS设备进行交互。</p>
+
+<p>该框架基于BLE4.0规范，直接适用于蓝牙低功率设备的使用。也就是说，该框架隐藏了很多开发规范的底层实现细节，使您更容易开发出与蓝牙低功耗设备进行交互的app。因为该说明中涉及到蓝牙框架的一些概念和术语在本说明中已经被广泛采用，本文将向你介绍这个 Core Bluetooth 框架中的一些关键术语和概念。</p>
+
+<p>Central 和 Peripheral 在蓝牙交互中的角色
+所有涉及蓝牙低功耗的交互中有两个主要的角色：中心Central和外围设备Perpheral。根据一些传统的客户端-服务端结构，Peripheral通常具有其他设备所需要的数据，而Central通常通过使用Perpheral的信息来实现一些特定的功能。如下图所示，例如，一个心率监听器可能含有一些有用的信息，你的 Mac/iOS app 可能需要以用户友好的方式显示用户的心率。</p>
+
+<p><img src="/images/figure1-1.png" alt="" /></p>
+
+<h4>Central 发现并连接广播中的 Peripheral</h4>
+
+<p>Peripheral向外广播一些广告包形式的数据，广告包是一个相对较小的束，可能包含Peripheral提供的有用信息资料，如外设的名称和主要功能。例如，一个数字恒温器可以广告包含其中的一个房间的即时温度。在低功耗蓝牙中，广播是Peripheral被获知的主要方式。</p>
+
+<p>从另一方面说，Central可以扫描和监听任何对广播内容感兴趣的Peripheral。如下图，Central可以请求连接任何已对外广播内容的Peripheral。</p>
+
+<p><img src="/images/figure1-2.png" alt="" /></p>
+
+<h4>数据在 Peripheral 中如何构成</h4>
+
+<p>连接到Peripheral的目的是为了对它所提供的数据进行探索和交互。在此之前，理解数据在Peripheral中是怎样构成的将会对我们有所帮助。</p>
+
+<p>Peripheral包含一个或者多个Service以及有关其连接信号强度的有用信息。Service是指实现一个函数或者功能的设备（或者设备的一部分）的数据采集和相关行为的集合。例如，一个心率监听器的Service可能包含从监听心率传感器采集的心率数据。</p>
+
+<p>而Service本身由Characteristic或者其他被包含的Service所组成。Characteristic提供了更多有关Peripheral的Service中的详细内容。例如，刚才描述的心率service中可以包含一个用来描述该设备的心率传感器所记录身体位置的characteristic或者包含发送测量心率数据的Characteristic。如下图，表示了一个心率监听器可能包含的Service和Characteristic。</p>
+
+<p><img src="/images/figure1-3.png" alt="" /></p>
+
+<h4>Central 在 Peripheral 上的数据探索及交互</h4>
+
+<p>在Central成功与Peripheral建立连接后，就能发现到Peripheral提供的所有的Service和Characteristic。(广播数据可能只包含一部分可见的Service)</p>
+
+<p>Central可以通过读取或者写入Service中Characteristic的value与Peripheral进行交互。例如，你的 app 可能从数字恒温器上请求当前的室内温度，或者为恒温器提供一个数值以设置室内温度。</p>
+
+<h4>Central,Peripherals 以及 Peripheral数据如何表示</h4>
+
+<p>有关低功耗蓝牙交互中的主要角色和数据在Core Bluetooth中以简单明了的方式表示。</p>
+
+<h4>Central 端的对象</h4>
+
+<p>当你使用本地Central和远程Peripheral进行交互，您将在低功耗蓝牙Central侧执行操作。除非你是建立一个本地Peripheral设备，并使它由一个Central端请求响应，大多数的蓝牙交互由Central端完成。</p>
+
+<h4>本地 Central 和远程 Peripheral</h4>
+
+<p>在Central端，本地Central设备表示为CBCentralManager。这些对象用来管理发现或连接远程Peripheral设备(表示为CBPeripheral)，包括扫描，发现和连接广播中的Peripheral。如下图所示：</p>
+
+<p><img src="/images/figure1-4.png" alt="" /></p>
+
+<h4>远程 Peripheral 数据表示为 CBService 和CBCharacteristic</h4>
+
+<p>当你与远程Peripheral(表示为CBPeripheral)进行数据交互时，你将处理它的Service和Characteristic。在Core Bluetooth框架中，远程Peripheral的Service表示为CBService。相类似的，远程Peripheral中Service的Characteritic表示为CBCharacteristic。如下图所示：</p>
+
+<p><img src="/images/figure1-5.png" alt="" /></p>
+
+<h4>Peripheral 端的对象</h4>
+
+<p>OS X v10.9和iOS6以上的Mac/iOS设备能够可以设置成低功耗蓝牙的Peripheral，为其他Mac/iPhone/iPad 传输数据。当你设置好你的设备使其能够实现Peripheral的角色，你就可以完成低功耗蓝牙交互的Peripheral端功能。</p>
+
+<h4>本地 Peripheral 和远程 Central</h4>
+
+<p>在Peripheral端，一个Peripheral设备表示为CBPeripheralManager
+。该对象用于管理那些包含本地Peripheral设备的Service和Characteristic数据的Service，通过广播这些服务的方式发布到远程Central设备(表示为CBCentral)。Peripheral manager对象同样可以响应远程Central的读取和写入请求。如下图所示：</p>
+
+<p><img src="/images/figure1-6.png" alt="" /></p>
+
+<h4>本地 Peripheral 数据表示为 CBMutableService 和 CBMutableCharacteristic</h4>
+
+<p>当你设置好和本地Peripheral(表示为CBPeripheralManager)数据交互，就可以处理Service和Characteristic的可变版本。在Core Bluetooth框架中，本地Peripheral的Service表示为CBMutableService。同样地，本地Peripheral中Service的Characteristic表示为CBMutableCharacteristic。如下图所示：</p>
+
+<p><img src="/images/figure1-7.png" alt="" /></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1692,87 +1763,6 @@ CADisplayLink 不能被继承。</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014-08-05-webviewjia-zai-jin-du-tiao-de-bu-kai-fang-he-chang-jian-jie-jue-fang-an/">webView加载进度条的不开放和常见解决方案</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-08-05T11:32:37+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>11:32 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>webView加载进度的实现&mdash;APP所有加载进度都是假象</h2>
-
-<p><img src="/images/Snip20150803_10.png" alt="" /></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// 将第三方框架设置为webView代理</span>
-</span><span class='line'><span class="nb">self</span><span class="p">.</span><span class="n">progress</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NJKWebViewProgress</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
-</span><span class='line'><span class="nb">self</span><span class="p">.</span><span class="n">webView</span><span class="p">.</span><span class="n">delegate</span> <span class="o">=</span> <span class="nb">self</span><span class="p">.</span><span class="n">progress</span><span class="p">;</span>
-</span><span class='line'><span class="k">__weak</span> <span class="k">typeof</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span> <span class="n">weakSelf</span> <span class="o">=</span> <span class="nb">self</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// 通过给代理的blcok赋值,拿到progress进度进行赋值</span>
-</span><span class='line'><span class="nb">self</span><span class="p">.</span><span class="n">progress</span><span class="p">.</span><span class="n">progressBlock</span> <span class="o">=</span> <span class="o">^</span><span class="p">(</span><span class="kt">float</span> <span class="n">progress</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="n">weakSelf</span><span class="p">.</span><span class="n">progressView</span><span class="p">.</span><span class="n">progress</span> <span class="o">=</span> <span class="n">progress</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">weakSelf</span><span class="p">.</span><span class="n">progressView</span><span class="p">.</span><span class="n">hidden</span> <span class="o">=</span> <span class="p">(</span><span class="n">progress</span> <span class="o">==</span> <span class="mf">1.0</span><span class="p">);</span>
-</span><span class='line'><span class="p">};</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// 再设置第三方框架的代理为控制器,以便控制器还可以正常监听webview的代理方法</span>
-</span><span class='line'><span class="nb">self</span><span class="p">.</span><span class="n">progress</span><span class="p">.</span><span class="n">webViewProxyDelegate</span> <span class="o">=</span> <span class="nb">self</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// webview加载网络请求</span>
-</span><span class='line'><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">webView</span> <span class="nl">loadRequest</span><span class="p">:[</span><span class="bp">NSURLRequest</span> <span class="nl">requestWithURL</span><span class="p">:[</span><span class="bp">NSURL</span> <span class="nl">URLWithString</span><span class="p">:</span><span class="nb">self</span><span class="p">.</span><span class="n">url</span><span class="p">]]];</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Button通过网络加载图片不能使用SDWebimage的&lt;UIImageView+WebCache.h>方法,否则图片不显示</h2>
-
-<p><img src="/images/Snip20150803_13.png" alt="" /></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// 使用UIButton的分类方法,附近状态参数</span>
-</span><span class='line'><span class="p">[</span><span class="nb">self</span> <span class="nl">sd_setImageWithURL</span><span class="p">:[</span><span class="bp">NSURL</span> <span class="nl">URLWithString</span><span class="p">:</span><span class="n">square</span><span class="p">.</span><span class="n">icon</span><span class="p">]</span> <span class="nl">forState</span><span class="p">:</span><span class="n">UIControlStateNormal</span><span class="p">];</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><img src="/images/Snip20150803_11.png" alt="" /></p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/2">&larr; Older</a>
@@ -1786,6 +1776,10 @@ CADisplayLink 不能被继承。</p>
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015-05-29-ioslan-ya-4-dot-0kai-fa/">iOS蓝牙4.0开发</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2015-05-11-nsscannerchu-li-fu-wu-qi-shu-ju-yi-chang-,-shu-ju-chu-li/">NSScanner处理服务器数据异常、数据处理</a>
@@ -1861,10 +1855,6 @@ CADisplayLink 不能被继承。</p>
     
       <li class="post">
         <a href="/blog/2014-07-22-bai-si-bu-de-qi-jie-xiang-mu-zong-jie/">主流框架搭建常用技巧</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014-07-19-shi-yong-svnxie-tong-kai-fa-xcodexiang-mu/">使用SVN协同开发Xcode项目</a>
       </li>
     
   </ul>
