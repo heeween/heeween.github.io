@@ -9,10 +9,7 @@
   <meta name="author" content="Heew">
 
   
-  <meta name="description" content="什么是GCD 全称是Grand Central Dispatch，可译为“牛逼的中枢调度器”
-纯C语言，提供了非常多强大的函数 GCD的优势 GCD是苹果公司为多核的并行运算提出的解决方案
-GCD会自动利用更多的CPU内核（比如双核、四核）
-GCD会自动管理线程的生命周期（创建线程、调度任务、 &hellip;">
+  <meta name="description" content="NSOperation的作用 配合使用NSOperation和NSOperationQueue也能实现多线程编程 NSOperation和NSOperationQueue实现多线程的具体步骤 先将需要执行的操作封装到一个NSOperation对象中 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -68,6 +65,203 @@ GCD会自动管理线程的生命周期（创建线程、调度任务、 &hellip
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014-07-09-nsoperation/">NSOperation</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-07-09T09:20:06+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>9:20 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h5>NSOperation的作用</h5>
+
+<ul>
+<li>配合使用NSOperation和NSOperationQueue也能实现多线程编程</li>
+</ul>
+
+
+<h5>NSOperation和NSOperationQueue实现多线程的具体步骤</h5>
+
+<ul>
+<li>先将需要执行的操作封装到一个NSOperation对象中</li>
+<li>然后将NSOperation对象添加到NSOperationQueue中</li>
+<li>系统会自动将NSOperationQueue中的NSOperation取出来</li>
+<li>将取出的NSOperation封装的操作放到一条新线程中执行</li>
+</ul>
+
+
+<h5>NSOperation是个抽象类，并不具备封装操作的能力，必须使用它的子类</h5>
+
+<ul>
+<li>使用NSOperation子类的方式有3种</li>
+<li>NSInvocationOperation</li>
+<li>NSBlockOperation</li>
+<li>自定义子类继承NSOperation，实现内部相应的方法</li>
+</ul>
+
+
+<h5>NSInvocationOperation,跟NSThread类相似</h5>
+
+<ul>
+<li><p>创建NSInvocationOperation对象</p>
+
+<ul>
+<li>(id)initWithTarget:(id)target selector:(SEL)sel object:(id)arg;</li>
+</ul>
+</li>
+<li><p>调用start方法开始执行操作</p>
+
+<ul>
+<li>(void)start;</li>
+<li>一旦执行操作，就会调用target的sel方法</li>
+</ul>
+</li>
+<li><p>注意,和NSThread不同点如下:</p>
+
+<ul>
+<li>默认情况下，调用了start方法后并不会开一条新线程去执行操作，而是在当前线程同步执行操作</li>
+<li>只有将NSOperation放到一个NSOperationQueue中，才会异步执行操作</li>
+<li>NSOperation是任务类,NSThread是线程类</li>
+</ul>
+</li>
+</ul>
+
+
+<h5>NSBlockOperation</h5>
+
+<ul>
+<li><p>创建NSBlockOperation对象</p>
+
+<ul>
+<li>(id)blockOperationWithBlock:(void (^)(void))block;</li>
+</ul>
+</li>
+<li><p>通过addExecutionBlock:方法添加更多的操作</p>
+
+<ul>
+<li>(void)addExecutionBlock:(void (^)(void))block;</li>
+</ul>
+</li>
+<li><p>注意：只要NSBlockOperation封装的操作数 > 1，就会异步执行操作</p></li>
+<li>与NSThread不同的是,一个线程可以添加多个方法去执行,NSThread只能添加一个方法,方法中添加多个任务</li>
+</ul>
+
+
+<h5>自定义Operation任务</h5>
+
+<ul>
+<li>继承自抽象类NSOperation</li>
+<li>外界创建就用[[HYWOperation alloc] init]</li>
+<li>具体任务,需要改写内部的main方法,在main方法写操作</li>
+<li>好处是,适合一个很长的任务,封装到自己的.m文件中,想执行的时候,直接[[HYWOperation alloc] init],添加到队列就可以执行了</li>
+<li><p><code>NSOperation 默认提供了一个 completionBlock 的参数，一旦设置，就会在操作执行完毕后，自动执行！</code></p>
+
+<p>  － completionBlock 会在后台线程执行，不会在主线程执行，所以如果要更新UI，需要注意线程
+  － completionBlock 不能接受参数，没有返回值，因此在使用的时候，会有很多限制！</p></li>
+</ul>
+
+
+<h5>NSOperationQueue的作用</h5>
+
+<ul>
+<li>NSOperation可以调用start方法来执行任务，但默认是同步执行的</li>
+<li>如果将NSOperation添加到NSOperationQueue（操作队列）中，系统会自动异步执行NSOperation中的操作</li>
+<li><p>NSOperationQueue队列类型:</p>
+
+<ul>
+<li>1.主队列[NSOperationQueue mainQueue];</li>
+<li>2.其他队列(既有串行又有并发功能)[[NSOperationQueue alloc] init]</li>
+</ul>
+</li>
+<li><p>添加操作到NSOperationQueue中</p>
+
+<ul>
+<li>只要添加到队列中,系统会自动调用NSOperation 的start方法,并且开启线程</li>
+<li>(void)addOperation:(NSOperation *)op;</li>
+<li>(void)addOperationWithBlock:(void (^)(void))block;</li>
+</ul>
+</li>
+<li><p>NSOpreation的最大并发数</p>
+
+<ul>
+<li>同时执行的任务数</li>
+<li>比如，同时开3个线程执行3个任务，并发数就是3</li>
+<li>如果设置为1 ,当前的NSOperationQueue就是串行队列</li>
+<li>如果设置为0,当前的NSOperationQueue,同时执行任务数为0,即不执行</li>
+</ul>
+</li>
+<li><p>最大并发数的相关方法</p>
+
+<ul>
+<li>(NSInteger)maxConcurrentOperationCount;</li>
+<li>(void)setMaxConcurrentOperationCount:(NSInteger)cnt;</li>
+</ul>
+</li>
+<li><p>暂停和恢复队列,为了增强用户体验,使用queue的挂起和开启来切换,GCD和NSThread都没有这个功能</p>
+
+<ul>
+<li>(void)setSuspended:(BOOL)b; // YES代表暂停队列，NO代表恢复队列</li>
+<li>(BOOL)isSuspended;</li>
+</ul>
+</li>
+<li><p>NSOperation取消的注意点:</p>
+
+<ul>
+<li>一旦开启后,正在执行的任务,不会受外界cancel方法的影响,会一直执行下去</li>
+<li>所以苹果建议,NSOperation里面,每执行完一段耗时操作就判断下,外界是否cancel</li>
+<li>手动强制取消下正在执行的任务,直接return</li>
+</ul>
+</li>
+<li><p>NSOperationQueue的依赖,任务执行顺序</p>
+
+<ul>
+<li>直接调用想依赖NSOperation对象的addDependency方法,就可以设置NSOperation依赖的对象</li>
+<li>千万注意,NSOperation对象,不能循环依赖,否则,进入死锁</li>
+<li>NSOperation对象还可以跨队列,设置依赖,不受队列的影响</li>
+<li>GCD的依赖是通过队列组来实现的,但不同的是NSOperation是可以跨队列的</li>
+</ul>
+</li>
+<li><p>NSOperationQueue还可以设置里面任务的完成监听方法</p>
+
+<ul>
+<li>执行设置NSOperation的comletionBlock方法,将提示写在Block里面即可</li>
+<li>任务完成的监听方法,也是在子线程执行</li>
+</ul>
+</li>
+</ul>
+
+
+<h5>NSOperationQueue和主队列之间的通信</h5>
+
+<ul>
+<li>直接在NSOperationQueue的任务执行完之后</li>
+<li>写[SNOperationQueue mainQueue] addOperationWithBlock方法执行UI线程</li>
+</ul>
+
+
+<p>Temp 下载的文件都是临时,随时删除
+Caches 下载的文件要永久保留
+Document里面禁止放下载文件,否则审核不通过</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -2299,50 +2493,6 @@ GCD会自动管理线程的生命周期（创建线程、调度任务、 &hellip
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014-03-19-tong-xin-lu-huo-qu/">通信录获取</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-03-19T15:05:21+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>19</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>3:05 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>AddressBookUI.framework</h2>
-
-<ul>
-<li>提供了联系人列表界面、联系人详情界面、添加联系人界面等</li>
-<li>一般用于选择联系人</li>
-</ul>
-
-
-<h2>AddressBook.framework</h2>
-
-<ul>
-<li>纯C语言的API，仅仅是获得联系人数据</li>
-<li>没有提供UI界面展示，需要自己搭建联系人展示界面</li>
-<li>里面的数据类型大部分基于Core Foundation框架，使用起来极其蛋疼</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/5">&larr; Older</a>
@@ -2369,6 +2519,10 @@ GCD会自动管理线程的生命周期（创建线程、调度任务、 &hellip
     
       <li class="post">
         <a href="/blog/2015-04-07-gcdde-di-ceng-yi-ji-gcdde-miao-yong/">GCD的底层以及GCD的妙用</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015-03-29-html5chang-yong-kuang-jia/">未来的技术 - HTML5</a>
       </li>
     
       <li class="post">
@@ -2433,10 +2587,6 @@ GCD会自动管理线程的生命周期（创建线程、调度任务、 &hellip
     
       <li class="post">
         <a href="/blog/2014-07-23-gao-fang-bai-si-bu-de-jie-xiang-mu-zong-jie/">自定义键盘与数组使用的坑</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014-07-22-bai-si-bu-de-qi-jie-xiang-mu-zong-jie/">主流框架搭建常用技巧</a>
       </li>
     
   </ul>

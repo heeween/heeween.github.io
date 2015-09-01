@@ -9,8 +9,10 @@
   <meta name="author" content="Heew">
 
   
-  <meta name="description" content="下面两种方法都可以获取导航控制器的导航栏 这种方法获取的是本应用全部控制器的导航栏,包括调用系统照片选择器,而系统的照片选择器不希望被修改 1
-UINavigationBar *bar = [UINavigationBar appearance]; 因此推荐下面这种方法,只获取自定义这个类的导航栏 &hellip;">
+  <meta name="description" content="AddressBookUI.framework 提供了联系人列表界面、联系人详情界面、添加联系人界面等
+一般用于选择联系人 AddressBook.framework 纯C语言的API，仅仅是获得联系人数据
+没有提供UI界面展示，需要自己搭建联系人展示界面
+里面的数据类型大部分基于Core &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -66,6 +68,50 @@ UINavigationBar *bar = [UINavigationBar appearance]; 因此推荐下面这种方
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014-03-19-tong-xin-lu-huo-qu/">通信录获取</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-03-19T15:05:21+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>19</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>3:05 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>AddressBookUI.framework</h2>
+
+<ul>
+<li>提供了联系人列表界面、联系人详情界面、添加联系人界面等</li>
+<li>一般用于选择联系人</li>
+</ul>
+
+
+<h2>AddressBook.framework</h2>
+
+<ul>
+<li>纯C语言的API，仅仅是获得联系人数据</li>
+<li>没有提供UI界面展示，需要自己搭建联系人展示界面</li>
+<li>里面的数据类型大部分基于Core Foundation框架，使用起来极其蛋疼</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -2241,561 +2287,6 @@ UINavigationBar *bar = [UINavigationBar appearance]; 因此推荐下面这种方
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013-06-18-chang-jian-wen-ben-shu-xing-she-zhi/">常见文本属性设置</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2013-06-18T15:29:30+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>18</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>3:29 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>   /<em>
-     1.控件 UIView UILabel UITextField UITextView UIButton
-     2.字体、大小、单位、颜色
-     </em>/</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 30, 300, 260)];
-</span><span class='line'>label.text = @"Label Text Content, This is a text label things attribute";//默认为空
-</span><span class='line'>label.font = [UIFont systemFontOfSize:17];//默认使用系统的17
-</span><span class='line'>label.textColor = [UIColor orangeColor];//默认使用文本黑色
-</span><span class='line'>label.shadowColor = [UIColor lightGrayColor];//默认没有阴影
-</span><span class='line'>label.shadowOffset = CGSizeMake(1,0);//默认是一个向上的阴影(0,-1)
-</span><span class='line'>label.textAlignment = NSTextAlignmentCenter;//默认是左对齐
-</span><span class='line'>label.lineBreakMode = NSLineBreakByTruncatingTail;//段落样式，默认是最后截断尾巴，用...代替</span></code></pre></td></tr></table></div></figure>
-
-
-<p>   //富文本的基本数据类型，属性字符串。以此为基础，如果这个设置了相应的属性，则会忽略上面设置的属性，默认为空</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>NSString *string = label.text;
-</span><span class='line'>const CGFloat fontSize = 16.0;
-</span><span class='line'>NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:string];
-</span><span class='line'>NSUInteger length = [string length];
-</span><span class='line'>//设置字体
-</span><span class='line'>UIFont *baseFont = [UIFont systemFontOfSize:fontSize];
-</span><span class='line'>[attrString addAttribute:NSFontAttributeName value:baseFont range:NSMakeRange(0, length)];//设置所有的字体
-</span><span class='line'>UIFont *boldFont = [UIFont boldSystemFontOfSize:fontSize];
-</span><span class='line'>[attrString addAttribute:NSFontAttributeName value:boldFont range:[string rangeOfString:@"Text"]];//设置Text这四个字母的字体为粗体
-</span><span class='line'>//设置倾斜，需要导入coreText
-</span><span class='line'>UIFont *italicFont = GetVariationOfFontWithTrait(baseFont,
-</span><span class='line'>                                                 kCTFontTraitItalic);
-</span><span class='line'>[attrString addAttribute:NSFontAttributeName value:italicFont
-</span><span class='line'>                   range:[string rangeOfString:@"Label"]];
-</span><span class='line'>// 设置颜色
-</span><span class='line'>UIColor *color = [UIColor redColor];
-</span><span class='line'>[attrString addAttribute:NSForegroundColorAttributeName
-</span><span class='line'>                   value:color
-</span><span class='line'>                   range:[string rangeOfString:@"Content"]];
-</span><span class='line'>[attrString addAttribute:NSBackgroundColorAttributeName value:[UIColor blueColor] range:[string rangeOfString:@"ent"]];</span></code></pre></td></tr></table></div></figure>
-
-
-<p>   //可以对这些属性设置值</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>//    label.font = [UIFont fontWithName:@"Arial-BoldItalicMT" size:24];
-</span><span class='line'>    [attrString addAttribute:NSFontAttributeName value:[UIFont fontWithName:@"Verdana-BoldItalic" size:18] range:[string rangeOfString:@"Label"]];
-</span><span class='line'>    label.numberOfLines = 2;
-</span><span class='line'>    NSMutableParagraphStyle *
-</span><span class='line'>    style = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
-</span><span class='line'>    style.lineSpacing = 10;//增加行高
-</span><span class='line'>    style.headIndent = 10;//头部缩进，相当于左padding
-</span><span class='line'>    style.tailIndent = -10;//相当于右padding
-</span><span class='line'>    style.lineHeightMultiple = 1.5;//行间距是多少倍
-</span><span class='line'>    style.alignment = NSTextAlignmentLeft;//对齐方式
-</span><span class='line'>    style.firstLineHeadIndent = 20;//首行头缩进
-</span><span class='line'>    style.paragraphSpacing = 10;//段落后面的间距
-</span><span class='line'>    style.paragraphSpacingBefore = 20;//段落之前的间距
-</span><span class='line'>    [attrString addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, length)];
-</span><span class='line'>    
-</span><span class='line'>    [attrString addAttribute:NSKernAttributeName value:@2 range:NSMakeRange(0, length)];//字符间距 2pt
-</span><span class='line'>    [attrString addAttribute:NSStrokeColorAttributeName value:[UIColor blueColor] range:[string rangeOfString:@"is"]];//设置文字描边颜色，需要和NSStrokeWidthAttributeName设置描边宽度，这样就能使文字空心
-</span><span class='line'>    [attrString addAttribute:NSStrokeWidthAttributeName value:@2 range:[string rangeOfString:@"is"]];//空心字，文字边框描述
-</span><span class='line'>    [attrString addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:[string rangeOfString:@"text"]];//下划线
-</span><span class='line'>    [attrString addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleThick) range:[string rangeOfString:@"label"]];//厚的下划线
-</span><span class='line'>    [attrString addAttribute:NSStrikethroughStyleAttributeName value:@(NSUnderlinePatternSolid | NSUnderlineStyleSingle) range:[string rangeOfString:@"things"]];//删除线
-</span><span class='line'>    [attrString addAttribute:NSStrikethroughColorAttributeName value:[UIColor blueColor] range:[string rangeOfString:@"things"]];//删除线蓝色
-</span><span class='line'>   label.attributedText = attrString;
-</span><span class='line'>    
-</span><span class='line'>    label.highlightedTextColor = [UIColor redColor];//设置文本高亮显示颜色，与highlighted一起使用。
-</span><span class='line'>    label.highlighted = NO; //高亮状态是否打开
-</span><span class='line'>    label.enabled = YES;//设置文字内容是否可变
-</span><span class='line'>    label.userInteractionEnabled = YES;//设置标签是否忽略或移除用户交互。默认为NO
-</span><span class='line'>    label.baselineAdjustment = UIBaselineAdjustmentNone;//如果adjustsFontSizeToFitWidth属性设置为YES，这个属性就来控制文本基线的行为。
-</span><span class='line'>//    UIBaselineAdjustmentAlignBaselines=0，默认，文本最上端与中线对齐。
-</span><span class='line'>//    UIBaselineAdjustmentAlignCenters,   文本中线与label中线对齐。
-</span><span class='line'>//    UIBaselineAdjustmentNone,  文本最低端与label中线对齐。;
-</span><span class='line'>    [self.view addSubview:label];
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>字体名如下：</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-<span class='line-number'>49</span>
-<span class='line-number'>50</span>
-<span class='line-number'>51</span>
-<span class='line-number'>52</span>
-<span class='line-number'>53</span>
-<span class='line-number'>54</span>
-<span class='line-number'>55</span>
-<span class='line-number'>56</span>
-<span class='line-number'>57</span>
-<span class='line-number'>58</span>
-<span class='line-number'>59</span>
-<span class='line-number'>60</span>
-<span class='line-number'>61</span>
-<span class='line-number'>62</span>
-<span class='line-number'>63</span>
-<span class='line-number'>64</span>
-<span class='line-number'>65</span>
-<span class='line-number'>66</span>
-<span class='line-number'>67</span>
-<span class='line-number'>68</span>
-<span class='line-number'>69</span>
-<span class='line-number'>70</span>
-<span class='line-number'>71</span>
-<span class='line-number'>72</span>
-<span class='line-number'>73</span>
-<span class='line-number'>74</span>
-<span class='line-number'>75</span>
-<span class='line-number'>76</span>
-<span class='line-number'>77</span>
-<span class='line-number'>78</span>
-<span class='line-number'>79</span>
-<span class='line-number'>80</span>
-<span class='line-number'>81</span>
-<span class='line-number'>82</span>
-<span class='line-number'>83</span>
-<span class='line-number'>84</span>
-<span class='line-number'>85</span>
-<span class='line-number'>86</span>
-<span class='line-number'>87</span>
-<span class='line-number'>88</span>
-<span class='line-number'>89</span>
-<span class='line-number'>90</span>
-<span class='line-number'>91</span>
-<span class='line-number'>92</span>
-<span class='line-number'>93</span>
-<span class='line-number'>94</span>
-<span class='line-number'>95</span>
-<span class='line-number'>96</span>
-<span class='line-number'>97</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>
-</span><span class='line'>   Font Family: American Typewriter
-</span><span class='line'>   Font: AmericanTypewriter
-</span><span class='line'>   Font: AmericanTypewriter-Bold
-</span><span class='line'>   
-</span><span class='line'>   Font Family: AppleGothic
-</span><span class='line'>   Font: AppleGothic
-</span><span class='line'>   
-</span><span class='line'>   Font Family: Arial
-</span><span class='line'>   Font: ArialMT
-</span><span class='line'>   Font: Arial-BoldMT
-</span><span class='line'>   Font: Arial-BoldItalicMT
-</span><span class='line'>   Font: Arial-ItalicMT
-</span><span class='line'>   
-</span><span class='line'>   Font Family: Arial Rounded MT Bold
-</span><span class='line'>   Font: ArialRoundedMTBold
-</span><span class='line'>   
-</span><span class='line'>   Font Family: Arial Unicode MS
-</span><span class='line'>   Font: ArialUnicodeMS
-</span><span class='line'>   
-</span><span class='line'>   Font Family: Courier
-</span><span class='line'>   Font: Courier
-</span><span class='line'>   Font: Courier-BoldOblique
-</span><span class='line'>   Font: Courier-Oblique
-</span><span class='line'>   Font: Courier-Bold
-</span><span class='line'>   
-</span><span class='line'>   Font Family: Courier New
-</span><span class='line'>   Font: CourierNewPS-BoldMT
-</span><span class='line'>   Font: CourierNewPS-ItalicMT
-</span><span class='line'>   Font: CourierNewPS-BoldItalicMT
-</span><span class='line'>   Font: CourierNewPSMT
-</span><span class='line'>   
-</span><span class='line'>   Font Family: DB LCD Temp
-</span><span class='line'>   Font: DBLCDTempBlack
-</span><span class='line'>   
-</span><span class='line'>   Font Family: Georgia
-</span><span class='line'>   Font: Georgia-Bold
-</span><span class='line'>   Font: Georgia
-</span><span class='line'>   Font: Georgia-BoldItalic
-</span><span class='line'>   Font: Georgia-Italic
-</span><span class='line'>   
-</span><span class='line'>   Font Family: Helvetica
-</span><span class='line'>   Font: Helvetica-Oblique
-</span><span class='line'>   Font: Helvetica-BoldOblique
-</span><span class='line'>   Font: Helvetica
-</span><span class='line'>   Font: Helvetica-Bold
-</span><span class='line'>   
-</span><span class='line'>   Font Family: Helvetica Neue
-</span><span class='line'>   Font: HelveticaNeue
-</span><span class='line'>   Font: HelveticaNeue-Bold
-</span><span class='line'>   
-</span><span class='line'>   Font Family: Hiragino Kaku Gothic **** W3
-</span><span class='line'>   Font: HiraKakuProN-W3
-</span><span class='line'>   
-</span><span class='line'>   Font Family: Hiragino Kaku Gothic **** W6
-</span><span class='line'>   Font: HiraKakuProN-W6
-</span><span class='line'>   
-</span><span class='line'>   Font Family: Marker Felt
-</span><span class='line'>   Font: MarkerFelt-Thin
-</span><span class='line'>   
-</span><span class='line'>   Font Family: STHeiti J
-</span><span class='line'>   Font: STHeitiJ-Medium
-</span><span class='line'>   Font: STHeitiJ-Light
-</span><span class='line'>   
-</span><span class='line'>   Font Family: STHeiti K
-</span><span class='line'>   Font: STHeitiK-Medium
-</span><span class='line'>   Font: STHeitiK-Light
-</span><span class='line'>   
-</span><span class='line'>   Font Family: STHeiti SC
-</span><span class='line'>   Font: STHeitiSC-Medium
-</span><span class='line'>   Font: STHeitiSC-Light
-</span><span class='line'>   
-</span><span class='line'>   Font Family: STHeiti TC
-</span><span class='line'>   Font: STHeitiTC-Light
-</span><span class='line'>   Font: STHeitiTC-Medium
-</span><span class='line'>   
-</span><span class='line'>   Font Family: Times New Roman
-</span><span class='line'>   Font: TimesNewRomanPSMT
-</span><span class='line'>   Font: TimesNewRomanPS-BoldMT
-</span><span class='line'>   Font: TimesNewRomanPS-BoldItalicMT
-</span><span class='line'>   Font: TimesNewRomanPS-ItalicMT
-</span><span class='line'>   
-</span><span class='line'>   Font Family: Trebuchet MS
-</span><span class='line'>   Font: TrebuchetMS-Italic
-</span><span class='line'>   Font: TrebuchetMS
-</span><span class='line'>   Font: Trebuchet-BoldItalic
-</span><span class='line'>   Font: TrebuchetMS-Bold
-</span><span class='line'>   
-</span><span class='line'>   Font Family: Verdana
-</span><span class='line'>   Font: Verdana-Bold
-</span><span class='line'>   Font: Verdana-BoldItalic
-</span><span class='line'>   Font: Verdana
-</span><span class='line'>   Font: Verdana-Italic
-</span><span class='line'>   
-</span><span class='line'>   Font Family: Zapfino
-</span><span class='line'>   Font: Zapfino
-</span><span class='line'>   */</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>文本对齐方式</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>/* Values for NSTextAlignment */
-</span><span class='line'> /*
-</span><span class='line'> NSTextAlignmentLeft 左对齐
-</span><span class='line'> NSTextAlignmentCenter 剧中对齐
-</span><span class='line'> NSTextAlignmentRight 右对齐
-</span><span class='line'> NSTextAlignmentJustified 两端对齐
-</span><span class='line'> NSTextAlignmentNatural 根据显示的文字特性对齐
-</span><span class='line'> */</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>段落样式</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>lineSpacing;                         来增加行距
-</span><span class='line'>paragraphSpacing;
-</span><span class='line'>alignment;                           对齐
-</span><span class='line'>firstLineHeadIndent;                 段落开始的缩排像素
-</span><span class='line'>headIndent;                          可调整全部文字的缩排距离，可当作左边 padding 使用
-</span><span class='line'>tailIndent;                          可调整文字尾端的缩排距离。需要注意的是，这里指定的值可以当作文字显示的宽、而也可当作右边 padding 使用，依据输入的正负值而定：
-</span><span class='line'>lineBreakMode;
-</span><span class='line'>minimumLineHeight;
-</span><span class='line'>maximumLineHeight;        而针对不同的字型与字号，我们可以透过指定最大与最小行距（maximumLineHeight 与 minimumLineHeight）来避免过高或过窄的状况发生。
-</span><span class='line'>baseWritingDirection;
-</span><span class='line'>lineHeightMultiple;                  想要调整行距，可以透过搭配使用 lineHeightMultiple 更改行距倍数
-</span><span class='line'>paragraphSpacingBefore; 而若是文章内容有分段落的话，也可以透过指定段落结尾距离（paragraphSpacing）以及段落开头距离（paragraphSpacingBefore）:
-</span><span class='line'>hyphenationFactor;
-</span><span class='line'>@property(readwrite,copy,NS_NONATOMIC_IOSONLY) NSArray *tabStops NS_AVAILABLE_IOS(7_0);
-</span><span class='line'>@property(readwrite,NS_NONATOMIC_IOSONLY) CGFloat defaultTabInterval NS_AVAILABLE_IOS(7_0);
-</span><span class='line'> */   
-</span><span class='line'>/* Predefined character attributes for text. If the key is not in the dictionary, then use the default values as described below.  //预定义的文本属性值，如果键不是一个字典，那么使用默认的值作为以下描述
-</span><span class='line'>NSFontAttributeName 字体 默认是Helvetica 12号
-</span><span class='line'>NSParagraphStyleAttributeName 段落样式
-</span><span class='line'>*/
-</span><span class='line'>/*
-</span><span class='line'>UIKIT_EXTERN NSString *const  NS_AVAILABLE_IOS(6_0);      // NSParagraphStyle, default defaultParagraphStyle
-</span><span class='line'>UIKIT_EXTERN NSString *const NSForegroundColorAttributeName NS_AVAILABLE_IOS(6_0);     // UIColor, default blackColor
-</span><span class='line'>UIKIT_EXTERN NSString *const NSBackgroundColorAttributeName NS_AVAILABLE_IOS(6_0);     // UIColor, default nil: no background
-</span><span class='line'>UIKIT_EXTERN NSString *const NSLigatureAttributeName NS_AVAILABLE_IOS(6_0);            // NSNumber containing integer, default 1: default ligatures, 0: no ligatures
-</span><span class='line'>UIKIT_EXTERN NSString *const NSKernAttributeName NS_AVAILABLE_IOS(6_0);                // NSNumber containing floating point value, in points; amount to modify default kerning. 0 means kerning is disabled. (note: values other than nil and 0 are unsupported on iOS)
-</span><span class='line'>UIKIT_EXTERN NSString *const NSStrikethroughStyleAttributeName NS_AVAILABLE_IOS(6_0);  // NSNumber containing integer, default 0: no strikethrough
-</span><span class='line'>UIKIT_EXTERN NSString *const NSUnderlineStyleAttributeName NS_AVAILABLE_IOS(6_0);      // NSNumber containing integer, default 0: no underline
-</span><span class='line'>UIKIT_EXTERN NSString *const NSStrokeColorAttributeName NS_AVAILABLE_IOS(6_0);         // UIColor, default nil: same as foreground color
-</span><span class='line'>UIKIT_EXTERN NSString *const NSStrokeWidthAttributeName NS_AVAILABLE_IOS(6_0);         // NSNumber containing floating point value, in percent of font point size, default 0: no stroke; positive for stroke alone, negative for stroke and fill (a typical value for outlined text would be 3.0)
-</span><span class='line'>UIKIT_EXTERN NSString *const NSShadowAttributeName NS_AVAILABLE_IOS(6_0);              // NSShadow, default nil: no shadow
-</span><span class='line'>UIKIT_EXTERN NSString *const NSTextEffectAttributeName NS_AVAILABLE_IOS(7_0);          // NSString, default nil: no text effect
-</span><span class='line'>
-</span><span class='line'>UIKIT_EXTERN NSString *const NSAttachmentAttributeName NS_AVAILABLE_IOS(7_0);          // NSTextAttachment, default nil
-</span><span class='line'>UIKIT_EXTERN NSString *const NSLinkAttributeName NS_AVAILABLE_IOS(7_0);                // NSURL (preferred) or NSString
-</span><span class='line'>UIKIT_EXTERN NSString *const NSBaselineOffsetAttributeName NS_AVAILABLE_IOS(7_0);      // NSNumber containing floating point value, in points; offset from baseline, default 0
-</span><span class='line'>UIKIT_EXTERN NSString *const NSUnderlineColorAttributeName NS_AVAILABLE_IOS(7_0);      // UIColor, default nil: same as foreground color
-</span><span class='line'>UIKIT_EXTERN NSString *const NSStrikethroughColorAttributeName NS_AVAILABLE_IOS(7_0);  // UIColor, default nil: same as foreground color
-</span><span class='line'>UIKIT_EXTERN NSString *const NSObliquenessAttributeName NS_AVAILABLE_IOS(7_0);         // NSNumber containing floating point value; skew to be applied to glyphs, default 0: no skew
-</span><span class='line'>UIKIT_EXTERN NSString *const NSExpansionAttributeName NS_AVAILABLE_IOS(7_0);           // NSNumber containing floating point value; log of expansion factor to be applied to glyphs, default 0: no expansion
-</span><span class='line'>
-</span><span class='line'>UIKIT_EXTERN NSString *const NSWritingDirectionAttributeName NS_AVAILABLE_IOS(7_0);    // NSArray of NSNumbers representing the nested levels of writing direction overrides as defined by Unicode LRE, RLE, LRO, and RLO characters.  The control characters can be obtained by masking NSWritingDirection and NSTextWritingDirection values.  LRE: NSWritingDirectionLeftToRight|NSTextWritingDirectionEmbedding, RLE: NSWritingDirectionRightToLeft|NSTextWritingDirectionEmbedding, LRO: NSWritingDirectionLeftToRight|NSTextWritingDirectionOverride, RLO: NSWritingDirectionRightToLeft|NSTextWritingDirectionOverride,
-</span><span class='line'>
-</span><span class='line'>UIKIT_EXTERN NSString *const NSVerticalGlyphFormAttributeName NS_AVAILABLE_IOS(6_0);   // An NSNumber containing an integer value.  0 means horizontal text.  1 indicates vertical text.  If not specified, it could follow higher-level vertical orientation settings.  Currently on iOS, it's always horizontal.  The behavior for any other value is undefined.
-</span><span class='line'>*/</span></code></pre></td></tr></table></div></figure>
-
-
-<p></p>
-
-<ul>
-<li>NSParagraphStyle  段落样式</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>//    typedef NS_ENUM(NSInteger, NSLineBreakMode) {      /* What to do with long lines */ //对于长内容或多行内容的处理方式
-</span><span class='line'>//        NSLineBreakByWordWrapping = 0,      /* Wrap at word boundaries, default */   //按包含单词为界限截断
-</span><span class='line'>//        NSLineBreakByCharWrapping,      /* Wrap at character boundaries */           //按字符为界限截断
-</span><span class='line'>//        NSLineBreakByClipping,      /* Simply clip */                                //简单的修剪
-</span><span class='line'>//        NSLineBreakByTruncatingHead,    /* Truncate at head of line: "...wxyz" */        //截断头部
-</span><span class='line'>//        NSLineBreakByTruncatingTail,    /* Truncate at tail of line: "abcd..." */        //截断尾巴
-</span><span class='line'>//        NSLineBreakByTruncatingMiddle   /* Truncate middle of line:  "ab...yz" */        //截断中间
-</span><span class='line'>//    } NS_ENUM_AVAILABLE_IOS(6_0);
-</span><span class='line'>}
-</span><span class='line'>//获取斜体
-</span><span class='line'>UIFont * GetVariationOfFontWithTrait(UIFont *baseFont,
-</span><span class='line'>                                     CTFontSymbolicTraits trait) {
-</span><span class='line'>CGFloat fontSize = [baseFont pointSize];
-</span><span class='line'>CFStringRef
-</span><span class='line'>baseFontName = (__bridge CFStringRef)[baseFont fontName];
-</span><span class='line'>CTFontRef baseCTFont = CTFontCreateWithName(baseFontName,
-</span><span class='line'>                                            fontSize, NULL);
-</span><span class='line'>CTFontRef ctFont =
-</span><span class='line'>CTFontCreateCopyWithSymbolicTraits(baseCTFont, 0, NULL,
-</span><span class='line'>                                   trait, trait);
-</span><span class='line'>NSString *variantFontName =
-</span><span class='line'>CFBridgingRelease(CTFontCopyName(ctFont,
-</span><span class='line'>                                 kCTFontPostScriptNameKey));
-</span><span class='line'>
-</span><span class='line'>UIFont *variantFont = [UIFont fontWithName:variantFontName
-</span><span class='line'>                                      size:fontSize];
-</span><span class='line'>CFRelease(ctFont);
-</span><span class='line'>CFRelease(baseCTFont);
-</span><span class='line'>return variantFont;
-</span><span class='line'>};</span></code></pre></td></tr></table></div></figure>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/6">&larr; Older</a>
@@ -2822,6 +2313,10 @@ UINavigationBar *bar = [UINavigationBar appearance]; 因此推荐下面这种方
     
       <li class="post">
         <a href="/blog/2015-04-07-gcdde-di-ceng-yi-ji-gcdde-miao-yong/">GCD的底层以及GCD的妙用</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015-03-29-html5chang-yong-kuang-jia/">未来的技术 - HTML5</a>
       </li>
     
       <li class="post">
@@ -2886,10 +2381,6 @@ UINavigationBar *bar = [UINavigationBar appearance]; 因此推荐下面这种方
     
       <li class="post">
         <a href="/blog/2014-07-23-gao-fang-bai-si-bu-de-jie-xiang-mu-zong-jie/">自定义键盘与数组使用的坑</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014-07-22-bai-si-bu-de-qi-jie-xiang-mu-zong-jie/">主流框架搭建常用技巧</a>
       </li>
     
   </ul>
