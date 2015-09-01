@@ -9,8 +9,8 @@
   <meta name="author" content="Heew">
 
   
-  <meta name="description" content="安装服务端软件 配置服务端仓库和权限等 选empty仓库
-选nobody权限,不让任何人访问 创建用户配置权限 创建工作组,方便整体切换到其他工作项目 在客户端访问服务端 终端命令 在经理工作组账号里初始化代码 删除代码 多人开发 多人开发冲突如何解决 ">
+  <meta name="description" content="1：statusBar字体为白色 1
+在plist里面设置View controller-based status bar appearance 为 NO；设置statusBarStyle 为 UIStatusBarStyleLightContent 2: &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -66,87 +66,6 @@
     <div id="content">
       <div class="blog-index">
   
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014-07-19-svnda-jian-he-shi-yong/">SVN搭建和使用</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-07-19T10:19:37+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>19</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>10:19 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>安装服务端软件</h3>
-
-<p><img src="/images/Snip20150719_4.png" alt="" /></p>
-
-<h3>配置服务端仓库和权限等</h3>
-
-<ul>
-<li>选empty仓库</li>
-<li>选nobody权限,不让任何人访问</li>
-</ul>
-
-
-<p><img src="/images/Snip20150719_5.png" alt="" /></p>
-
-<h3>创建用户配置权限</h3>
-
-<p><img src="/images/Snip20150719_7.png" alt="" /></p>
-
-<p><img src="/images/Snip20150719_9.png" alt="" /></p>
-
-<h3>创建工作组,方便整体切换到其他工作项目</h3>
-
-<p><img src="/images/Snip20150719_10.png" alt="" /></p>
-
-<h3>在客户端访问服务端</h3>
-
-<p><img src="/images/Snip20150719_11.png" alt="" /></p>
-
-<h3>终端命令</h3>
-
-<p><img src="/images/Snip20150719_12.png" alt="" /></p>
-
-<h3>在经理工作组账号里初始化代码</h3>
-
-<p><img src="/images/Snip20150719_14.png" alt="" />
-<img src="/images/Snip20150719_16.png" alt="" />
-<img src="/images/Snip20150719_17.png" alt="" />
-<img src="/images/Snip20150719_18.png" alt="" />
-<img src="/images/Snip20150719_20.png" alt="" /></p>
-
-<h3>删除代码</h3>
-
-<p><img src="/images/Snip20150719_21.png" alt="" /></p>
-
-<h3>多人开发</h3>
-
-<p><img src="/images/Snip20150719_21.png" alt="" />
-<img src="/images/Snip20150719_22.png" alt="" />
-<img src="/images/Snip20150719_23.png" alt="" /></p>
-
-<h3>多人开发冲突如何解决</h3>
-
-<p><img src="/images/Snip20150719_1.png" alt="" /></p>
-</div>
-  
-  
-
-
-    </article>
   
   
     <article>
@@ -1894,6 +1813,363 @@ Document里面禁止放下载文件,否则审核不通过</p>
 
     </article>
   
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014-06-10-duo-xian-cheng-zhi-shi/">多线程知识</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-06-10T09:09:19+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>10</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>9:09 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/NSthread.png" alt="NSThread结构图" /></p>
+
+<h6>进程</h6>
+
+<ul>
+<li>正在进行的程序,就叫程序</li>
+<li>从内存中杀掉的,就变成了程序,不叫进程</li>
+</ul>
+
+
+<h6>线程</h6>
+
+<ul>
+<li>一个进程要执行任务,必须得有线程(每个进程至少要有一个线程)</li>
+</ul>
+
+
+<h6>单线程的串行</h6>
+
+<ul>
+<li>一个线程的任务的执行是串行的</li>
+<li>同一时间内,一个线程只能执行一个任务</li>
+<li>所以一个线程执行多个任务,只能一个一个按顺序执行这些任务</li>
+<li>线程是进程执行的路径</li>
+</ul>
+
+
+<h5>多线程的并行</h5>
+
+<ul>
+<li>一个进程开启多条线程,每条线程可以并行执行不同的任务</li>
+<li>所以一个进程执行多个任务,可以开多条线程,每条线程执行一个任务,并行执行任务</li>
+<li>执行效率更高</li>
+</ul>
+
+
+<h5>多线程的原理</h5>
+
+<ul>
+<li>本质上同一时间CPU只能处理一条线程,只有一条线程在工作</li>
+<li>多线程并发执行,其实就是CPU快速地在多条线程之间调度</li>
+</ul>
+
+
+<h5>线程过多的弊端</h5>
+
+<ul>
+<li>CPU会再多线程之间调度,CPU会累死,消耗大量的CPU资源</li>
+<li>每条线程被调度的频率会降低,浪费了CPU资源</li>
+<li>创建线程是有开销的,iOS下主要成本包括:内核数据结构(1KB)/栈空间(子线程512KB/主线程1MB,也可以使用- setStackSize:设置,但必须是4K的倍数,而且最小是16K),创建线程大约需要90毫秒的创建时间</li>
+<li>线程越多,CPU在调度线程上得开销越大</li>
+<li>程序设计更加复杂:比如线程之间的通信\多线程的数据共享</li>
+</ul>
+
+
+<h5>主线程</h5>
+
+<ul>
+<li>一个iOS程序运行后,默认会开启1条线程,成为"主线程"或"UI线程"</li>
+<li>显示\刷新UI界面</li>
+<li>处理UI事件(比如点击事件\滚动时间\拖拽事件)</li>
+</ul>
+
+
+<h5>耗时操作的执行</h5>
+
+<ul>
+<li>耗时操作如果放在主线程,会影响UI界面的执行,刷新拖拽点击等事件,会让用户有卡的感觉</li>
+<li>所以一般把耗时操作放在子线程(后台线程\非主线程)</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>for (NSInteger i = 0; i &lt; 10000; i++) {
+</span><span class='line'>  NSLog(@"--------buttonClick----%d", i);
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<h5>iOS中多线程的实现方案</h5>
+
+<ul>
+<li>pthread 通用的多线程API,适用于Unix\Linx\Windows,跨平台可移植,使用难度大 纯C语言 程序员管理线程生命周期,几乎不用</li>
+<li>NSThread 使用更加面向对象,简单易用,可直接操作线程对象,OC语言,程序员管理线程生命周期,偶尔使用</li>
+<li>GCD 旨在替代NSThread等多线程技术,充分利用设备的多核,C语言,自动管理线程生命周期,经常使用</li>
+<li>NSOperation 基于GCD（底层是GCD) 比GCD多了一些更简单实用的功能 使用更加面向对象 OC语言,自动管理线程生命周期,经常使用</li>
+</ul>
+
+
+<h5>pthread使用</h5>
+
+<ul>
+<li>pthread需要导入pthread.h头文件</li>
+<li>pthread开启线程函数</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>void * run(void *param)
+</span><span class='line'>{
+</span><span class='line'>    for (NSInteger i = 0; i&lt;50000; i++) {
+</span><span class='line'>        NSLog(@"------buttonClick---%zd", i);
+</span><span class='line'>    }
+</span><span class='line'>    return NULL;
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>- (IBAction)buttonClick:(id)sender {
+</span><span class='line'>    for (NSInteger i = 0; i&lt;50000; i++) {
+</span><span class='line'>        NSLog(@"------buttonClick---%zd", i);
+</span><span class='line'>    }
+</span><span class='line'>    pthread_t thread;
+</span><span class='line'>    pthread_create(&thread, NULL, run, NULL);
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<h5>NSThread使用</h5>
+
+<ul>
+<li>NSThread不需要管理线程生命周期,线程执行完任务,会自动销毁线程对象</li>
+<li>线程实例化后需要调用start方法</li>
+<li>可以给线程命名</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>HYWThread *thread = [[HYWThread alloc] initWithTarget:self selector:@selector(run:) object:@"jack"];
+</span><span class='line'>// 启动线程
+</span><span class='line'>[thread start];</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (void)run:(NSString *)param
+</span><span class='line'>{
+</span><span class='line'>    for (NSInteger i = 0; i&lt;10000; i++) {
+</span><span class='line'>        NSLog(@"-----run-----%@--%@", param, [NSThread currentThread]);
+</span><span class='line'>    }
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>NSThread还有一个类方法,直接创建线程,并开启运行</li>
+<li>缺点是无法对线程设置线程的详细信息</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (void)createThread2
+</span><span class='line'>{
+</span><span class='line'>    [NSThread detachNewThreadSelector:@selector(run:) toTarget:self withObject:@"rose"];
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>除此之外,NSThread还有一种隐藏式创建线程的方法</li>
+<li>缺点是无法对线程设置线程的详细信息</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (void)createThread3
+</span><span class='line'>{
+</span><span class='line'>//    [self performSelectorInBackground:@selector(run:) withObject:@"jack"];
+</span><span class='line'>    [self performSelectorOnMainThread:&lt;#(SEL)#&gt; withObject:&lt;#(id)#&gt; waitUntilDone:&lt;#(BOOL)#&gt;];
+</span><span class='line'>    [self performSelectorOnMainThread:&lt;#(SEL)#&gt; withObject:&lt;#(id)#&gt; waitUntilDone:&lt;#(BOOL)#&gt; modes:&lt;#(NSArray *)#&gt;];
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<h5>线程的状态</h5>
+
+<p><img src="/images/Snip20150708_1.png" alt="线程的状态" /></p>
+
+<ul>
+<li>改变线程状态的方法,让线程睡眠从线程池中移出</li>
+<li>就绪和阻塞状态的线程都不在可调度线程池中,只在内存中</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>//    [NSThread sleepForTimeInterval:2]; // 让线程睡眠2秒（阻塞2秒）
+</span><span class='line'>//    [NSThread sleepUntilDate:[NSDate distantFuture]];
+</span><span class='line'>    [NSThread sleepUntilDate:[NSDate dateWithTimeIntervalSinceNow:2]];</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>让线程直接死亡,线程从内存中移出</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>for (NSInteger i = 0; i&lt;100; i++) {
+</span><span class='line'>    NSLog(@"-----%zd", i);
+</span><span class='line'>    
+</span><span class='line'>    if (i == 49) {
+</span><span class='line'>        [NSThread exit];
+</span><span class='line'>    }
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>一旦线程停止（死亡）了，就不能再次开启任务</li>
+</ul>
+
+
+<h5>多线程的安全隐患</h5>
+
+<ul>
+<li>1块资源可能会被多个线程共享，也就是多个线程可能会访问同一块资源</li>
+<li>比如多个线程访问同一个对象、同一个变量、同一个文件</li>
+<li>当多个线程访问同一块资源时，很容易引发数据错乱和数据安全问题</li>
+</ul>
+
+
+<p><img src="/images/Snip20150708_2.png" alt="多线程安全隐患" />
+<img src="/images/Snip20150708_3.png" alt="多线程安全隐患解决" /></p>
+
+<h6>多线程的互斥锁</h6>
+
+<ul>
+<li>互斥锁使用格式</li>
+<li>@synchronized(锁对象) { // 需要锁定的代码  }</li>
+<li><p>注意：锁定1份代码只用1把锁，用多把锁是无效的</p></li>
+<li><p>互斥锁的优缺点</p></li>
+<li>优点：能有效防止因多线程抢夺资源造成的数据安全问题</li>
+<li><p>缺点：需要消耗大量的CPU资源</p></li>
+<li><p>互斥锁的使用前提：多条线程抢夺同一块资源</p></li>
+<li><p>相关专业术语：线程同步</p></li>
+<li>线程同步的意思是：多条线程在同一条线上执行（按顺序地执行任务）</li>
+<li>互斥锁，就是使用了线程同步技术</li>
+</ul>
+
+
+<h5>原子和非原子属性</h5>
+
+<ul>
+<li>OC在定义属性时有nonatomic和atomic两种选择</li>
+<li>atomic：原子属性，为setter方法加锁（默认就是atomic）</li>
+<li><p>nonatomic：非原子属性，不会为setter方法加锁</p></li>
+<li><p>nonatomic和atomic对比</p></li>
+<li>atomic：线程安全，需要消耗大量的资源</li>
+<li>nonatomic：非线程安全，适合内存小的移动设备</li>
+</ul>
+
+
+<h5>iOS开发的建议</h5>
+
+<ul>
+<li>所有属性都声明为nonatomic</li>
+<li>尽量避免多线程抢夺同一块资源</li>
+<li>尽量将加锁、资源抢夺的业务逻辑交给服务器端处理，减小移动客户端的压力</li>
+</ul>
+
+
+<h5>线程间通信</h5>
+
+<ul>
+<li><p>什么叫做线程间通信</p>
+
+<ul>
+<li>在1个进程中，线程往往不是孤立存在的，多个线程之间需要经常进行通信</li>
+</ul>
+</li>
+<li><p>线程间通信的体现</p>
+
+<ul>
+<li>1个线程传递数据给另1个线程</li>
+<li>在1个线程中执行完特定任务后，转到另1个线程继续执行任务</li>
+</ul>
+</li>
+<li><p>线程间通信常用方法</p>
+
+<ul>
+<li>(void)performSelectorOnMainThread:(SEL)aSelector withObject:(id)arg waitUntilDone:(BOOL)wait;</li>
+<li>(void)performSelector:(SEL)aSelector onThread:(NSThread *)thr withObject:(id)arg waitUntilDone:(BOOL)wait;</li>
+</ul>
+</li>
+</ul>
+
+
+<p><img src="/images/Snip20150708_4.png" alt="线程之间的通信" /></p>
+
+<h5>NSPort实现线程之间的通信</h5>
+
+<ul>
+<li>主线程想要传子线程数据,需要返回一个port对象给子线程,子线程就可以通过port传送数据给主线程</li>
+<li>子线程想要传给主线程数据,需要返回一个port对象给主线程,主线程就可以通过port传送数据给子线程</li>
+</ul>
+
+
+<p><img src="/images/Snip20150708_6.png" alt="NSPort实现线程通信" /></p>
+</div>
+  
+  
+
+
+    </article>
+  
   <div class="pagination">
     
       <a class="prev" href="/posts/4">&larr; Older</a>
@@ -1914,10 +2190,6 @@ Document里面禁止放下载文件,否则审核不通过</p>
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
-    
-      <li class="post">
-        <a href="/blog/2015-04-07-gcdde-di-ceng-yi-ji-gcdde-miao-yong/">GCD的底层以及GCD的妙用</a>
-      </li>
     
       <li class="post">
         <a href="/blog/2015-03-29-html5chang-yong-kuang-jia/">未来的技术 - HTML5</a>
@@ -1993,6 +2265,10 @@ Document里面禁止放下载文件,否则审核不通过</p>
     
       <li class="post">
         <a href="/blog/2014-07-19-shi-yong-svnxie-tong-kai-fa-xcodexiang-mu/">使用SVN协同开发Xcode项目</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-07-19-svnda-jian-he-shi-yong/">SVN搭建和使用</a>
       </li>
     
   </ul>
