@@ -9,14 +9,25 @@
   <meta name="author" content="Heew">
 
   
-  <meta name="description" content="通过APPearance修改navigationbarItem后,状态不会默认高亮,也不会马上渲染 1
+  <meta name="description" content="webView加载进度的实现&mdash;APP所有加载进度都是假象 1
 2
 3
 4
 5
 6
 7
-// 设置item UIBarButtonItem *item = [UIBarButtonItem appearance]; // &hellip;">
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+// 将第三方框架设置为webView代理
+self.progress = [[NJKWebViewProgress alloc] init &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -72,95 +83,6 @@
     <div id="content">
       <div class="blog-index">
   
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014-08-06-appearancetong-%5B%3F%5D-she-zhi-zhu-ti-de-wen-ti/">Appearance统一设置主题的问题</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-08-06T11:35:44+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>6</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>11:35 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>通过APPearance修改navigationbarItem后,状态不会默认高亮,也不会马上渲染</h2>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// 设置item</span>
-</span><span class='line'>    <span class="bp">UIBarButtonItem</span> <span class="o">*</span><span class="n">item</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIBarButtonItem</span> <span class="n">appearance</span><span class="p">];</span>
-</span><span class='line'>    <span class="c1">// UIControlStateNormal</span>
-</span><span class='line'>    <span class="bp">NSMutableDictionary</span> <span class="o">*</span><span class="n">itemAttrs</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSMutableDictionary</span> <span class="n">dictionary</span><span class="p">];</span>
-</span><span class='line'>    <span class="n">itemAttrs</span><span class="p">[</span><span class="n">NSForegroundColorAttributeName</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIColor</span> <span class="n">blackColor</span><span class="p">];</span>
-</span><span class='line'>    <span class="n">itemAttrs</span><span class="p">[</span><span class="n">NSFontAttributeName</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIFont</span> <span class="nl">systemFontOfSize</span><span class="p">:</span><span class="mi">17</span><span class="p">];</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">item</span> <span class="nl">setTitleTextAttributes</span><span class="p">:</span><span class="n">itemAttrs</span> <span class="nl">forState</span><span class="p">:</span><span class="n">UIControlStateNormal</span><span class="p">];</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>这样设置以后导航栏的按钮点击高亮消失了,所以还需要再设置disable或者hilight的状态</li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'>    <span class="c1">// UIControlStateDisabled</span>
-</span><span class='line'>    <span class="bp">NSMutableDictionary</span> <span class="o">*</span><span class="n">itemDisabledAttrs</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSMutableDictionary</span> <span class="n">dictionary</span><span class="p">];</span>
-</span><span class='line'>    <span class="n">itemDisabledAttrs</span><span class="p">[</span><span class="n">NSForegroundColorAttributeName</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIColor</span> <span class="n">lightGrayColor</span><span class="p">];</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">item</span> <span class="nl">setTitleTextAttributes</span><span class="p">:</span><span class="n">itemDisabledAttrs</span> <span class="nl">forState</span><span class="p">:</span><span class="n">UIControlStateDisabled</span><span class="p">];</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">// 在post控制中设置默认不能点击</span>
-</span><span class='line'>    <span class="nb">self</span><span class="p">.</span><span class="n">navigationItem</span><span class="p">.</span><span class="n">rightBarButtonItem</span><span class="p">.</span><span class="n">enabled</span> <span class="o">=</span> <span class="nb">NO</span><span class="p">;</span> <span class="c1">// 默认不能点击</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>设置disable后发现,导航栏的按钮并不会显示默认的disable状态,这是因为通过appearance设置渲染延迟的问题,需要强制刷新控制</li>
-</ul>
-
-
-<p><img src="/images/Snip20150805_2.png" alt="" /></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// 强制刷新</span>
-</span><span class='line'><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">navigationController</span><span class="p">.</span><span class="n">navigationBar</span> <span class="n">layoutIfNeeded</span><span class="p">];</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p><img src="/images/Snip20150805_3.png" alt="" /></p>
-
-<ul>
-<li>另外,当导航栏用在NavigationController中, appearance设置才会生效</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
   
   
     <article>
@@ -1421,6 +1343,83 @@
 
     </article>
   
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014-07-22-bai-si-bu-de-qi-jie-xiang-mu-zong-jie/">主流框架搭建常用技巧</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-07-22T09:58:12+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>22</span><span class='date-suffix'>nd</span>, <span class='date-year'>2014</span></span> <span class='time'>9:58 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>通过appearance统一设置所有UITabBarItem的文字属性</h2>
+
+<p><img src="/images/Snip20150722_1.png" alt="" />
+<img src="/images/Snip20150722_2.png" alt="" /></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// </span>
+</span><span class='line'><span class="c1">// 后面带有UI_APPEARANCE_SELECTOR的方法, 都可以通过appearance对象来统一设置</span>
+</span><span class='line'><span class="bp">NSMutableDictionary</span> <span class="o">*</span><span class="n">attrs</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSMutableDictionary</span> <span class="n">dictionary</span><span class="p">];</span>
+</span><span class='line'><span class="n">attrs</span><span class="p">[</span><span class="n">NSFontAttributeName</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIFont</span> <span class="nl">systemFontOfSize</span><span class="p">:</span><span class="mi">12</span><span class="p">];</span>
+</span><span class='line'><span class="n">attrs</span><span class="p">[</span><span class="n">NSForegroundColorAttributeName</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIColor</span> <span class="n">grayColor</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="bp">NSMutableDictionary</span> <span class="o">*</span><span class="n">selectedAttrs</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSMutableDictionary</span> <span class="n">dictionary</span><span class="p">];</span>
+</span><span class='line'><span class="n">selectedAttrs</span><span class="p">[</span><span class="n">NSFontAttributeName</span><span class="p">]</span> <span class="o">=</span> <span class="n">attrs</span><span class="p">[</span><span class="n">NSFontAttributeName</span><span class="p">];</span>
+</span><span class='line'><span class="n">selectedAttrs</span><span class="p">[</span><span class="n">NSForegroundColorAttributeName</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIColor</span> <span class="n">darkGrayColor</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="bp">UITabBarItem</span> <span class="o">*</span><span class="n">item</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UITabBarItem</span> <span class="n">appearance</span><span class="p">];</span>
+</span><span class='line'><span class="p">[</span><span class="n">item</span> <span class="nl">setTitleTextAttributes</span><span class="p">:</span><span class="n">attrs</span> <span class="nl">forState</span><span class="p">:</span><span class="n">UIControlStateNormal</span><span class="p">];</span>
+</span><span class='line'><span class="p">[</span><span class="n">item</span> <span class="nl">setTitleTextAttributes</span><span class="p">:</span><span class="n">selectedAttrs</span> <span class="nl">forState</span><span class="p">:</span><span class="n">UIControlStateSelected</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>在分类中声明@property, 只会生成方法的声明, 不会生成方法的实现和带有_下划线的成员变量</h2>
+
+<p><img src="/images/Snip20150722_5.png" alt="" /></p>
+
+<h2>在TabBar中访问子控制器的view,会把子控制器view提前加载,影响性能</h2>
+
+<p><img src="/images/Snip20150722_3.png" alt="" /></p>
+
+<h2>如果想要访问苹果私有的类,可以使用NSClassFromString方法,实现</h2>
+
+<p><img src="/images/Snip20150722_4.png" alt="" /></p>
+
+<h2>在navigation控制器的push方法可以统一设置子控制器某些特性</h2>
+
+<p><img src="/images/Snip20150722_8.png" alt="" /></p>
+</div>
+  
+  
+
+
+    </article>
+  
   <div class="pagination">
     
       <a class="prev" href="/posts/3">&larr; Older</a>
@@ -1436,15 +1435,11 @@
     <section>
   <h1>关于我</h1>
   <p>慢慢来比较快,随遇而安</p>
-  <img src="https://github.com/heeween/heeween.github.io/blob/master/images/icon.png" />
+  <img src="/images/icon.png" />
 </section>
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
-    
-      <li class="post">
-        <a href="/blog/2015-09-15-ji-shi-tong-xun-ji-zhu/">即时通讯技术</a>
-      </li>
     
       <li class="post">
         <a href="/blog/2015-05-11-nsscannerchu-li-fu-wu-qi-shu-ju-yi-chang-,-shu-ju-chu-li/">NSScanner处理服务器数据异常、数据处理</a>
@@ -1520,6 +1515,10 @@
     
       <li class="post">
         <a href="/blog/2014-07-23-gao-fang-bai-si-bu-de-jie-xiang-mu-zong-jie/">自定义键盘与数组使用的坑</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-07-22-bai-si-bu-de-qi-jie-xiang-mu-zong-jie/">主流框架搭建常用技巧</a>
       </li>
     
   </ul>

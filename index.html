@@ -9,7 +9,41 @@
   <meta name="author" content="Heew">
 
   
-  <meta name="description" content="XMPP的现状 XMPP是用来做即时通讯的一套即时通讯技术－IM 常见的应用如:QQ，微信，陌陌，比邻 目前国内的即时通讯领域，有向"垂直"发展的趋势 未来移动互联网应用，即时通讯有潜力的可发展的市场相对比较小，比较聚焦，聚集在某一个领域。 例如，淘宝－阿里旺旺, &hellip;">
+  <meta name="description" content="今天来介绍一下NSScanner, 并讲述一下如何使用这个东西来避免服务器传回的数组类型的数据错误的问题。 1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -65,227 +99,6 @@
     <div id="content">
       <div class="blog-index">
   
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015-09-15-ji-shi-tong-xun-ji-zhu/">即时通讯技术</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-09-15T15:33:41+08:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>15</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>3:33 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>XMPP的现状</h3>
-
-<p>XMPP是用来做即时通讯的一套即时通讯技术－IM</p>
-
-<p>常见的应用如:QQ，微信，陌陌，比邻</p>
-
-<p>目前国内的即时通讯领域，有向"垂直"发展的趋势</p>
-
-<p>未来移动互联网应用，即时通讯有潜力的可发展的市场相对比较小，比较聚焦，聚集在某一个领域。</p>
-
-<p>例如，淘宝－阿里旺旺,特别针对淘宝的特定人群提供卖家和买家的即时通讯－》讨价还价</p>
-
-<h3>XMPP的意义</h3>
-
-<p>XMPP诞生源于一个伟大的想法1998，让所有的即时通讯软件统一通讯协议，意味着所有的IM软件都能够互通！</p>
-
-<p>学习XMPP的意义</p>
-
-<ol>
-<li>XMPP确实是可用的，google都用过，GTalk！</li>
-<li>XMPP的协议定义中，几乎包含了所有的IM软件需要的功能
- 注册，登录，发送文本消息，发送图片，发送语音，发送视频，管理名片，管理群组&hellip;</li>
-<li>学习XMPP的开发，可以了解绝大多数IM软件应该包含哪些功能！</li>
-</ol>
-
-
-<p>－绝大多数掌握核心技术的，都不太愿意开源！</p>
-
-<ol>
-<li>如果自己要开发一个IM软件，学习XMPP框架是一个非常好的起点</li>
-<li><p>目前国内开发IM的公司非常多
-－新软件：内容取胜
-－有了一定用户积累之后，需要做User Generate Content（用户生成内容）
-－用户间的交流，针对某一个领域的交流</p></li>
-<li><p>目前国内还有哪些解决方案
-－环信，第三方框架，封装了非常多即时通讯的功能，使用起来比XMPP要方便很多！
-＊是按照用户量来算钱的</p></li>
-</ol>
-
-
-<h3>利用推送做IM的特点：</h3>
-
-<ol>
-<li>及时性不好，消息会在服务器停留，通过APNs通知接收方，接收方连接服务器获取消息</li>
-<li><p>所有的客户端都不需要跟服务器建立长连接
- 例如：一个服务器能够支持的长连接1000，一个服务器上最多只能同时登录1000个人</p>
-
-<p> 而使用推送方式，用户不需要和服务器建立长连接，服务器能够支持的用户数会大增
- 意味着公司的硬件成本会急剧降低！</p></li>
-</ol>
-
-
-<p>利用推送而产生的即时通讯可以说是一种伪即时通讯！</p>
-
-<h3>XMPP的数据格式</h3>
-
-<p>XMPP －以发送"XML"格式的数据为基础的一套及时通讯协议</p>
-
-<p>主要发送三类数据</p>
-
-<p>1>  请求：用户登录，用户注册，添加好友
-2>  展现：用户上线，用户下线
-3>  消息：用户之间交流的信息（文本，图片，视频，语音&hellip;）</p>
-
-<p>网络上传输的数据都是二进制的数据，二进制数据是以流的方式在网络上传输的！</p>
-
-<p>在XMPP中，数据的传递，统一由XMPPStream来负责</p>
-
-<h3>XMPP如何搭建服务器</h3>
-
-<p>为什么要安装服务器？
-1. Openfire->XMPP的服务器，基于java</p>
-
-<p>负责用户登录，注册，发送消息。。。XMPP日常的功能</p>
-
-<p>1>  首先安装JDK，因为java的程序是运行在虚拟机上的，没有jdk，就没有虚拟机
-2>  安装Openfire
-3>  打开管理控制器，进入管理页面 <a href="http://localhost:9090">http://localhost:9090</a></p>
-
-<p>===> 告一段落</p>
-
-<ol>
-<li>数据库->MySQL</li>
-</ol>
-
-
-<p>负责保存用户记录</p>
-
-<p>1>  安装MySQL
-2>  重新打开系统偏要面板，能够看到MySQL的图标
-3>  启动服务器
-4>  设置MySQL的“管理员密码”
-    原因：MySQL安装完成后，没有管理员密码，同时禁止从网络访问MySQL</p>
-
-<p>终端</p>
-
-<p>$ cd 数据库的目录（从Finder拖）
-$ ./alias</p>
-
-<p>重新启动终端，输入ls，如果发现目录变蓝，通常说明配置正确</p>
-
-<p>郑重提示：脚本只需要运行一次就OK，一旦ls看到蓝色的目录，就不要再重复执行！</p>
-
-<p>5>  配置phpMyadmin</p>
-
-<p>1]  复制到Apache根目录
-2］    将目录名修改为phpMyAdmin
-3］ 将 config.sample.inc.php 复制，重命名为：config.inc.php
-4］    打开config.inc.php
-    将 localhost 改为 127.0.0.1</p>
-
-<p>5]  启动apache服务器
-$ sudo apachectl -k start</p>
-
-<p>6]  打开浏览器，输入<a href="http://localhost">http://localhost</a>
-7]  选择 phpMyAdmin，进入phpadmin的登录页面</p>
-
-<p>8］    用户名：root
-    口令：123456</p>
-
-<p>9]  新建一个数据库
-    名字：openfire
-    排序规则：utf8_general_ci</p>
-
-<p>10] 点击openfire（刚刚新建的空数据库）－》SQL（准备执行脚本，openfire所需要的脚本）</p>
-
-<p>11］ 打开finder，进入目录 /usr/local</p>
-
-<p>12] 允许管理员访问openfire文件夹
-        在文件夹上，点击右键，选择“显示简介”在“共享与权限”
-    －点锁头，输入密码
-    －添加本机账号具有“读与写”的权限</p>
-
-<p>13］ 进入 /usr/local/openfire/resources/database
-        找到openfire_mysql.sql，并用Xcode 打开，cmd＋A， cmd ＋C</p>
-
-<p>14］   回到safari，确认在SQL输入框中，cmd ＋v
-        点击“执行”创建openfire服务器所需要的数据表</p>
-
-<p>15］   点击左侧的openfire，确认数据库安装正确！</p>
-
-<ol>
-<li>配置openfire服务器</li>
-</ol>
-
-
-<p><em>1］   选择“简体中文”
-2］    域"teacher.local"，非常非常重要！默认是自己"计算机的名称.local"
-    提示：在系统偏好－共享中可以看到自己的计算机名称
-3］    数据库设置“标准数据库连接”
-</em>4］ <br/>
-        －数据库驱动选项：MySQL
-        －数据库的URL：jdbc:mysql://127.0.0.1:3306/openfire?rewriteBatchedStatements=true
-        提示：修改主机名为127.0.0.1，数据库名称为：openfire
-        －用户名：root(mysql的管理员用户名)
-        －密码：123456
-5］    直接继续
-6］    输入xmpp管理员的初始密码：123456
-    提示：千万不要点“跳过这一步”</p>
-
-<p>……</p>
-
-<p>登录到管理页面</p>
-
-<p>用户名：admin
-密码：123456(xmpp管理员的密码)</p>
-
-<p>如果能够登录成功，说明服务器安装完成！</p>
-
-<ol>
-<li>新增用户</li>
-</ol>
-
-
-<p>1］    点击“用户／组”
-2］    “新建用户”，设置带星号的内容即可</p>
-
-<ol>
-<li>配置客户端 iChat(iMessage)</li>
-</ol>
-
-
-<p>1］    添加用户，选择“其他”类型
-2］ 账户类型：jabber
-3］ 用户名：<a href="&#x6d;&#x61;&#105;&#108;&#x74;&#x6f;&#x3a;&#x61;&#x64;&#109;&#105;&#x6e;&#x40;&#116;&#x65;&#97;&#x63;&#104;&#101;&#x72;&#46;&#108;&#x6f;&#99;&#97;&#x6c;">&#x61;&#100;&#109;&#105;&#110;&#x40;&#x74;&#101;&#97;&#99;&#x68;&#x65;&#114;&#46;&#x6c;&#111;&#x63;&#97;&#108;</a> 123456
-4］    信任证书</p>
-
-<ol>
-<li>小鸭子Adium_1.5.10</li>
-</ol>
-
-
-<p>客户端软件是开发XMPP应用时必备的工具！</p>
-</div>
-  
-  
-
-
-    </article>
   
   
     <article>
@@ -2313,6 +2126,95 @@ CADisplayLink 不能被继承。</p>
 
     </article>
   
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014-08-06-appearancetong-%5B%3F%5D-she-zhi-zhu-ti-de-wen-ti/">Appearance统一设置主题的问题</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-08-06T11:35:44+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>6</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>11:35 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>通过APPearance修改navigationbarItem后,状态不会默认高亮,也不会马上渲染</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// 设置item</span>
+</span><span class='line'>    <span class="bp">UIBarButtonItem</span> <span class="o">*</span><span class="n">item</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIBarButtonItem</span> <span class="n">appearance</span><span class="p">];</span>
+</span><span class='line'>    <span class="c1">// UIControlStateNormal</span>
+</span><span class='line'>    <span class="bp">NSMutableDictionary</span> <span class="o">*</span><span class="n">itemAttrs</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSMutableDictionary</span> <span class="n">dictionary</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">itemAttrs</span><span class="p">[</span><span class="n">NSForegroundColorAttributeName</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIColor</span> <span class="n">blackColor</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">itemAttrs</span><span class="p">[</span><span class="n">NSFontAttributeName</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIFont</span> <span class="nl">systemFontOfSize</span><span class="p">:</span><span class="mi">17</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">item</span> <span class="nl">setTitleTextAttributes</span><span class="p">:</span><span class="n">itemAttrs</span> <span class="nl">forState</span><span class="p">:</span><span class="n">UIControlStateNormal</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>这样设置以后导航栏的按钮点击高亮消失了,所以还需要再设置disable或者hilight的状态</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'>    <span class="c1">// UIControlStateDisabled</span>
+</span><span class='line'>    <span class="bp">NSMutableDictionary</span> <span class="o">*</span><span class="n">itemDisabledAttrs</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSMutableDictionary</span> <span class="n">dictionary</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">itemDisabledAttrs</span><span class="p">[</span><span class="n">NSForegroundColorAttributeName</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIColor</span> <span class="n">lightGrayColor</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">item</span> <span class="nl">setTitleTextAttributes</span><span class="p">:</span><span class="n">itemDisabledAttrs</span> <span class="nl">forState</span><span class="p">:</span><span class="n">UIControlStateDisabled</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 在post控制中设置默认不能点击</span>
+</span><span class='line'>    <span class="nb">self</span><span class="p">.</span><span class="n">navigationItem</span><span class="p">.</span><span class="n">rightBarButtonItem</span><span class="p">.</span><span class="n">enabled</span> <span class="o">=</span> <span class="nb">NO</span><span class="p">;</span> <span class="c1">// 默认不能点击</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>设置disable后发现,导航栏的按钮并不会显示默认的disable状态,这是因为通过appearance设置渲染延迟的问题,需要强制刷新控制</li>
+</ul>
+
+
+<p><img src="/images/Snip20150805_2.png" alt="" /></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// 强制刷新</span>
+</span><span class='line'><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">navigationController</span><span class="p">.</span><span class="n">navigationBar</span> <span class="n">layoutIfNeeded</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img src="/images/Snip20150805_3.png" alt="" /></p>
+
+<ul>
+<li>另外,当导航栏用在NavigationController中, appearance设置才会生效</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
   <div class="pagination">
     
       <a class="prev" href="/posts/2">&larr; Older</a>
@@ -2326,15 +2228,11 @@ CADisplayLink 不能被继承。</p>
     <section>
   <h1>关于我</h1>
   <p>慢慢来比较快,随遇而安</p>
-  <img src="https://github.com/heeween/heeween.github.io/blob/master/images/icon.png" />
+  <img src="/images/icon.png" />
 </section>
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
-    
-      <li class="post">
-        <a href="/blog/2015-09-15-ji-shi-tong-xun-ji-zhu/">即时通讯技术</a>
-      </li>
     
       <li class="post">
         <a href="/blog/2015-05-11-nsscannerchu-li-fu-wu-qi-shu-ju-yi-chang-,-shu-ju-chu-li/">NSScanner处理服务器数据异常、数据处理</a>
@@ -2410,6 +2308,10 @@ CADisplayLink 不能被继承。</p>
     
       <li class="post">
         <a href="/blog/2014-07-23-gao-fang-bai-si-bu-de-jie-xiang-mu-zong-jie/">自定义键盘与数组使用的坑</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-07-22-bai-si-bu-de-qi-jie-xiang-mu-zong-jie/">主流框架搭建常用技巧</a>
       </li>
     
   </ul>

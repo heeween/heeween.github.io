@@ -9,12 +9,12 @@
   <meta name="author" content="Heew">
 
   
-  <meta name="description" content="屏幕适配的发展历史 iPhone3GS\iPhone4 没有屏幕适配可言
-全部用frame、bounds、center进行布局
-很多这样的现象：坐标值、宽度高度值全部写死 1
+  <meta name="description" content="九宫格计算思路 利用控件的索引index计算出控件所在的行号和列号
+利用列号计算控件的x值
+利用行号计算控件的y值 HUD 其他说法：指示器、遮盖、蒙板
+半透明HUD的做法 背景色设置为半透明颜色 定时任务 方法1：performSelector 1
 2
-UIButton *btn1 = [[UIButton alloc] init];
-btn1.frame = &hellip;">
+// 1. &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -70,261 +70,6 @@ btn1.frame = &hellip;">
     <div id="content">
       <div class="blog-index">
   
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013-06-03-autolayout%E7%9A%84%E5%8E%86%E5%8F%B2/">Autolayout的历史</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2013-06-03T23:48:39+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>3</span><span class='date-suffix'>rd</span>, <span class='date-year'>2013</span></span> <span class='time'>11:48 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>屏幕适配的发展历史</h2>
-
-<ul>
-<li>iPhone3GS\iPhone4
-
-<ul>
-<li>没有屏幕适配可言</li>
-<li>全部用frame、bounds、center进行布局</li>
-<li>很多这样的现象：坐标值、宽度高度值全部写死</li>
-</ul>
-</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>UIButton *btn1 = [[UIButton alloc] init];
-</span><span class='line'>btn1.frame = CGRectMake(0, 0, 320 - b, 480 - c);</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li><p>iPad出现、iPhone横屏</p>
-
-<ul>
-<li>出现Autoresizing技术
-
-<ul>
-<li>让横竖屏适配相对简单</li>
-<li>让子控件可以跟随父控件的行为自动发生相应的变化</li>
-<li>前提是：关闭Autolayout功能</li>
-<li>局限性
-
-<ul>
-<li>只能解决子控件跟父控件的相对关系问题</li>
-<li>不能解决兄弟控件的相对关系问题</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>iOS 6.0（Xcode4）开始</p>
-
-<ul>
-<li>出现了Autolayout技术</li>
-<li>从Xcode5.0(iOS 7.0)开始，开始流行Autolayout</li>
-</ul>
-</li>
-<li><p>iOS设备分辨率</p></li>
-</ul>
-
-
-<p><img src="../../images/iOSdevice.png" alt="" /></p>
-
-<h2>使用代码实现Autolayout的方法1- 苹果原生方法</h2>
-
-<ul>
-<li>创建约束</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>+(id)constraintWithItem:(id)view1
-</span><span class='line'>attribute:(NSLayoutAttribute)attr1
-</span><span class='line'>relatedBy:(NSLayoutRelation)relation
-</span><span class='line'>toItem:(id)view2
-</span><span class='line'>attribute:(NSLayoutAttribute)attr2
-</span><span class='line'>multiplier:(CGFloat)multiplier
-</span><span class='line'>constant:(CGFloat)c;
-</span><span class='line'>* view1 ：要约束的控件
-</span><span class='line'>* attr1 ：约束的类型（做怎样的约束）
-</span><span class='line'>* relation ：与参照控件之间的关系
-</span><span class='line'>* view2 ：参照的控件
-</span><span class='line'>* attr2 ：约束的类型（做怎样的约束）
-</span><span class='line'>* multiplier ：乘数
-</span><span class='line'>* c ：常量</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>添加约束</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>- (void)addConstraint:(NSLayoutConstraint *)constraint;
-</span><span class='line'>- (void)addConstraints:(NSArray *)constraints;</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>注意
-
-<ul>
-<li>一定要在拥有父控件之后再添加约束</li>
-<li>关闭Autoresizing功能</li>
-</ul>
-</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>view.translatesAutoresizingMaskIntoConstraints = NO;</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>使用代码实现Autolayout的方法2 - VFL</h2>
-
-<ul>
-<li>使用VFL创建约束数组</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>+ (NSArray *)constraintsWithVisualFormat:(NSString *)format
-</span><span class='line'>options:(NSLayoutFormatOptions)opts
-</span><span class='line'>metrics:(NSDictionary *)metrics
-</span><span class='line'>views:(NSDictionary *)views;
-</span><span class='line'>* format ：VFL语句
-</span><span class='line'>* opts ：约束类型
-</span><span class='line'>* metrics ：VFL语句中用到的具体数值
-</span><span class='line'>* views ：VFL语句中用到的控件</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>使用下面的宏来自动生成views和metrics参数</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>NSDictionaryOfVariableBindings(...)</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>使用代码实现Autolayout的方法3 - Masonry</h2>
-
-<ul>
-<li>使用步骤
-
-<ul>
-<li>添加Masonry文件夹的所有源代码到项目中</li>
-<li>添加2个宏、导入主头文件</li>
-</ul>
-</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>// 只要添加了这个宏，就不用带mas_前缀
-</span><span class='line'>#define MAS_SHORTHAND
-</span><span class='line'>// 只要添加了这个宏，equalTo就等价于mas_equalTo
-</span><span class='line'>#define MAS_SHORTHAND_GLOBALS
-</span><span class='line'>// 这个头文件一定要放在上面两个宏的后面
-</span><span class='line'>#import "Masonry.h"</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>添加约束的方法</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>// 这个方法只会添加新的约束
-</span><span class='line'> [view makeConstraints:^(MASConstraintMaker *make) {
-</span><span class='line'>
-</span><span class='line'> }];
-</span><span class='line'>
-</span><span class='line'>// 这个方法会将以前的所有约束删掉，添加新的约束
-</span><span class='line'> [view remakeConstraints:^(MASConstraintMaker *make) {
-</span><span class='line'>
-</span><span class='line'> }];
-</span><span class='line'>
-</span><span class='line'> // 这个方法将会覆盖以前的某些特定的约束
-</span><span class='line'> [view updateConstraints:^(MASConstraintMaker *make) {
-</span><span class='line'>
-</span><span class='line'> }];</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>约束的类型</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>1.尺寸：width\height\size
-</span><span class='line'>2.边界：left\leading\right\trailing\top\bottom
-</span><span class='line'>3.中心点：center\centerX\centerY
-</span><span class='line'>4.边界：edges</span></code></pre></td></tr></table></div></figure>
-
-</div>
-  
-  
-
-
-    </article>
   
   
     <article>
@@ -643,15 +388,11 @@ btn1.frame = &hellip;">
     <section>
   <h1>关于我</h1>
   <p>慢慢来比较快,随遇而安</p>
-  <img src="https://github.com/heeween/heeween.github.io/blob/master/images/icon.png" />
+  <img src="/images/icon.png" />
 </section>
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
-    
-      <li class="post">
-        <a href="/blog/2015-09-15-ji-shi-tong-xun-ji-zhu/">即时通讯技术</a>
-      </li>
     
       <li class="post">
         <a href="/blog/2015-05-11-nsscannerchu-li-fu-wu-qi-shu-ju-yi-chang-,-shu-ju-chu-li/">NSScanner处理服务器数据异常、数据处理</a>
@@ -727,6 +468,10 @@ btn1.frame = &hellip;">
     
       <li class="post">
         <a href="/blog/2014-07-23-gao-fang-bai-si-bu-de-jie-xiang-mu-zong-jie/">自定义键盘与数组使用的坑</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-07-22-bai-si-bu-de-qi-jie-xiang-mu-zong-jie/">主流框架搭建常用技巧</a>
       </li>
     
   </ul>
