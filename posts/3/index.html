@@ -9,25 +9,8 @@
   <meta name="author" content="Heew">
 
   
-  <meta name="description" content="在Xcode中输入以下代码,并且把出现警告的代码包起来 如何利用第三方工具统计崩溃信息 1 友盟
-2 flurry
-3 crashlytics 一般如果自己收集程序中的崩溃信息方法如下 1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-/** * 拦截异常 */
-void &hellip;">
+  <meta name="description" content="1：statusBar字体为白色 1
+在plist里面设置View controller-based status bar appearance 为 NO；设置statusBarStyle 为 UIStatusBarStyleLightContent 2: &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -83,6 +66,99 @@ void &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014-07-18-dao-hang-lan-she-zhi-ji-qiao/">导航栏设置技巧</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-07-18T16:55:21+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>18</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>4:55 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>1：statusBar字体为白色</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="err">在</span><span class="n">plist</span><span class="err">里面设置</span><span class="n">View</span> <span class="n">controller</span><span class="o">-</span><span class="n">based</span> <span class="n">status</span> <span class="n">bar</span> <span class="n">appearance</span> <span class="err">为</span> <span class="nb">NO</span><span class="err">；设置</span><span class="n">statusBarStyle</span> <span class="err">为</span> <span class="n">UIStatusBarStyleLightContent</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>2:设置statusBar和navigationbar为一体</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[</span><span class="n">nav</span><span class="p">.</span><span class="n">navigationBar</span> <span class="nl">setBackgroundImage</span><span class="p">:[</span><span class="bp">UIImage</span> <span class="nl">imageNamed</span><span class="p">:</span><span class="s">@&quot;bg_navbar.png&quot;</span><span class="p">]</span> <span class="nl">forBarPosition</span><span class="p">:</span><span class="n">UIBarPositionTopAttached</span> <span class="nl">barMetrics</span><span class="p">:</span><span class="n">UIBarMetricsDefault</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>3：tabBarItem被选中没效果，需要调用sdk7中的方法：</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">//兼容ios7以前</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">[</span><span class="n">viewController</span><span class="p">.</span><span class="n">tabBarItem</span> <span class="nl">setFinishedSelectedImage</span><span class="p">:</span><span class="n">actionMenu</span><span class="p">.</span><span class="n">selectedIcon</span> <span class="nl">withFinishedUnselectedImage</span><span class="p">:</span><span class="n">actionMenu</span><span class="p">.</span><span class="n">icon</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//ios7的方法</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">viewController</span><span class="p">.</span><span class="n">tabBarItem</span><span class="p">.</span><span class="n">selectedImage</span> <span class="o">=</span> <span class="n">actionMenu</span><span class="p">.</span><span class="n">selectedIcon</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>4：刷新状态栏statusBar</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[</span><span class="nb">self</span> <span class="n">setNeedsStatusBarAppearanceUpdate</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>5：navigationbar上面的BarButtonItem字看不见问题，backBarItem箭头没有，则需要</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">//ios7设置BarButtonItem字体颜色，则会显示出来，不包括返回箭头</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">[[</span><span class="bp">UIBarButtonItem</span> <span class="n">appearance</span><span class="p">]</span> <span class="nl">setBackButtonTitlePositionAdjustment</span><span class="p">:</span><span class="n">UIOffsetMake</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="nl">forBarMetrics</span><span class="p">:</span><span class="n">UIBarMetricsDefault</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//设置BarButtonItem颜色，包括返回箭头</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">[[</span><span class="bp">UINavigationBar</span> <span class="n">appearance</span><span class="p">]</span> <span class="nl">setTintColor</span><span class="p">:[</span><span class="bp">UIColor</span> <span class="n">whiteColor</span><span class="p">]];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>6:取消ios7自带手势，比如navigationcontroller的右滑返回</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="nb">self</span><span class="p">.</span><span class="n">navigationController</span><span class="p">.</span><span class="n">interactivePopGestureRecognizer</span><span class="p">.</span><span class="n">enabled</span> <span class="o">=</span> <span class="nb">NO</span> <span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -2094,250 +2170,6 @@ Document里面禁止放下载文件,否则审核不通过</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014-06-06-zi-ding-yi-dui-xiang-shu-xing-copy/">自定义对象属性copy</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-06-06T09:29:11+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>6</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>9:29 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h5>自定义对象属性类型为NSString用copy类型</h5>
-
-<ul>
-<li>set方法写法就如下面代码</li>
-<li>设计原理是为了赋值后的属性是一份新内存,修改外界变量不会影响属性值</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>- (void)setName:(NSString *)name
-</span><span class='line'>{
-</span><span class='line'>  _name = [name copy];
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>自定义对象属性用copy类型时,属性类型还用NSMutableString就可能会出现错误</li>
-<li>copy出来的对象都是不可变,如果还当做NSMutableString使用的话,程序就会报错</li>
-</ul>
-
-
-<h6>UIScrollView的约束</h6>
-
-<ul>
-<li>ScrollView的frame取决于scrollView与其他视图的约束</li>
-<li>scrollView的contentSize取决于scrollView与子视图的约束(间距)和子视图的大小</li>
-</ul>
-
-
-<h5>scrollView的子控件添加约束的注意点</h5>
-
-<ul>
-<li>子控件的位置可以相对scrollView来约束</li>
-<li>子控件大小必须相对其他控件来约束</li>
-<li>子控件大小还可以设置为固定值</li>
-</ul>
-
-
-<h5>const修饰的变量是苹果推荐的,定义的变量也是不能修改的</h5>
-
-<ul>
-<li>相比define const变量性能更好,define相当于替换,导致代码中会有很多临时存储空间</li>
-<li>而const的内存只有一份,其他都是</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>const CGFloat HYWRed = 0.4;
-</span><span class='line'>const CGFloat HYWGreen = 0.6;
-</span><span class='line'>const CGFloat HYWBlue = 0.7;
-</span><span class='line'>
-</span><span class='line'>//#define HYWRed 0.4
-</span><span class='line'>//#define HYWGreen 0.6
-</span><span class='line'>//#define HYWBlue 0.7</span></code></pre></td></tr></table></div></figure>
-
-
-<h5>同时为了避免全局变量的不安全性,还加static修饰</h5>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>static const CGFloat HYWRed = 0.4;
-</span><span class='line'>static const CGFloat HYWGreen = 0.6;
-</span><span class='line'>static const CGFloat HYWBlue = 0.7;</span></code></pre></td></tr></table></div></figure>
-
-
-<h5>引用一个全局变量,如果这个全局变量是const不可修改的,一般要再extern加const,用来标识这个变量是const的,通常编译时就会报错</h5>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>extern const CGFloat HYWRed;</span></code></pre></td></tr></table></div></figure>
-
-
-<h5>为了扩展性,一般把引用全局常用的代码写到一个HYWConst.h文件中,用到的地方直接#import就可以了</h5>
-
-<h5>同时再写一个同名字的HYWConst.m文件,用来定义常量</h5>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>HYWConst.h文件中
-</span><span class='line'>// #import &lt;UIKit/UIKit.h&gt;
-</span><span class='line'>
-</span><span class='line'>// extern const CGFloat HYWRed;
-</span><span class='line'>// extern const CGFloat HYWGreen;
-</span><span class='line'>// extern const CGFloat HYWBlue;
-</span><span class='line'>// extern const CGFloat HYWAlpha;
-</span><span class='line'>// extern const int HYWAge;
-</span><span class='line'>
-</span><span class='line'>为了装逼还可以写成
-</span><span class='line'>UIKIT_EXTERN const CGFloat HYWRed;
-</span><span class='line'>UIKIT_EXTERN const CGFloat HYWGreen;
-</span><span class='line'>UIKIT_EXTERN const CGFloat HYWBlue;
-</span><span class='line'>UIKIT_EXTERN const CGFloat HYWAlpha;
-</span><span class='line'>UIKIT_EXTERN const int HYWAge;
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>HYWConst.m文件中
-</span><span class='line'>// #import &lt;UIKit/UIKit.h&gt;
-</span><span class='line'>
-</span><span class='line'>const CGFloat HYWRed = 0.4;
-</span><span class='line'>const CGFloat HYWGreen = 0.6;
-</span><span class='line'>const CGFloat HYWBlue = 0.7;
-</span><span class='line'>const CGFloat HYWAlpha = 1.0;
-</span><span class='line'>const int HYWAge = 20;</span></code></pre></td></tr></table></div></figure>
-
-
-<h5>以后pch文件中需要引用,直接在pch文件中#import HYWConst.h既可</h5>
-
-<h5>常量指针和指针常量的区别</h5>
-
-<ul>
-<li>const int <em>p 等价于 int const </em>p</li>
-<li>int * const p</li>
-<li>常量指针和指针常量,哪个为常量,主要看const右边的值</li>
-<li>const *p意味着不能通过指针修改变量的值</li>
-<li>const p意味着指针地址不能修改,就在定义那一刻固定了指向的内存</li>
-</ul>
-
-
-<h5>在OC中定义常量字符串,应该在*号之后写const,引用的时候也应该注明</h5>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>
-</span><span class='line'>NSString * const HYWName = @"jack";
-</span><span class='line'>
-</span><span class='line'>UIKIT_EXTERN NSString * const HYWName;
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h5>指针p + 1,相当于指针往下移一位,也就是地址值+ 1 * 指针类型所占的字节数</h5>
-
-<h5>数组名就是首地址,也是数组首元素的地址,也相当于指向数组首元素的指针</h5>
-
-<h5>&amp;数组名,是一个数组指针,指向数组的指针</h5>
-
-<ul>
-<li>数组名存储的是<code>数组首元素</code>的地址</li>
-<li>等价于:一个指向<code>数组首元素</code>的指针</li>
-<li><p><code>数组名 + 1</code> 的跨度：<code>数组首元素</code>的占用字节数</p></li>
-<li><p>&amp;数组名就是一个指向数组的指针,指针的跨度就是整个数组的跨度</p></li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>    int numbers[2][2][2] = {
-</span><span class='line'>        {
-</span><span class='line'>            {10, 20},
-</span><span class='line'>            {30, 40},
-</span><span class='line'>        },
-</span><span class='line'>        {
-</span><span class='line'>            {50, 60},
-</span><span class='line'>            {70, 80}
-</span><span class='line'>        }
-</span><span class='line'>    };
-</span><span class='line'>    
-</span><span class='line'>    // numbers[0][0] == &numbers[0][0][0],相当于是一个指向numbers[0][0][0]的指针
-</span><span class='line'>    // numbers[1] == &numbers[1][0],相当于是一个指向numbers[1][0]的指针
-</span><span class='line'>    // numbers == &numbers[0],相当于是一个指向numbers[0]的指针
-</span><span class='line'>    // &numbers == 相当于是一个指向numbers的指针</span></code></pre></td></tr></table></div></figure>
-
-
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/4">&larr; Older</a>
@@ -2353,6 +2185,10 @@ Document里面禁止放下载文件,否则审核不通过</p>
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015-04-07-gcdde-di-ceng-yi-ji-gcdde-miao-yong/">GCD的底层以及GCD的妙用</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2015-02-27-shen-ru-yan-jiu-cadisplaylinkhe-nstimer/">深入研究CADisplayLink和NSTimer</a>
@@ -2428,10 +2264,6 @@ Document里面禁止放下载文件,否则审核不通过</p>
     
       <li class="post">
         <a href="/blog/2014-07-19-svnda-jian-he-shi-yong/">SVN搭建和使用</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014-07-18-dao-hang-lan-she-zhi-ji-qiao/">导航栏设置技巧</a>
       </li>
     
   </ul>
