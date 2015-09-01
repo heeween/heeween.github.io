@@ -4,7 +4,7 @@
   <title><![CDATA[Heew’s iOS Blog]]></title>
   <link href="http://heeween.github.io/atom.xml" rel="self"/>
   <link href="http://heeween.github.io/"/>
-  <updated>2015-09-02T00:37:10+08:00</updated>
+  <updated>2015-09-02T00:39:36+08:00</updated>
   <id>http://heeween.github.io/</id>
   <author>
     <name><![CDATA[Heew]]></name>
@@ -12,509 +12,6 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
-  
-  <entry>
-    <title type="html"><![CDATA[未来的技术 - HTML5]]></title>
-    <link href="http://heeween.github.io/blog/2015-03-29-html5chang-yong-kuang-jia/"/>
-    <updated>2015-03-29T09:30:00+08:00</updated>
-    <id>http://heeween.github.io/blog/html5chang-yong-kuang-jia</id>
-    <content type="html"><![CDATA[<h5>1. 什么是HTML5?&lt;html+5></h5>
-
-<p>  1> 2014年才定制完HTML5的标准，历时8年
-  2> 移动先行
-   * HTML3,HTML4只为PC设计、没有考虑手机页面展示，移动互联网前几年才兴起
-   （如果要新增一些功能、特性，首先考虑手机上能不能适用）</p>
-
-<h5>2. HTML5的优势</h5>
-
-<p>  1> 跨平台 利用HTML5编写的（*UI界面）代码能运行在所有拥有浏览器的平台
-  2> HTML5的运行平台：浏览器
-  3> 但是HTML5不能完成一些特定的功能，比如：拍照(ImagePickerController)、访问相册&hellip;.
-   &lt;需要调用OC的控制器modal和dismiss>
-   * iOS中用UIWebView来加载HTML
-     &lt;有些公司的代码只有一个webView></p>
-
-<h5>3、如何使用HTML5?</h5>
-
-<p>  1> 自己编写大量的HTML5
-  2> 使用现成的HTML5框架&lt;用很少的代码实现比如UIButton、UILabel等控件>
-   <em>sencha - touch
-   </em>jquery -mobile
-   *phoneGap</p>
-
-<p> 展示HTML5的案例&mdash;-jquery-mobile
-  1>先在网页中展示，拉大、拉小，重点突出框架随着页面大小的变化而做出自适应；（dataPicker、listView）展示一些特效，教如何拷贝
-  2>在模拟器中展示，知识点：网页应用  通过百度新闻网页版和手机版，突出完全可以用HTML5做出一套跨平台的应用（有些公司也在研究，看看哪些东西可以用HTML5来做）</p>
-
-<h5>4.手机App的开发模式（从要不要使用HTML5）</h5>
-
-<p>1> 原生（纯OC）
-   目前大多数
-2> 纯HTML5
-   比较少
-3> 原生 + HTML5 （UIWebView）
-   原生与系统无缝结合。HTML5需要跨平台，考虑很多因素，性能提升不上去（但是HTML5的标准制定下来，其性能有了质的改变，当然对比而言，还不如原生。很多公司开始探讨用这种方式来开发）
-   *HTML在性能上不如原生：点击UIButton, HTML5：点击事件传递给应用程序&mdash;》window &mdash;》webView &mdash;》UIButton
-   最明显的差距：响应速度
-   HTML5:不需要太注重用户体验、功能太复杂的、开发成本太高的。。。</p>
-
-<h5>5、为什么要学习HTML5?</h5>
-
-<p>1> 未来的一种趋势
-2> 增加面试、开发竞争力
-   拿andriod的对比举例
-   安卓的：学习java、服务器&mdash;> HTML5</p>
-
-<p>强调HTML5只需要了解，大部分公司的HTML5代码都不是自己写，我们只需要看懂</p>
-
-<h4>6、HTML5开发工具</h4>
-
-<p>1> andriod: eclipse、 Android studio
-2> iOS: Xcode
-3> HTML5:
-* eclipse、MyEclipse（后台喜爱）
-* DreamWaver(美工喜爱、网页三剑客:DreamWave、Flash、FireWork &mdash;》 Adobe )
-* sublime text(前端喜爱、大神编辑器，可以装各种插件、配色完美)
-* WebStorm(前端喜爱，默认集成了各种插件)
-《安装WebStorm》
-注意：准备java环境下载</p>
-
-<h4>7、HTML的基本语法</h4>
-
-<p>3> a 标签，
-   a是超链接标签
-   herf：是链接地址
-   *体验不好，有些网站会另外打开一个窗口
-   target=&ldquo;_blank"：新开一个网页</p>
-
-<p>4> input标签
-  * 在网页中展示
-  * 在模拟器中展示
-  * 特殊点：没有结束标签 区分：如果里面不要放东西，则不需要结束</p>
-
-<p>5> input中常见的样式，用type引出
-    <input type="color">
-    <input type="checkbox">
-    <input type="radio">
-    <input type="range">
-    <input type="date"></p>
-
-<p>6> input中的value属性
-   placeHold:请输入用户名</p>
-
-<p>7> br 标签 换行&lt;不需要结束></p>
-
-<p>8> img 标签
-* 本地路径  &mdash;-引出协议：http ftp   file  跨域的问题
-* 相对路径和绝对路径<br/>
-  相对路径：从当前文件入手去找这个图片文件  （加一个文件夹用于区分）
-  绝对路径：右击&ndash;>复制图片网址</p>
-
-<p>9> div 标签
-div非常灵活</p>
-
-<div>122121212112</div>
-
-
-<p>div和h比较像，但是有区别
-&ndash;再加</p>
-
-<div>122121212112</div>
-
-
-<div>122121212112</div>
-
-
-<div>122121212112  放入其他的控件</div>
-
-
-<p>div就是一个容器，没有更多才华的容器</p>
-
-<p>div 和 h 标签的区别
-div:非常纯洁的容器，什么都没有，一块未雕琢的玉，我们想怎么做都可以，个性化定制
-关于更多的标签，。。。。</p>
-
-<h4>8、CSS的基本使用</h4>
-
-<p>  1>行内样式
-    <em>单值属性
-    </em>复合属性
-    <div>my-div</div>
-    <span>my-span</span></p>
-
-<pre><code>&lt;div style="color: red;" border: 10px dashed green&gt;my-div&lt;/div&gt;
-&lt;span style="background-color: red; border:..."&gt;my-span&lt;/span&gt;
-</code></pre>
-
-<p>  如果有多个div，就需要使用页面样式
-  *行内属性的缺点：
-  a.无法给多个标签加样式（不能重用）；
-  b.会扰乱HTML代码《HTML代码是内容和框架，过多的样式会让人很难理解》</p>
-
-<p>  2>页内样式
-    假如有一个需求：所有div红色，所有p蓝色
-    第一种写法：
-    <div style="color: red;">11111111</div>
-    <div style="color: red;">333333333</div>
-    <p style="color: green;">22222222</p>
-    <p style="color: green;">444444444</p>
-    虽然可以完成,但是有缺点：不能复用
-       <style>
-          div{
-            color:green;
-          }
-          p{
-            color:yellow;
-          }
-       </style>
-    第二种写法：
-    优点：充分的复用</p>
-
-<pre><code>有些样式，在网站中很多网页中都是相同的，供多个网页使用引出外部样式
-用PPT:
-3&gt; 外部样式
-新建test.css文件
-div{
-  color:red;
-  ..
-}
-&lt;link herf="" rel=""&gt;
-
-
-总结行内样式、页内样式和外部样式的的区别：
-- 在业内样式中，引入外部样式
-- 加入行内样式
-1. 效果叠加
-2. 就近原则
-这些思想就可以运用到iOS中，编程的最高境界是：一理通百理融
-
-总结css的三种样式：
-*注意点：语法、顺序要规范
-</code></pre>
-
-<h5>9、CSS的选择器</h5>
-
-<ol>
-<li>CSS的两大核心
-1> 属性:通过属性复杂的组合才能做出漂亮的东西
-2> 选择器：通过选择器筛选符合条件的标签来增加样式
-代码内容：
-div{
-  color: red;
-}
-p {
-  color: blue;
-}
-span{
-  color: yellow;
-}</li>
-</ol>
-
-
-<p>   <div>11111</div>
-   <p>222222</p>
-   <span>3333333</span></p>
-
-<p>  <em>有很多选择器，像div、p、span就是标签选择器
-  &mdash;通过ppt对照讲解
-  </em>标签选择器
-  *类选择器</p>
-
-<p>  2.假如有一个需求 根据不同的类名设置不同的样式
-   <div>11111</div>
-   <p>222222</p>
-   <span>3333333</span>
-   <h2>44444444444</h2></p>
-
-<p>   <div class="main">11111</div>
-   <p class="second">222222</p>
-   <span  class="main">3333333</span>
-   <h2  class="sencond">44444444444</h2></p>
-
-<p>   &mdash;&ndash;>这样用标签选择器是办不到，是不是要用类选择器？</p>
-
-<pre><code>.main{
-
-     color: red;
- }
- .second{
-
-     color: green;
- }
-</code></pre>
-
-<p>  <!--类选择器--> 可以有多个属性，加tom属性
-     .tom{</p>
-
-<pre><code>     color: black;
- }
-</code></pre>
-
-<p>  前面会覆盖后面。
-   <div class="main tom">11111</div>
-   <p class="second">222222</p>
-   <span class="main">3333333</span>
-   <h2 class="second">44444444444</h2>
-  - id 如果有两个标签的id一样，会提示错误 id是唯一的</p>
-
-<pre><code> 并列选择器
- 符合选择器
- 后代选择器
- 相邻选择器
- 属性选择器
-</code></pre>
-
-<h4>10、CSS选择器的优先级别</h4>
-
-<p>  1 常见的标签
-  * div、span、a、ul、li、input</p>
-
-<p>  2 CSS语法
-     2大核心
-     <em>属性：编写怎样的样式
-     </em>选择器：给谁添加样式</p>
-
-<pre><code> 较为复杂的选择器
- *div, .high:并列选择器，div或者class="high"的标签
- *div.high:复合选择器，class="high"的div标签
- *div .high:后代选择器, div中所有class=“high”的后代标签（所有直接、间接的）
- *div &gt; .high:直接后代选择器，div中所有class=“high”的直接后代标签（不包括间接的）
- *div + high:相邻兄弟选择器，相邻兄弟选择器，跟div互为兄弟，且class= "high"
-</code></pre>
-
-<p> 3.CSS中的优先级
-   1> 在style中设置三个div样式，知识点：同级别中 就近原则
-      div{
-         color:red;
-      }
-      div{
-         color:blue;
-      }
-      div{
-         color:yellow;
-      }
-      <div>1111</div>
-   2> 在style中设置标签选择器、类选择器
-      * 一个类选择器  一个标签选择器
-      * 两个类选择器  一个标签选择器
-      * 复合选择器  标签+id   类+类
-         div#cat</p>
-
-<pre><code> 不同级别中  优先级不相等；
- 优先级一样的选择器，写在后面的会覆盖前面的
- 针对性越强的选择器（范围越小），优先级越高   
-
-id选择器 &gt; 类选择器 &gt; 标签选择器
-
-选择器的权值
-
-对应代码  标注权值
-
-3&gt; important
-在 div中 加入important 和 行内样式做比较， 突出important的重要性
-</code></pre>
-
-<h3>11、标签的类型</h3>
-
-<ol>
-<li><p>块级标签
-行内标签
-行内-块级标签</p></li>
-</ol>
-
-
-<p> <span>1111111</span>
- <span>2222222</span>
- <span>3333333</span></p>
-
-<p> <div>111111111</div>
- <div>222222222</div>
- <div>333333333</div></p>
-
-<p> <em>块级标签：独占一行，能随时改变宽度和高度
- -即使右边有很多空白，也不显示内容
- </em>行内标签：尺寸跟随内容，但不能改变尺寸
- - 改变宽度和高度，不好使
- - 增加内容，刷新
- *行内-块级标签：
- input 改变宽度和高度</p>
-
-<p>2.display
-- 很多人喜欢用div结合display来使用
- *none</p>
-
-<p> *block</p>
-
-<p> <em>inline
- 用div结合 inline讲解
- </em>inline-block</p>
-
-<p> 用span 结合 block讲解
- *inline-block</p>
-
-<p> 3 居中
- div{
-    background-color:red;
-    width:200px;
-    height:100px;
-    <!--水平居中-->
-    text-align:center;
-    <!--垂直居中-->
-    line-height:100px;
-    <!--用于更复杂的情况-->
-    vertical-align:middle;
- }</p>
-
-<p> <div>1111111</div>
-  让文字水平居中和垂直居中
-  text-align:center;
-  line-hieght:100px;
-  vertical-align:middle;</p>
-
-<p>```</p>
-
-<h3>12、html5框架</h3>
-
-<p>bootStrap</p>
-
-<p>bootStrap:封装了很多好用的类，</p>
-
-<p>1.input class =&ldquo;form-control&rdquo;
-2.button class=&ldquo;btn btn-danger&rdquo;
-  button class=&ldquo;btn btn-success&rdquo;
-  button class=&ldquo;btn btn-warning&rdquo;
-<em>如何在框架的基础上加一些自己的东西
-3.<div class="panel panel-danger">
-     <div class= "panel-heading"></div>
-     <div class = "panel-body"></div>
-  </div>
-</em>加一些行内样式</p>
-
-<ol>
-<li><p><span class="badge">4</span></p></li>
-<li><p>bootStrap集成图片&mdash;-》字体图片
-一次性打包，web开发，所有的资源都在服务器
-<i>888888</i>
-文字不会失真</p></li>
-<li><p>.min.css  .css 的区别
-压缩文件大小</p></li>
-</ol>
-
-
-<h3>13、 JS语法</h3>
-
-<p>1.介绍javascript，动态的添加一些东西
-  js写服务器代码&mdash;NodeJS
-  js以前是不行的,因为没有解析器。利用Google的V8的引擎开发了NodeJS
-  js写服务器代码也是很有前景的</p>
-
-<p>3、JS的编写形式
-  用js写一个helloWord
-  alert(&ldquo;hello world&rdquo;)</p>
-
-<p>  console.log(&lsquo;hello world&rsquo;)
-  比较alter和console,后者更利于调试：</p>
-
-<p>4、js的基本语法
-* 数据类型
-* 函数
-* 对象
-&mdash;&ndash;创建代码
-(1)<br/>
-var age = 10; //number
-var money = 10.5; // number
-var name = &ldquo;jack&rdquo;; // string
-var name2 = &lsquo;rose&rsquo;; // boolean
-*推荐使用单引号
- <button onclick = "alter("10")">
- var result = true; // true false
-* 可以不写var</p>
-
-<p>打印类型，加深印象：
-console.log(typeof age)</p>
-
-<p>(2)字符串的拼接<br/>
- var prefix = &lsquo;I am&rsquo;;
- var name = &lsquo;jack&rsquo;
- var str = prefix + name + &lsquo;sb&rsquo; + 20;</p>
-
-<p>(3) 字符串与数字拼接
- 出题：
-  var str1 = 10 + 10 + &lsquo;10&rsquo;;
-  var str2 = &lsquo;10&rsquo; + 10 + 10;
-  var str3 = &lsquo;10&rsquo; + （10 + 10）
-  var str4 =  10 + &lsquo;10&rsquo; + &lsquo;10&rsquo;
-  注意点：运算从左往右，任何类型与字符串相加都是字符串类型</p>
-
-<p>（4）数组
-  var names = []; // 比较下js和oc和java的数组区别
-  var names = [10, 20, &lsquo;jack&rsquo;, 10.8, true, false];
-  console.log(names.length)
-  console.log(names[0])
-  console.log(typeof names)</p>
-
-<p>  var dog = {
-     name : &lsquo;jack&rsquo;,
-     age : 10
-  };
-  console.log(dog.name)
-  console.log(dog.name + &lsquo;-&rsquo; + dog.age)</p>
-
-<p>  var dog2 = {
-     name : &lsquo;hhh&rsquo;,
-     age  : 10,
-     height : 1.55  (身高已经超过郭敬明了)
-  };
-  console.log &hellip;.</p>
-
-<p>（5）函数
-  *函数的定义格式
-  function 函数名（参数列表）{
-      // 函数体</p>
-
-<pre><code>  函数没有返回类型
-</code></pre>
-
-<p>  }
-  js中定义变量必须用var
-  // 加法运算
-  function sum(num1, num2){  // 参数列表不需要标明类型
-     return num1 + num2
-  }
-  cosole.log(sum(1, 2))</p>
-
-<p>  // 写一个万能的加法函数
-   对比前面一个，突出新方法
-   function sum(numbers){
-      var count = 0;
-      for(var i = 0; i &lt; numbers.count; i++){
-          count += numbers[i];
-      }
-      return count;
-   }
-   // 改进版
-   function sum(){ // arguments
-      var count = 0;
-      for (var i = 0; i &lt; arguments.length; i++){
-         count += arguments[i];
-      }<br/>
-      return count
-   }</p>
-
-<p>   总结：js非常灵活，有很多写法，其他语言办不到</p>
-
-<ul>
-<li>数据类型
-number:包括所有的数字（整数、小数）
-boolean:正常取值（true 或者 false）
-string: 字符串，可以用双引号和单引号引住内容（建议使用单引号）
-object: 对象类型，（注意：数组[]也是对象类型）、{}</li>
-<li>函数</li>
-<li>对象</li>
-</ul>
-
-]]></content>
-  </entry>
   
   <entry>
     <title type="html"><![CDATA[深入研究CADisplayLink和NSTimer]]></title>
@@ -2307,6 +1804,79 @@ CADisplayLink 不能被继承。</p>
 <h3>多人开发冲突如何解决</h3>
 
 <p><img src="http://heeween.github.io/images/Snip20150719_1.png" alt="" /></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[导航栏设置技巧]]></title>
+    <link href="http://heeween.github.io/blog/2014-07-18-dao-hang-lan-she-zhi-ji-qiao/"/>
+    <updated>2014-07-18T16:55:21+08:00</updated>
+    <id>http://heeween.github.io/blog/dao-hang-lan-she-zhi-ji-qiao</id>
+    <content type="html"><![CDATA[<h3>1：statusBar字体为白色</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="err">在</span><span class="n">plist</span><span class="err">里面设置</span><span class="n">View</span> <span class="n">controller</span><span class="o">-</span><span class="n">based</span> <span class="n">status</span> <span class="n">bar</span> <span class="n">appearance</span> <span class="err">为</span> <span class="nb">NO</span><span class="err">；设置</span><span class="n">statusBarStyle</span> <span class="err">为</span> <span class="n">UIStatusBarStyleLightContent</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>2:设置statusBar和navigationbar为一体</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[</span><span class="n">nav</span><span class="p">.</span><span class="n">navigationBar</span> <span class="nl">setBackgroundImage</span><span class="p">:[</span><span class="bp">UIImage</span> <span class="nl">imageNamed</span><span class="p">:</span><span class="s">@&quot;bg_navbar.png&quot;</span><span class="p">]</span> <span class="nl">forBarPosition</span><span class="p">:</span><span class="n">UIBarPositionTopAttached</span> <span class="nl">barMetrics</span><span class="p">:</span><span class="n">UIBarMetricsDefault</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>3：tabBarItem被选中没效果，需要调用sdk7中的方法：</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">//兼容ios7以前</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">[</span><span class="n">viewController</span><span class="p">.</span><span class="n">tabBarItem</span> <span class="nl">setFinishedSelectedImage</span><span class="p">:</span><span class="n">actionMenu</span><span class="p">.</span><span class="n">selectedIcon</span> <span class="nl">withFinishedUnselectedImage</span><span class="p">:</span><span class="n">actionMenu</span><span class="p">.</span><span class="n">icon</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//ios7的方法</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">viewController</span><span class="p">.</span><span class="n">tabBarItem</span><span class="p">.</span><span class="n">selectedImage</span> <span class="o">=</span> <span class="n">actionMenu</span><span class="p">.</span><span class="n">selectedIcon</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>4：刷新状态栏statusBar</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[</span><span class="nb">self</span> <span class="n">setNeedsStatusBarAppearanceUpdate</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>5：navigationbar上面的BarButtonItem字看不见问题，backBarItem箭头没有，则需要</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">//ios7设置BarButtonItem字体颜色，则会显示出来，不包括返回箭头</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">[[</span><span class="bp">UIBarButtonItem</span> <span class="n">appearance</span><span class="p">]</span> <span class="nl">setBackButtonTitlePositionAdjustment</span><span class="p">:</span><span class="n">UIOffsetMake</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="nl">forBarMetrics</span><span class="p">:</span><span class="n">UIBarMetricsDefault</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//设置BarButtonItem颜色，包括返回箭头</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">[[</span><span class="bp">UINavigationBar</span> <span class="n">appearance</span><span class="p">]</span> <span class="nl">setTintColor</span><span class="p">:[</span><span class="bp">UIColor</span> <span class="n">whiteColor</span><span class="p">]];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>6:取消ios7自带手势，比如navigationcontroller的右滑返回</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="nb">self</span><span class="p">.</span><span class="n">navigationController</span><span class="p">.</span><span class="n">interactivePopGestureRecognizer</span><span class="p">.</span><span class="n">enabled</span> <span class="o">=</span> <span class="nb">NO</span> <span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
 ]]></content>
   </entry>
   

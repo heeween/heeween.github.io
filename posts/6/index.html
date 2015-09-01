@@ -9,12 +9,15 @@
   <meta name="author" content="Heew">
 
   
-  <meta name="description" content="iOS8之后程序未读消息提示badge主动权交给用户 1
+  <meta name="description" content="自定义键盘主要是修改textfield的inputView属性 1
 2
 3
 4
-UIApplication *app = [UIApplication sharedApplication];
-app.applicationIconBadgeNumber = 10; &hellip;">
+5
+6
+7
+- (void)setUpBirthdayKeyboard
+{ UIDatePicker *picker = [[UIDatePicker alloc] init]; picker.locale = [ &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -70,177 +73,6 @@ app.applicationIconBadgeNumber = 10; &hellip;">
     <div id="content">
       <div class="blog-index">
   
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013-06-10-cheng-xu-tiao-zhuan-cheng-xu-hou-tai-shou-ji-zhuang-tai-lan/">程序跳转程序后台手机状态栏</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2013-06-10T09:02:31+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>10</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>9:02 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>iOS8之后程序未读消息提示badge主动权交给用户</h3>
-
-<p><img src="../../images/badgeMessage.png" alt="badgeMessage" /></p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>UIApplication *app = [UIApplication sharedApplication];
-</span><span class='line'>app.applicationIconBadgeNumber = 10;
-</span><span class='line'>UIUserNotificationSettings *setting = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeBadge categories:nil];
-</span><span class='line'>[app registerUserNotificationSettings:setting];</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>iOS8之后必须有如下代码来实现badge提示</li>
-<li>也意味着是否提示由用户来确认,不会写死,影响用户体验</li>
-</ul>
-
-
-<p><img src="../../images/badgeNumber.png" alt="badgeNumber" /></p>
-
-<h3>info.plist注意事项</h3>
-
-<ul>
-<li><p>Localiztion native development region(CFBundleDevelopmentRegion)-本地化相关</p></li>
-<li><p>Bundle display name(CFBundleDisplayName)-程序安装后显示的名称,限制在10－12个字符，如果超出，将被显示缩写名称</p></li>
-<li><p>Icon file(CFBundleIconFile)-app图标名称,一般为Icon.png</p></li>
-<li><p>Bundle version(CFBundleShortVersionString)-应用程序的版本号，每次往App Store上发布一个新版本时，需要增加这个版本号</p></li>
-<li><p>Main storyboard file base name(NSMainStoryboardFile)-主storyboard文件的名称</p></li>
-<li><p>Bundle identifier(CFBundleIdentifier)-项目的唯一标识，部署到真机时用到</p></li>
-</ul>
-
-
-<h3>UIWindow注意事项</h3>
-
-<ul>
-<li><p>[UIApplication sharedApplication].windows
-在本应用中打开的UIWindow列表，这样就可以接触应用中的任何一个UIView对象
-(平时输入文字弹出的键盘，就处在一个新的UIWindow中)</p></li>
-<li><p>[UIApplication sharedApplication].keyWindow
-用来接收键盘以及非触摸类的消息事件的UIWindow，而且程序中每个时刻只能有一个UIWindow是keyWindow。如果某个UIWindow内部的文本框不能输入文字，可能是因为这个UIWindow不是keyWindow</p></li>
-<li><p>view.window
-获得某个UIView所在的UIWindow</p></li>
-</ul>
-
-
-<h3>UITabBarController通常是作为整个程序的rootViewController</h3>
-
-<ul>
-<li><p>创建一个自定义HYWTabBarController对象</p></li>
-<li><p>通过设置UITabBarController对象为window.rootViewController，然后显示window</p></li>
-<li><p>在自定义tabbarcontroller中添加child控制器</p></li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-</span><span class='line'>    
-</span><span class='line'>    // 这是自定义TabBarcontroller为主窗口根控制器
-</span><span class='line'>    UIWindow *window = [[UIWindow alloc] init];
-</span><span class='line'>    window.frame = [UIScreen mainScreen].bounds;
-</span><span class='line'>    HYWTabBarController *tabBarVc = [[HYWTabBarController alloc] init];
-</span><span class='line'>    window.rootViewController = tabBarVc;
-</span><span class='line'>    
-</span><span class='line'>    
-</span><span class='line'>    // 显示主窗口
-</span><span class='line'>    self.window = window;
-</span><span class='line'>    [self.window makeKeyAndVisible];
-</span><span class='line'>    return YES;
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>在自定义TabBar控制器中设置子控制器</li>
-</ul>
-
-
-<p>效果如下
-<img src="../../images/tabBar.png" alt="tabBar" /></p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>- (void)viewDidLoad {
-</span><span class='line'>    [super viewDidLoad];
-</span><span class='line'>    
-</span><span class='line'>    UIViewController *oneVc,*twoVc,*threeVc,*fourVc,*fiveVc;
-</span><span class='line'>    oneVc = [[UIViewController alloc] init];
-</span><span class='line'>    oneVc.tabBarItem.image = [UIImage imageNamed:@"tab_recent_nor"];
-</span><span class='line'>    oneVc.title = @"消息";
-</span><span class='line'>    oneVc.view.backgroundColor = HYWRandomColor;
-</span><span class='line'>    twoVc = [[UIViewController alloc] init];
-</span><span class='line'>    twoVc.tabBarItem.image = [UIImage imageNamed:@"tab_buddy_nor"];
-</span><span class='line'>    twoVc.title = @"联系人";
-</span><span class='line'>    twoVc.view.backgroundColor = HYWRandomColor;
-</span><span class='line'>    threeVc = [[UIViewController alloc] init];
-</span><span class='line'>    threeVc.tabBarItem.image = [UIImage imageNamed:@"tab_qworld_nor"];
-</span><span class='line'>    threeVc.title = @"动态";
-</span><span class='line'>    threeVc.view.backgroundColor = HYWRandomColor;
-</span><span class='line'>    fourVc = [[UIViewController alloc] init];
-</span><span class='line'>    fourVc.tabBarItem.image = [UIImage imageNamed:@"tab_me_nor"];
-</span><span class='line'>    fourVc.title = @"设置";
-</span><span class='line'>    fourVc.view.backgroundColor = HYWRandomColor;
-</span><span class='line'>    fiveVc = [[UIViewController alloc] init];
-</span><span class='line'>    
-</span><span class='line'>    self.viewControllers = @[oneVc,twoVc,threeVc,fourVc];
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
-</div>
-  
-  
-
-
-    </article>
   
   
     <article>
@@ -2625,9 +2457,36 @@ app.applicationIconBadgeNumber = 10; &hellip;">
 
     </article>
   
-  <div class="pagination">
+  
+    <article>
+      
+  <header>
     
-      <a class="prev" href="/posts/7">&larr; Older</a>
+      <h1 class="entry-title"><a href="/blog/2013-04-01-my-first-octopress-blog/">My First Octopress Blog</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2013-04-01T20:48:39+08:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>1</span><span class='date-suffix'>st</span>, <span class='date-year'>2013</span></span> <span class='time'>8:48 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content">
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
     
     <a href="/blog/archives">Blog Archives</a>
     
@@ -2645,10 +2504,6 @@ app.applicationIconBadgeNumber = 10; &hellip;">
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
-    
-      <li class="post">
-        <a href="/blog/2015-03-29-html5chang-yong-kuang-jia/">未来的技术 - HTML5</a>
-      </li>
     
       <li class="post">
         <a href="/blog/2015-02-27-shen-ru-yan-jiu-cadisplaylinkhe-nstimer/">深入研究CADisplayLink和NSTimer</a>
@@ -2724,6 +2579,10 @@ app.applicationIconBadgeNumber = 10; &hellip;">
     
       <li class="post">
         <a href="/blog/2014-07-19-svnda-jian-he-shi-yong/">SVN搭建和使用</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-07-18-dao-hang-lan-she-zhi-ji-qiao/">导航栏设置技巧</a>
       </li>
     
   </ul>

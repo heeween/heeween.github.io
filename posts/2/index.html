@@ -9,31 +9,14 @@
   <meta name="author" content="Heew">
 
   
-  <meta name="description" content="圆角设置的性能问题layer.cornerRadius方法会造成程序卡顿,利用Quartz2D性能更好 * C语言绘图方式 1
+  <meta name="description" content="状态栏修改的两种方式 iOS7之后默认infolist里View controller-based status bar appearance值为YES,默认的状态栏也为黑色,意思就是状态栏修改都交给每个控制器,每个控制器实现 1
 2
 3
 4
 5
 6
 7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-- (UIImage *)circleImage &hellip;">
+/** * 让当前控制器对应的状态栏是白色 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -89,147 +72,6 @@
     <div id="content">
       <div class="blog-index">
   
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014-08-04-layer-dot-cornerradiusxing-neng-wen-ti-ji-jie-jue-fang-an/">layer.cornerRadius性能问题及解决方案</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-08-04T11:30:42+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>4</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>11:30 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>圆角设置的性能问题layer.cornerRadius方法会造成程序卡顿,利用Quartz2D性能更好</h2>
-
-<p><img src="/images/Snip20150803_9.png" alt="" />
-* C语言绘图方式</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="bp">UIImage</span> <span class="o">*</span><span class="p">)</span><span class="nf">circleImage</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="c1">// NO代表透明</span>
-</span><span class='line'>    <span class="n">UIGraphicsBeginImageContextWithOptions</span><span class="p">(</span><span class="nb">self</span><span class="p">.</span><span class="n">size</span><span class="p">,</span> <span class="nb">NO</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">// 获得上下文</span>
-</span><span class='line'>    <span class="n">CGContextRef</span> <span class="n">ctx</span> <span class="o">=</span> <span class="n">UIGraphicsGetCurrentContext</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">// 添加一个圆</span>
-</span><span class='line'>    <span class="bp">CGRect</span> <span class="n">rect</span> <span class="o">=</span> <span class="n">CGRectMake</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">self</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="nb">self</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">CGContextAddEllipseInRect</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">rect</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">// 裁剪</span>
-</span><span class='line'>    <span class="n">CGContextClip</span><span class="p">(</span><span class="n">ctx</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">// 将图片画上去</span>
-</span><span class='line'>    <span class="p">[</span><span class="nb">self</span> <span class="nl">drawInRect</span><span class="p">:</span><span class="n">rect</span><span class="p">];</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="bp">UIImage</span> <span class="o">*</span><span class="n">image</span> <span class="o">=</span> <span class="n">UIGraphicsGetImageFromCurrentImageContext</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">UIGraphicsEndImageContext</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">return</span> <span class="n">image</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>UIBezierPath绘图方式</li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="bp">UIImage</span> <span class="o">*</span><span class="p">)</span><span class="nf">clipImage</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="c1">// 1.开启位图上下文，跟图片尺寸一样大</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="bp">CGSize</span> <span class="n">imageSize</span> <span class="o">=</span> <span class="nb">self</span><span class="p">.</span><span class="n">size</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">UIGraphicsBeginImageContextWithOptions</span><span class="p">(</span><span class="n">imageSize</span><span class="p">,</span> <span class="nb">NO</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">// 2.设置圆形裁剪区域，正切与图片</span>
-</span><span class='line'>    <span class="bp">UIBezierPath</span> <span class="o">*</span><span class="n">path</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIBezierPath</span> <span class="nl">bezierPathWithOvalInRect</span><span class="p">:</span><span class="n">CGRectMake</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">imageSize</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="n">imageSize</span><span class="p">.</span><span class="n">height</span><span class="p">)];</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">// 2.2把路径设置为裁剪区域</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">path</span> <span class="n">addClip</span><span class="p">];</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">// 3.绘制图片</span>
-</span><span class='line'>    <span class="p">[</span><span class="nb">self</span> <span class="nl">drawAtPoint</span><span class="p">:</span><span class="n">CGPointZero</span><span class="p">];</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">// 4.从上下文中获取图片</span>
-</span><span class='line'>    <span class="bp">UIImage</span> <span class="o">*</span><span class="n">clipImage</span> <span class="o">=</span> <span class="n">UIGraphicsGetImageFromCurrentImageContext</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">// 5.关闭上下文</span>
-</span><span class='line'>    <span class="n">UIGraphicsEndImageContext</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">return</span> <span class="n">clipImage</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-</div>
-  
-  
-
-
-    </article>
   
   
     <article>
@@ -1406,6 +1248,99 @@
 
     </article>
   
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014-07-18-dao-hang-lan-she-zhi-ji-qiao/">导航栏设置技巧</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-07-18T16:55:21+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>18</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>4:55 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>1：statusBar字体为白色</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="err">在</span><span class="n">plist</span><span class="err">里面设置</span><span class="n">View</span> <span class="n">controller</span><span class="o">-</span><span class="n">based</span> <span class="n">status</span> <span class="n">bar</span> <span class="n">appearance</span> <span class="err">为</span> <span class="nb">NO</span><span class="err">；设置</span><span class="n">statusBarStyle</span> <span class="err">为</span> <span class="n">UIStatusBarStyleLightContent</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>2:设置statusBar和navigationbar为一体</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[</span><span class="n">nav</span><span class="p">.</span><span class="n">navigationBar</span> <span class="nl">setBackgroundImage</span><span class="p">:[</span><span class="bp">UIImage</span> <span class="nl">imageNamed</span><span class="p">:</span><span class="s">@&quot;bg_navbar.png&quot;</span><span class="p">]</span> <span class="nl">forBarPosition</span><span class="p">:</span><span class="n">UIBarPositionTopAttached</span> <span class="nl">barMetrics</span><span class="p">:</span><span class="n">UIBarMetricsDefault</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>3：tabBarItem被选中没效果，需要调用sdk7中的方法：</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">//兼容ios7以前</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">[</span><span class="n">viewController</span><span class="p">.</span><span class="n">tabBarItem</span> <span class="nl">setFinishedSelectedImage</span><span class="p">:</span><span class="n">actionMenu</span><span class="p">.</span><span class="n">selectedIcon</span> <span class="nl">withFinishedUnselectedImage</span><span class="p">:</span><span class="n">actionMenu</span><span class="p">.</span><span class="n">icon</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//ios7的方法</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">viewController</span><span class="p">.</span><span class="n">tabBarItem</span><span class="p">.</span><span class="n">selectedImage</span> <span class="o">=</span> <span class="n">actionMenu</span><span class="p">.</span><span class="n">selectedIcon</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>4：刷新状态栏statusBar</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[</span><span class="nb">self</span> <span class="n">setNeedsStatusBarAppearanceUpdate</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>5：navigationbar上面的BarButtonItem字看不见问题，backBarItem箭头没有，则需要</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">//ios7设置BarButtonItem字体颜色，则会显示出来，不包括返回箭头</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">[[</span><span class="bp">UIBarButtonItem</span> <span class="n">appearance</span><span class="p">]</span> <span class="nl">setBackButtonTitlePositionAdjustment</span><span class="p">:</span><span class="n">UIOffsetMake</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="nl">forBarMetrics</span><span class="p">:</span><span class="n">UIBarMetricsDefault</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//设置BarButtonItem颜色，包括返回箭头</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">[[</span><span class="bp">UINavigationBar</span> <span class="n">appearance</span><span class="p">]</span> <span class="nl">setTintColor</span><span class="p">:[</span><span class="bp">UIColor</span> <span class="n">whiteColor</span><span class="p">]];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>6:取消ios7自带手势，比如navigationcontroller的右滑返回</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="nb">self</span><span class="p">.</span><span class="n">navigationController</span><span class="p">.</span><span class="n">interactivePopGestureRecognizer</span><span class="p">.</span><span class="n">enabled</span> <span class="o">=</span> <span class="nb">NO</span> <span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
   <div class="pagination">
     
       <a class="prev" href="/posts/3">&larr; Older</a>
@@ -1426,10 +1361,6 @@
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
-    
-      <li class="post">
-        <a href="/blog/2015-03-29-html5chang-yong-kuang-jia/">未来的技术 - HTML5</a>
-      </li>
     
       <li class="post">
         <a href="/blog/2015-02-27-shen-ru-yan-jiu-cadisplaylinkhe-nstimer/">深入研究CADisplayLink和NSTimer</a>
@@ -1505,6 +1436,10 @@
     
       <li class="post">
         <a href="/blog/2014-07-19-svnda-jian-he-shi-yong/">SVN搭建和使用</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-07-18-dao-hang-lan-she-zhi-ji-qiao/">导航栏设置技巧</a>
       </li>
     
   </ul>
