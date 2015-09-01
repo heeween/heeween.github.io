@@ -1,0 +1,399 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>二维码制作 - Heew’s iOS Blog</title>
+  <meta name="author" content="Heew">
+
+  
+  <meta name="description" content="从iOS7开始集成了二维码的生成和读取功能 此前被广泛使用的zbarsdk目前不支持64位处理器 0.导入CoreImage框架 1
+/#import &lt;CoreImage/CoreImage.h&gt; 1.实例化二维码滤镜 1
+CIFilter *fiter = [CIFilter &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://heeween.github.io/blog/2015-02-19-er-wei-ma-zhi-zuo/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Heew’s iOS Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Heew’s iOS Blog</a></h1>
+  
+    <h2>A personal blog accounting problems for iOS.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.baidu.com" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="heeween.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">二维码制作</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-02-19T09:22:09+08:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>19</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>9:22 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h3>从iOS7开始集成了二维码的生成和读取功能</h3>
+
+<h3>此前被广泛使用的zbarsdk目前不支持64位处理器</h3>
+
+<p>0.导入CoreImage框架</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="o">/</span><span class="err">#</span><span class="n">import</span> <span class="o">&lt;</span><span class="n">CoreImage</span><span class="o">/</span><span class="n">CoreImage</span><span class="p">.</span><span class="n">h</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>1.实例化二维码滤镜</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="bp">CIFilter</span> <span class="o">*</span><span class="n">fiter</span> <span class="o">=</span> <span class="p">[</span><span class="bp">CIFilter</span> <span class="nl">filterWithName</span><span class="p">:</span><span class="s">@&quot;CIQRCodeGenerator&quot;</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>2.恢复滤镜的默认属性</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[</span><span class="n">fiter</span> <span class="n">setDefaults</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>3.将字符串转换成NSData</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="bp">NSString</span> <span class="o">*</span><span class="n">inputData</span> <span class="o">=</span> <span class="s">@&quot;http://www.520it.com&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="bp">NSData</span> <span class="o">*</span><span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="n">inputData</span> <span class="nl">dataUsingEncoding</span><span class="p">:</span><span class="n">NSUTF8StringEncoding</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>4.通过KVO设置滤镜inputMessage数据</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[</span><span class="n">fiter</span> <span class="nl">setValue</span><span class="p">:</span><span class="n">data</span> <span class="nl">forKeyPath</span><span class="p">:</span><span class="s">@&quot;inputMessage&quot;</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>5.获得滤镜输出的图像</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="bp">CIImage</span> <span class="o">*</span><span class="n">outputImage</span> <span class="o">=</span> <span class="p">[</span><span class="n">fiter</span> <span class="n">outputImage</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>6.将CIImage转换成UIImage，并放大显示</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="nb">self</span><span class="p">.</span><span class="n">imageView</span><span class="p">.</span><span class="n">image</span> <span class="o">=</span> <span class="p">[</span><span class="nb">self</span> <span class="nl">createNonInterpolatedUIImageFormCIImage</span><span class="p">:</span><span class="n">outputImage</span> <span class="nl">withSize</span><span class="p">:</span><span class="mi">200</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img src="/images/Snip20150819_1.png" alt="" /></p>
+
+<h2>读取二维码需要导入AVFoundation框架</h2>
+
+<h2>利用摄像头识别二维码中的内容(模拟器不行)</h2>
+
+<p>1.实例化拍摄设备</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="bp">AVCaptureDevice</span> <span class="o">*</span><span class="n">device</span> <span class="o">=</span> <span class="p">[</span><span class="bp">AVCaptureDevice</span> <span class="nl">defaultDeviceWithMediaType</span><span class="p">:</span><span class="n">AVMediaTypeVideo</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>2.设置输入设备</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="bp">AVCaptureDeviceInput</span> <span class="o">*</span><span class="n">input</span> <span class="o">=</span> <span class="p">[</span><span class="bp">AVCaptureDeviceInput</span> <span class="nl">deviceInputWithDevice</span><span class="p">:</span><span class="n">device</span> <span class="nl">error</span><span class="p">:</span><span class="nb">nil</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>3.设置元数据输出</p>
+
+<blockquote><p>3.1 实例化拍摄元数据输出</p></blockquote>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="bp">AVCaptureMetadataOutput</span> <span class="o">*</span><span class="n">output</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">AVCaptureMetadataOutput</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<blockquote><p>3.2 设置输出数据代理</p></blockquote>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[</span><span class="n">output</span> <span class="nl">setMetadataObjectsDelegate</span><span class="p">:</span><span class="nb">self</span> <span class="nl">queue</span><span class="p">:</span><span class="n">dispatch_get_main_queue</span><span class="p">()];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>4.添加拍摄会话</p>
+
+<blockquote><p>4.1 实例化拍摄会话</p></blockquote>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="bp">AVCaptureSession</span> <span class="o">*</span><span class="n">session</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">AVCaptureSession</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<blockquote><p>4.2 添加会话输入</p></blockquote>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[</span><span class="n">session</span> <span class="nl">addInput</span><span class="p">:</span><span class="n">input</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<blockquote><p>4.3 添加会话输出</p></blockquote>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[</span><span class="n">session</span> <span class="nl">addOutput</span><span class="p">:</span><span class="n">output</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<blockquote><p>4.4 设置输出数据类型，需要将元数据输出添加到会话后，才能指定元数据类型，否则会报错</p></blockquote>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[</span><span class="n">output</span> <span class="nl">setMetadataObjectTypes</span><span class="p">:</span><span class="l">@[</span><span class="n">AVMetadataObjectTypeQRCode</span><span class="l">]</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>5.视频预览图层</p>
+
+<blockquote><p>5.1 实例化预览图层</p></blockquote>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="bp">AVCaptureVideoPreviewLayer</span> <span class="o">*</span><span class="n">preview</span> <span class="o">=</span> <span class="p">[</span><span class="bp">AVCaptureVideoPreviewLayer</span> <span class="nl">layerWithSession</span><span class="p">:</span><span class="n">session</span><span class="p">];</span>
+</span><span class='line'><span class="n">preview</span><span class="p">.</span><span class="n">videoGravity</span> <span class="o">=</span> <span class="n">AVLayerVideoGravityResizeAspectFill</span><span class="p">;</span>
+</span><span class='line'><span class="n">preview</span><span class="p">.</span><span class="n">frame</span> <span class="o">=</span> <span class="nb">self</span><span class="p">.</span><span class="n">view</span><span class="p">.</span><span class="n">bounds</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<blockquote><p>5.2 将图层插入当前视图</p></blockquote>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">view</span><span class="p">.</span><span class="n">layer</span> <span class="nl">insertSublayer</span><span class="p">:</span><span class="n">preview</span> <span class="nl">atIndex</span><span class="p">:</span><span class="mi">100</span><span class="p">];</span>
+</span><span class='line'><span class="nb">self</span><span class="p">.</span><span class="n">previewLayer</span> <span class="o">=</span> <span class="n">preview</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>6.启动会话</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[</span><span class="n">_session</span> <span class="n">startRunning</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Heew</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2015-02-19T09:22:09+08:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>19</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>9:22 am</span></time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014-08-30-shu-ju-jie-xi-mo-xing-she-zhi-de-ji-qiao/" title="Previous Post: 数据解析模型设置的技巧">&laquo; 数据解析模型设置的技巧</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2015-02-27-shen-ru-yan-jiu-cadisplaylinkhe-nstimer/" title="Next Post: 深入研究CADisplayLink和NSTimer">深入研究CADisplayLink和NSTimer &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015-09-15-ji-shi-tong-xun-ji-zhu/">即时通讯技术</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015-05-29-ioslan-ya-4-dot-0kai-fa/">iOS蓝牙4.0开发</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015-05-11-nsscannerchu-li-fu-wu-qi-shu-ju-yi-chang-,-shu-ju-chu-li/">NSScanner处理服务器数据异常、数据处理</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015-04-07-gcdde-di-ceng-yi-ji-gcdde-miao-yong/">GCD的底层以及GCD的妙用</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015-03-29-html5chang-yong-kuang-jia/">未来的技术 - HTML5</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015-02-27-shen-ru-yan-jiu-cadisplaylinkhe-nstimer/">深入研究CADisplayLink和NSTimer</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015-02-19-er-wei-ma-zhi-zuo/">二维码制作</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-30-shu-ju-jie-xi-mo-xing-she-zhi-de-ji-qiao/">数据解析模型设置的技巧</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-10-popmenucontrollerzhu-yi-shi-xiang/">popMenuController注意事项</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-08-zi-ding-yi-kong-jian-feng-zhuang-de-zhu-yi-shi-xiang/">自定义控件封装的注意事项</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-07-textfieldhe-textviewde-qu-bie/">Textfield和TextView的区别</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-06-appearancetong-%5B%3F%5D-she-zhi-zhu-ti-de-wen-ti/">Appearance统一设置主题的问题</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-05-webviewjia-zai-jin-du-tiao-de-bu-kai-fang-he-chang-jian-jie-jue-fang-an/">webView加载进度条的不开放和常见解决方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-05-bai-si-bu-de-jie-zong-jie-8yue-5ri/">Modal出来的控制器再modal一个控制器的问题</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-04-layer-dot-cornerradiusxing-neng-wen-ti-ji-jie-jue-fang-an/">layer.cornerRadius性能问题及解决方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-03-bai-si-bu-de-jie-xiang-mu-geng-duo-zong-jie/">让一个普通控件弹出menuController的步骤</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-02-bai-si-bu-de-jie-xiang-mu-zong-jie/">多组表格网络请求加载失败可能引发的小问题</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-07-30-bai-si-bu-de-jie-xiang-mu-zong-jie/">Facebook第三方框架pop动画</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-07-29-bai-si-bu-de-jie-xiang-mu-zong-jie/">Quartz实现image缩放的技巧</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-07-26-gao-fang-bai-si-bu-de-jie-zong-jie/">Textfield魔法效果实现</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Heew -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

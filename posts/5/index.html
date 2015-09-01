@@ -1,0 +1,2388 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Heew’s iOS Blog</title>
+  <meta name="author" content="Heew">
+
+  
+  <meta name="description" content="为了让导航控制器push的时候隐藏底部工具条,一般自定义导航控制器重写- (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated 1
+2
+3
+4
+5
+6
+7
+- (void) &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://heeween.github.io/posts/5/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Heew’s iOS Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Heew’s iOS Blog</a></h1>
+  
+    <h2>A personal blog accounting problems for iOS.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.baidu.com" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="heeween.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014-03-27-dao-hang-kong-zhi-qi-yin-cang-di-bu-gong-ju-tiao-de-keng/">导航控制器隐藏底部工具条的坑</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-03-27T21:45:08+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>27</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>9:45 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><ul>
+<li>为了让导航控制器push的时候隐藏底部工具条,一般自定义导航控制器重写- (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated
+</span><span class='line'>{
+</span><span class='line'>        NSLog(@"%s",__func__);
+</span><span class='line'>    viewController.hidesBottomBarWhenPushed = YES;
+</span><span class='line'>    [super pushViewController:viewController animated:animated];
+</span><span class='line'>    
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>结果问题来了:在tabbarcontroller里只要使用自定义导航控制器工具条就显示不出来,于是开始各种测试</h4>
+
+<ul>
+<li>用最简单的UIViewController可以显示底部的图片</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>//    UIViewController *vc4 = [[UIViewController alloc] init];
+</span><span class='line'>//    vc4.view.backgroundColor = HYWRandomColor;
+</span><span class='line'>//    vc4.tabBarItem.image = [[UIImage imageNamed:@"TabBar4"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+</span><span class='line'>//    vc4.tabBarItem.selectedImage = [UIImage imageNamed:@"TabBar4Sel"];
+</span><span class='line'>//    [self addChildViewController:vc4];</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img src="/images/Snip20150627_10.png" alt="底部工具条可以显示" /></p>
+
+<ul>
+<li>包一个最简单的UINavigationController也可以显示底部的图片</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>UIViewController *vc1 = [[UIViewController alloc] init];
+</span><span class='line'>vc1.view.backgroundColor = HYWRandomColor;
+</span><span class='line'>vc1.tabBarItem.image = [[UIImage imageNamed:@"TabBar1"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+</span><span class='line'>vc1.tabBarItem.selectedImage = [[UIImage imageNamed:@"TabBar1Sel"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+</span><span class='line'>UINavigationController *nav1 = [[UINavigationController alloc] initWithRootViewController:vc1];
+</span><span class='line'>[self addChildViewController:nav1];</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img src="/images/Snip20150627_11.png" alt="底部工具条也可以显示" /></p>
+
+<ul>
+<li>可是已使用自定义的导航控制器就不能显示底部工具条</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>#pragma mark - 添加所有子控制器
+</span><span class='line'>- (void)setUpAllChildController
+</span><span class='line'>{
+</span><span class='line'>    [self addOneChildViewController:[HallController class] title:@"购彩大厅" image:@"TabBar_LotteryHall_new" selectedImage:@"TabBar_LotteryHall_selected_new"];
+</span><span class='line'>    [self addOneChildViewController:[ArenaController class] title:@"竞技场" image:@"TabBar_Arena_new" selectedImage:@"TabBar_Arena_selected_new"];
+</span><span class='line'>    [self addOneChildViewController:[DiscoverController class] title:@"发现" image:@"TabBar_Discovery_new" selectedImage:@"TabBar_Discovery_selected_new"];
+</span><span class='line'>    [self addOneChildViewController:[HistoryController class] title:@"开奖信息" image:@"TabBar_History_new" selectedImage:@"TabBar_History_selected_new"];
+</span><span class='line'>    [self addOneChildViewController:[MylotteryController class] title:@"我的信息" image:@"TabBar_MyLottery_new" selectedImage:@"TabBar_MyLottery_selected_new"];
+</span><span class='line'>    
+</span><span class='line'>}
+</span><span class='line'>#pragma mark - 添加一个子控制器
+</span><span class='line'>
+</span><span class='line'>- (void)addOneChildViewController:(Class)VcClass title:(NSString *)title image:(NSString *)image selectedImage:(NSString *)selectedImage
+</span><span class='line'>{
+</span><span class='line'>    UIViewController *childVc = [[VcClass alloc] init];
+</span><span class='line'>    childVc.navigationItem.title = title;
+</span><span class='line'>    childVc.view.backgroundColor = HYWRandomColor;
+</span><span class='line'>    childVc.tabBarItem.image = [[UIImage imageNamed:image] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+</span><span class='line'>    childVc.tabBarItem.selectedImage = [[UIImage imageNamed:selectedImage] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+</span><span class='line'>    HYWNavigationController *nav = [[HYWNavigationController alloc] initWithRootViewController:childVc];
+</span><span class='line'>    [self addChildViewController:nav];
+</span><span class='line'>
+</span><span class='line'>    [self.items addObject:childVc.tabBarItem];
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img src="/images/Snip20150627_12.png" alt="底部工具条不可以显示" /></p>
+
+<h4>试到这里就很明显感觉是HYWNavigationController自定义控制器的问题</h4>
+
+<ul>
+<li>仔细研究发现    viewController.hidesBottomBarWhenPushed = YES;这句代码的问题</li>
+<li>因为NavigationController显示rootviewController的时候也是push,也会调用这个方法</li>
+<li>因此在第一个导航控制器的根控制器显示的时候,就把底部工具条给隐藏了</li>
+<li>因此- (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated重写一定要加以判断</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated
+</span><span class='line'>{
+</span><span class='line'>    if (self.childViewControllers.count) {
+</span><span class='line'>        viewController.hidesBottomBarWhenPushed = YES;
+</span><span class='line'>    }
+</span><span class='line'>    [super pushViewController:viewController animated:animated];
+</span><span class='line'>    
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img src="/images/Snip20150627_13.png" alt="底部工具条就可以正常显示了" /></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014-03-19-tong-xin-lu-huo-qu/">通信录获取</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-03-19T15:05:21+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>19</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>3:05 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>AddressBookUI.framework</h2>
+
+<ul>
+<li>提供了联系人列表界面、联系人详情界面、添加联系人界面等</li>
+<li>一般用于选择联系人</li>
+</ul>
+
+
+<h2>AddressBook.framework</h2>
+
+<ul>
+<li>纯C语言的API，仅仅是获得联系人数据</li>
+<li>没有提供UI界面展示，需要自己搭建联系人展示界面</li>
+<li>里面的数据类型大部分基于Core Foundation框架，使用起来极其蛋疼</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013-06-26-wang-yi-cai-piao-xiang-mu-shi-xian-bu-zou/">网易彩票项目实现步骤</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2013-06-26T14:45:50+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>26</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>2:45 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>下面两种方法都可以获取导航控制器的导航栏</h3>
+
+<ul>
+<li>这种方法获取的是本应用全部控制器的导航栏,包括调用系统照片选择器,而系统的照片选择器不希望被修改</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>UINavigationBar *bar = [UINavigationBar appearance];</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>因此推荐下面这种方法,只获取自定义这个类的导航栏</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>UINavigationBar *bar = [UINavigationBar appearanceWhenContainedIn:self, nil];</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img src="/images/Snip20150626_6.png" alt="导航栏设置" /></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>// 设置导航条属性
+</span><span class='line'>[bar setBackgroundImage:[UIImage imageNamed:@"NavBar64"] forBarMetrics:UIBarMetricsDefault];
+</span><span class='line'>bar.tintColor = [UIColor whiteColor];
+</span><span class='line'>NSMutableDictionary *titleAttr = [NSMutableDictionary dictionary];
+</span><span class='line'>titleAttr[NSFontAttributeName] = [UIFont systemFontOfSize:16];
+</span><span class='line'>titleAttr[NSForegroundColorAttributeName] = [UIColor whiteColor];
+</span><span class='line'>[bar setTitleTextAttributes:titleAttr];
+</span><span class='line'>
+</span><span class='line'>// 设置导航条上部件的属性
+</span><span class='line'>
+</span><span class='line'>NSMutableDictionary *barButtonAttr = [NSMutableDictionary dictionary];
+</span><span class='line'>barButtonAttr[NSFontAttributeName] = [UIFont systemFontOfSize:16];
+</span><span class='line'>barButtonAttr[NSForegroundColorAttributeName] = [UIColor whiteColor];
+</span><span class='line'>UIBarButtonItem *barButtonItem = [UIBarButtonItem appearance];
+</span><span class='line'>[barButtonItem setTitleTextAttributes:barButtonAttr forState:UIControlStateNormal];</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>tabBar的图片是包含文字高度为64,而系统tabBar图片尺寸不能超过44,因此自定义tabBar</h3>
+
+<ul>
+<li>tabBar的按钮是写死的所以可以用xib描述,并且设置约束,既可以适配不同屏幕,又省去不少代码</li>
+</ul>
+
+
+<p><img src="/images/Snip20150626_7.png" alt="tabBar子控件描述" /></p>
+
+<ul>
+<li>tabBar子控件图片通过添加一个item的模型数组,由控制器设置,</li>
+<li>tabBar内部改写set方法,这样按钮图片顺序和图片都交给控制器,控制器怎么设置,tabBar就怎么显示</li>
+</ul>
+
+
+<p><img src="/images/Snip20150626_8.png" alt="tabBar子控件图片设置" /></p>
+
+<h6>控制器设置tabBar的模型数组</h6>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (void)viewDidLoad {
+</span><span class='line'>    
+</span><span class='line'>    [super viewDidLoad];
+</span><span class='line'>    [self.tabBar removeFromSuperview];
+</span><span class='line'>    
+</span><span class='line'>    HYWTabBar *myTabBar = [HYWTabBar tabBar];
+</span><span class='line'>    myTabBar.HYWTabBardelegate = self;
+</span><span class='line'>    [self.view addSubview:myTabBar];
+</span><span class='line'>    
+</span><span class='line'>    myTabBar.frame = self.tabBar.frame;
+</span><span class='line'>    
+</span><span class='line'>    
+</span><span class='line'>    [self setUpAllChildController];
+</span><span class='line'>    
+</span><span class='line'>    myTabBar.tabBaritems = self.items;
+</span><span class='line'>    
+</span><span class='line'>}
+</span><span class='line'>- (void)setUpAllChildController
+</span><span class='line'>{
+</span><span class='line'>    [self addOneChildViewController:[ArenaController class] title:@"购彩大厅" image:@"TabBar_LotteryHall_new" selectedImage:@"TabBar_LotteryHall_selected_new"];
+</span><span class='line'>    [self addOneChildViewController:[ArenaController class] title:@"竞技场" image:@"TabBar_Arena_new" selectedImage:@"TabBar_Arena_selected_new"];
+</span><span class='line'>    [self addOneChildViewController:[DiscoverController class] title:@"发现" image:@"TabBar_Discovery_new" selectedImage:@"TabBar_Discovery_selected_new"];
+</span><span class='line'>    [self addOneChildViewController:[HistoryController class] title:@"开奖信息" image:@"TabBar_History_new" selectedImage:@"TabBar_History_selected_new"];
+</span><span class='line'>    [self addOneChildViewController:[ArenaController class] title:@"我的信息" image:@"TabBar_MyLottery_new" selectedImage:@"TabBar_MyLottery_selected_new"];
+</span><span class='line'>    
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>- (void)addOneChildViewController:(Class)VcClass title:(NSString *)title image:(NSString *)image selectedImage:(NSString *)selectedImage
+</span><span class='line'>{
+</span><span class='line'>    UIViewController *childVc = [[VcClass alloc] init];
+</span><span class='line'>    HYWNavigationController *nav = [[HYWNavigationController alloc] initWithRootViewController:childVc];
+</span><span class='line'>    [self addChildViewController:nav];
+</span><span class='line'>    childVc.navigationItem.title = title;
+</span><span class='line'>    
+</span><span class='line'>    childVc.tabBarItem.image = [[UIImage imageNamed:image] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+</span><span class='line'>    
+</span><span class='line'>    childVc.view.backgroundColor = HYWRandomColor;
+</span><span class='line'>    
+</span><span class='line'>    childVc.tabBarItem.selectedImage = [[UIImage imageNamed:selectedImage] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+</span><span class='line'>    
+</span><span class='line'>    [self.items addObject:childVc.tabBarItem];
+</span><span class='line'>}
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h6>tabBar内部set方法</h6>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>-(void)setTabBaritems:(NSArray *)tabBaritems
+</span><span class='line'>{
+</span><span class='line'>    _tabBaritems = tabBaritems;
+</span><span class='line'>    for (int i = 0; i &lt; tabBaritems.count; i++) {
+</span><span class='line'>        UITabBarItem *item = tabBaritems[i];
+</span><span class='line'>        UIButton *btn = self.subviews[i];
+</span><span class='line'>        [btn setImage:item.image forState:UIControlStateNormal];
+</span><span class='line'>        [btn setImage:item.selectedImage forState:UIControlStateSelected];
+</span><span class='line'>    }
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013-06-26-mo-fang-wei-bo-kai-qi-jie-mian-dong-hua/">模仿微博开启界面动画</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2013-06-26T09:05:30+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>26</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>9:05 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>微博启动画面动画
+<img src="/images/Snip20150626_1.png" alt="微博启动画面动画" /></p>
+
+<p>点击中间添加按钮
+<img src="/images/Snip20150626_2.png" alt="点击中间添加按钮" /></p>
+
+<p>弹出选中按钮动画
+<img src="/images/Snip20150626_3.png" alt="弹出选中按钮动画" /></p>
+
+<ul>
+<li>微博启动界面动画 一开始显示标语，慢慢消失，然后头像从下往上移动动画，最后文字慢慢显示。</li>
+<li>封装启动界面View</li>
+</ul>
+
+
+<p><img src="/images/Snip20150626_4.png" alt="自定义View的Xib描述" /></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>+ (instancetype)welcomeView
+</span><span class='line'>{
+</span><span class='line'>    return [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([self class]) owner:nil options:nil] lastObject];
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>- (void)didMoveToSuperview
+</span><span class='line'>{
+</span><span class='line'>    [super didMoveToSuperview];
+</span><span class='line'>    self.iconView.layer.cornerRadius = 50;
+</span><span class='line'>    self.iconView.layer.masksToBounds = YES;
+</span><span class='line'>    self.iconView.transform = CGAffineTransformMakeTranslation(0, 50);
+</span><span class='line'>    [UIView animateWithDuration:0.5 animations:^{
+</span><span class='line'>        self.sloganView.alpha = 0;
+</span><span class='line'>    } completion:^(BOOL finished) {
+</span><span class='line'>        self.iconView.hidden = NO;
+</span><span class='line'>        [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:0.3 initialSpringVelocity:0 options:UIViewAnimationOptionCurveLinear animations:^{
+</span><span class='line'>            self.iconView.transform = CGAffineTransformIdentity;
+</span><span class='line'>        } completion:^(BOOL finished) {
+</span><span class='line'>            self.textView.alpha = 0;
+</span><span class='line'>            self.textView.hidden = NO;
+</span><span class='line'>            [UIView animateWithDuration:0.5 animations:^{
+</span><span class='line'>                self.textView.alpha = 1;
+</span><span class='line'>            } completion:^(BOOL finished) {
+</span><span class='line'>                [self removeFromSuperview];
+</span><span class='line'>            }];
+</span><span class='line'>        }];
+</span><span class='line'>    }];
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>在程序启动appdelegate中设置</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+</span><span class='line'>    
+</span><span class='line'>    self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+</span><span class='line'>    
+</span><span class='line'>    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+</span><span class='line'>    
+</span><span class='line'>    UIViewController *vc = [storyboard instantiateInitialViewController];
+</span><span class='line'>    
+</span><span class='line'>    self.window.rootViewController = vc;
+</span><span class='line'>    
+</span><span class='line'>    [self.window makeKeyAndVisible];
+</span><span class='line'>    
+</span><span class='line'>    HYWWelcomeView *welcomeView = [HYWWelcomeView welcomeView];
+</span><span class='line'>    
+</span><span class='line'>    welcomeView.frame = [UIScreen mainScreen].bounds;
+</span><span class='line'>    
+</span><span class='line'>    [self.window addSubview:welcomeView];
+</span><span class='line'>    return YES;
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>点击加号按钮，弹出菜单。在控制器viewcontroller中的viewdidload方法中添加按钮</li>
+<li>按钮的图片和标题一看就是从服务器获取的数据,提前设计一个类专门来处理数据,并提供一个类方法快速创建模型</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (void)setUp
+</span><span class='line'>{
+</span><span class='line'>    CGFloat W = 70;
+</span><span class='line'>    CGFloat H = 100;
+</span><span class='line'>    CGFloat X = 0;
+</span><span class='line'>    CGFloat Y = 0;
+</span><span class='line'>    NSInteger totalCol = 3;
+</span><span class='line'>    CGFloat originH = 300;
+</span><span class='line'>    CGFloat margin = ([UIScreen mainScreen].bounds.size.width - totalCol * W) / (totalCol + 1);
+</span><span class='line'>    for (int i = 0; i &lt; self.items.count; i++) {
+</span><span class='line'>        HYWMenuItemButton *btn = [HYWMenuItemButton buttonWithType:UIButtonTypeCustom];
+</span><span class='line'>        NSInteger col = i % totalCol;
+</span><span class='line'>        NSInteger row = i / totalCol;
+</span><span class='line'>        X = margin + col * (margin + W);
+</span><span class='line'>        Y = margin + row * (margin + H) + originH;
+</span><span class='line'>        btn.frame = CGRectMake(X, Y , W, H);
+</span><span class='line'>        [self.view addSubview:btn];
+</span><span class='line'>        HYWMenuItem *item = self.items[i];
+</span><span class='line'>        
+</span><span class='line'>        btn.transform = CGAffineTransformMakeTranslation(0, self.view.bounds.size.height);
+</span><span class='line'>    }
+</span><span class='line'>}
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>按钮的图片和标题一看就是从服务器获取的数据,提前设计一个类专门来处理数据,并提供一个类方法快速创建模型</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>@implementation HYWMenuItem
+</span><span class='line'>
+</span><span class='line'>+ (instancetype)itemWithTitle:(NSString *)title image:(UIImage *)image
+</span><span class='line'>{
+</span><span class='line'>    HYWMenuItem *item = [[self alloc] init];
+</span><span class='line'>    item.title = title;
+</span><span class='line'>    item.image = image;
+</span><span class='line'>    return item;
+</span><span class='line'>}
+</span><span class='line'>@end</span></code></pre></td></tr></table></div></figure>
+
+
+<p>
+* 按钮也有一个模型接口,重写set方法来设置自己的图片和文字
+* 按照实际效果,图片在文字上面在layoutsubview方法中,把图片和文字的位置修改下</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (void)setItem:(HYWMenuItem *)item
+</span><span class='line'>{
+</span><span class='line'>    _item = item;
+</span><span class='line'>    [self setImage:item.image forState:UIControlStateNormal];
+</span><span class='line'>    [self setTitle:item.title forState:UIControlStateNormal];
+</span><span class='line'>}
+</span><span class='line'>// 以后如果通过代码设置子控件的位置，一般都是在layoutSubviews里面去写
+</span><span class='line'>// layoutSubviews什么时候调用，只要父控件的frame一改变就会调用layoutSubviews，重新布局子控件
+</span><span class='line'>- (void)layoutSubviews
+</span><span class='line'>{
+</span><span class='line'>    [super layoutSubviews];
+</span><span class='line'>    
+</span><span class='line'>    // UIImageView
+</span><span class='line'>    CGFloat imageX = 0;
+</span><span class='line'>    CGFloat imageY = 0;
+</span><span class='line'>    CGFloat imageW = self.bounds.size.width;
+</span><span class='line'>    CGFloat imageH = self.bounds.size.width;
+</span><span class='line'>    self.imageView.frame = CGRectMake(imageX, imageY, imageW, imageH);
+</span><span class='line'>    
+</span><span class='line'>    
+</span><span class='line'>    // UILabel
+</span><span class='line'>    CGFloat labelY = imageH;
+</span><span class='line'>    CGFloat labelH = self.bounds.size.height - labelY;
+</span><span class='line'>    self.titleLabel.frame = CGRectMake(imageX, labelY, imageW, labelH);
+</span><span class='line'>    
+</span><span class='line'>}
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>点击按钮放大，抬起放大倍数增大,并消失,添加按钮的touchdown和touchupinside事件</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>   [btn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchDown];
+</span><span class='line'>   [btn addTarget:self action:@selector(btnClick1:) forControlEvents:UIControlEventTouchUpInside];
+</span><span class='line'>
+</span><span class='line'>- (void)btnClick:(UIButton *)btn
+</span><span class='line'>{
+</span><span class='line'>    [UIView animateWithDuration:0.5 animations:^{
+</span><span class='line'>        btn.transform = CGAffineTransformMakeScale(1.2, 1.2);
+</span><span class='line'>    }];
+</span><span class='line'>}
+</span><span class='line'>- (void)btnClick1:(UIButton *)btn
+</span><span class='line'>{
+</span><span class='line'>    [UIView animateWithDuration:0.5 animations:^{
+</span><span class='line'>        btn.transform = CGAffineTransformMakeScale(2.0, 2.0);
+</span><span class='line'>        btn.alpha = 0;
+</span><span class='line'>        
+</span><span class='line'>    }];
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>图片一个一个从底下冒出来,创建按钮时先不在界面显示,搞个定时器，按顺序执行动画显示出来</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (void)viewDidLoad {
+</span><span class='line'>    [super viewDidLoad];
+</span><span class='line'>    [self setUp];
+</span><span class='line'>    self.timer = [NSTimer scheduledTimerWithTimeInterval:0.2 target:self selector:@selector(btnTransform) userInfo:nil repeats:YES];
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>- (void)btnTransform
+</span><span class='line'>{
+</span><span class='line'>    if (self.btnIndex == self.items.count) {
+</span><span class='line'>        [self.timer invalidate];
+</span><span class='line'>        return;
+</span><span class='line'>    }
+</span><span class='line'>    HYWMenuItemButton *btn = self.view.subviews[_btnIndex];
+</span><span class='line'>    [UIView animateWithDuration:1 delay:0 usingSpringWithDamping:1 initialSpringVelocity:1 options:UIViewAnimationOptionCurveLinear animations:^{
+</span><span class='line'>        btn.transform = CGAffineTransformIdentity;
+</span><span class='line'>    } completion:nil];
+</span><span class='line'>    
+</span><span class='line'>    _btnIndex++;
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013-06-25-hua-ban-shi-xian-si-lu/">画板实现思路</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2013-06-25T19:08:09+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>25</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>7:08 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>程序运行演示图
+<img src="/images/Snip20150625_8.png" alt="画板演示" /></p>
+
+<p>选中的图片可以进行旋转 平移 缩放等操作
+<img src="/images/pingmukuaizhao2015-06-25.png" alt="画板演示" /></p>
+
+<p>点击照片可以选择手机中的照片
+<img src="/images/Snip20150625_10.png" alt="画板演示" /></p>
+
+<p>大概的绘制演示
+<img src="/images/Snip20150625_11.png" alt="画板演示" /></p>
+
+<ul>
+<li>分析控件：自定义画板view,使用xib自定义工具条和下面按钮（方便屏幕适配，能迅速固定里面子控件的位置）
+
+<ul>
+<li>自动布局，四个约束确定一个控件</li>
+<li>蓝色按钮：左，右，下，高固定</li>
+<li>橘色按钮：右，下固定，宽度和高度和蓝色按钮相等。</li>
+<li>绿色按钮：右，下，宽度和高度和橘色按钮相等</li>
+<li>绘图思路：先描述路径，在渲染，需要画很多线条，最好每个线条保存到一个路径里面。</li>
+</ul>
+</li>
+</ul>
+
+
+<p><img src="/images/Snip20150626_11.png" alt="画板xib描述" /></p>
+
+<p>绘图功能：画板view中间的绘图再自定义一个具有绘图功能的view,使用pan手势进行绘图
+   * 手势开始设置画线起点：开始触摸的点
+   * 怎么设置起点？创建UIBezierPath，贝塞尔路径才能设置起点
+   * 每次移动时:手指移动到哪就画哪，addLine到移动的点
+   * setNeedDisplay,路径描述完了，就渲染到视图就好了。
+   * 只能画一条线？drawRect方法每次都会把之前的清掉，重新绘制
+   * 怎么绘制多条路径？搞个数组保存上一次的</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (void)pan:(UIPanGestureRecognizer *)pan
+</span><span class='line'>{
+</span><span class='line'>    CGPoint curP = [pan locationInView:self];
+</span><span class='line'>    if (pan.state == UIGestureRecognizerStateBegan) {
+</span><span class='line'>        self.myPath = [[HYWDrawPath alloc] init];
+</span><span class='line'>        [self.myPath moveToPoint:curP];
+</span><span class='line'>        self.myPath.lineWidth = self.lineBorder;
+</span><span class='line'>        self.myPath.pathColor = self.lineColor;
+</span><span class='line'>        [self.pathArray addObject:self.myPath];
+</span><span class='line'>    }
+</span><span class='line'>    [self.myPath addLineToPoint:curP];
+</span><span class='line'>    [self setNeedsDisplay];
+</span><span class='line'>}
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li> 设置线宽:每次滑动滑块，就改变下一次路径的宽度</li>
+<li> 监听滑块的值，把值传递给drawView,设置路径的线宽。</li>
+<li> 不能在drawRect写，会导致所有路径都是一个线宽，应该是每个路径都记录自己的线宽，而且线宽只需要设置一次，在路径一创建的时候就设置。</li>
+<li> 设置颜色：</li>
+<li> 自定义UIBezierPath，保存颜色，实现一条路径对应一个颜色</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>/**画线的粗细 */
+</span><span class='line'>@property (nonatomic, assign) NSInteger lineBorder;
+</span><span class='line'>/**画线的颜色 */
+</span><span class='line'>@property (nonatomic, strong) UIColor *lineColor;
+</span><span class='line'>/**可变数组记录画画路径 */
+</span><span class='line'>@property (nonatomic, strong) NSMutableArray *pathArray;</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>在画板view中通过控件拖线更改画板的上述属性</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>#pragma mark - 修改画笔粗细
+</span><span class='line'>- (IBAction)sliderValueChange:(UISlider *)slider {
+</span><span class='line'>    
+</span><span class='line'>    self.drawView.lineBorder = slider.value;
+</span><span class='line'>}
+</span><span class='line'>#pragma mark - 修改画笔红色颜色
+</span><span class='line'>- (IBAction)redButton:(UIButton *)btn {
+</span><span class='line'>    self.drawView.lineColor = [UIColor redColor];
+</span><span class='line'>}
+</span><span class='line'>#pragma mark - 修改画笔绿色颜色
+</span><span class='line'>- (IBAction)greenButton:(UIButton *)btn {
+</span><span class='line'>    self.drawView.lineColor = [UIColor greenColor];
+</span><span class='line'>}
+</span><span class='line'>#pragma mark - 修改画笔黄色颜色
+</span><span class='line'>- (IBAction)yellowButton:(UIButton *)btn {
+</span><span class='line'>    self.drawView.lineColor = [UIColor yellowColor];
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>辅助功能：
+* 清屏：清空所有路径数组
+* 撤销：移除最后一条路径
+* 橡皮擦:设置画笔为白色
+* 保存:
+   1> 把画板内容截屏
+   2> 把图片保存到相册 UIImageWriteToSavedPhotosAlbum
+   3> 保存相册的回调方法不能乱写，必须按照规定 image:didFinishSavingWithError:contextInfo:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>#pragma mark - 清屏
+</span><span class='line'>- (IBAction)clear
+</span><span class='line'>{
+</span><span class='line'>    [self.drawView.pathArray removeAllObjects];
+</span><span class='line'>    [self.drawView setNeedsDisplay];
+</span><span class='line'>}
+</span><span class='line'>#pragma mark - 撤销
+</span><span class='line'>- (IBAction)undo
+</span><span class='line'>{
+</span><span class='line'>    [self.drawView.pathArray removeLastObject];
+</span><span class='line'>    [self.drawView setNeedsDisplay];
+</span><span class='line'>}
+</span><span class='line'>#pragma mark - 删除
+</span><span class='line'>- (IBAction)eraser {
+</span><span class='line'>    self.drawView.lineColor = [UIColor whiteColor];
+</span><span class='line'>}
+</span><span class='line'>#pragma mark - 保存
+</span><span class='line'>- (IBAction)savePhoto {
+</span><span class='line'>    [self.drawView savephoto];
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li><p>照片选择</p>
+
+<ol>
+<li>通常都是去相册里去照片</li>
+<li>UIImagePickerController,就可以去手机相册了</li>
+<li>用Modal，没有导航控制器,不能push</li>
+<li>设置代理，获取图片</li>
+<li>把图片传递给画板View</li>
+<li>添加到路径，然后重绘。画图片也需要顺序的</li>
+<li>使用block将modal代码块赋值给画板view,让画板view监听到点击后调用</li>
+</ol>
+</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>#pragma mark - 选择照片
+</span><span class='line'>- (IBAction)pickerPhoto
+</span><span class='line'>{
+</span><span class='line'>    if (self.drawViewPickerPhoto) {
+</span><span class='line'>        self.drawViewPickerPhoto();
+</span><span class='line'>    }
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>控制器view赋值block,并实现block中的代码</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (void)viewDidLoad {
+</span><span class='line'>    [super viewDidLoad];
+</span><span class='line'>    HYWMainDrawView *drawView = [HYWMainDrawView drawView];
+</span><span class='line'>    drawView.drawViewPickerPhoto = ^{
+</span><span class='line'>        [self pickerPhoto];
+</span><span class='line'>    };
+</span><span class='line'>    [self.view addSubview:drawView];
+</span><span class='line'>    [drawView makeConstraints:^(MASConstraintMaker *make) {
+</span><span class='line'>        make.edges.equalTo(self.view).insets(UIEdgeInsetsMake(20, 0, 0, 0));
+</span><span class='line'>    }];
+</span><span class='line'>    self.drawView = drawView;
+</span><span class='line'>}
+</span><span class='line'>#pragma mark - 弹出选择照片控制器
+</span><span class='line'>- (void)pickerPhoto {
+</span><span class='line'>    UIImagePickerController *pickerVc = [[UIImagePickerController alloc] init];
+</span><span class='line'>    pickerVc.delegate = self;
+</span><span class='line'>    pickerVc.sourceType = UIImagePickerControllerSourceTypeSavedPhotosAlbum;
+</span><span class='line'>    [self presentViewController:pickerVc animated:YES completion:nil];
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>照片处理</li>
+</ul>
+
+
+<p>1.搞一个和画板一样的透明handleView，里面搞个UIImageView来显示我们从照片库选择的图片，然后对UIImageView进行旋转，缩放等操作</p>
+
+<p>2.UImageView的约束直接充满整个handleView</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (UIImageView *)imageV
+</span><span class='line'>{
+</span><span class='line'>    if (_imageV == nil) {
+</span><span class='line'>        UIImageView *imageV = [[UIImageView alloc] init];
+</span><span class='line'>        imageV.userInteractionEnabled = YES;
+</span><span class='line'>        _imageV = imageV;
+</span><span class='line'>        [self setUp];
+</span><span class='line'>        [self addSubview:imageV];
+</span><span class='line'>        [imageV makeConstraints:^(MASConstraintMaker *make) {
+</span><span class='line'>            make.edges.equalTo(self).insets(UIEdgeInsetsMake(0, 0, 0, 0));
+</span><span class='line'>        }];
+</span><span class='line'>    }
+</span><span class='line'>    return _imageV;
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>#pragma mark - 添加手势
+</span><span class='line'>- (void)setUp
+</span><span class='line'>{
+</span><span class='line'>    UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(pan:)];
+</span><span class='line'>    [_imageV addGestureRecognizer:pan];
+</span><span class='line'>    
+</span><span class='line'>    UIRotationGestureRecognizer *rotate = [[UIRotationGestureRecognizer alloc] initWithTarget:self action:@selector(rotate:)];
+</span><span class='line'>    rotate.delegate = self;
+</span><span class='line'>    [_imageV addGestureRecognizer:rotate];
+</span><span class='line'>    
+</span><span class='line'>    UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinch:)];
+</span><span class='line'>    [_imageV addGestureRecognizer:pinch];
+</span><span class='line'>    
+</span><span class='line'>    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];
+</span><span class='line'>    longPress.minimumPressDuration = 1.0;
+</span><span class='line'>    [_imageV addGestureRecognizer:longPress];
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>- (void)pan:(UIPanGestureRecognizer *)pan
+</span><span class='line'>{
+</span><span class='line'>    CGPoint transP = [pan translationInView:self.imageV];
+</span><span class='line'>    self.imageV.transform = CGAffineTransformTranslate(self.imageV.transform, transP.x, transP.y);
+</span><span class='line'>    [pan setTranslation:CGPointZero inView:self.imageV];
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>- (void)rotate:(UIRotationGestureRecognizer *)rotate
+</span><span class='line'>{
+</span><span class='line'>    self.imageV.transform = CGAffineTransformRotate(self.imageV.transform, rotate.rotation);
+</span><span class='line'>    rotate.rotation = 0;
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>- (void)pinch:(UIPinchGestureRecognizer *)pinch
+</span><span class='line'>{
+</span><span class='line'>    self.imageV.transform = CGAffineTransformScale(self.imageV.transform, pinch.scale, pinch.scale);
+</span><span class='line'>    pinch.scale = 1;
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>3.设置imageView的多重手势</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>#pragma mark - gesture代理方法
+</span><span class='line'>- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
+</span><span class='line'>{
+</span><span class='line'>    return YES;
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>   4.长按操作：在长按结束的时候，做操作
+       - 默认高亮状态，先变浅在恢复，设置alpha
+       - 事先在控制器里写好一个block代码块,把handle的block参数传给drawview
+       - 动画结束后,把生产的iamge当做参数传入,并执行block
+       - 需要移除父视图，使命完成了，而且不移除，不能绘制东西，永远添加到drawView上面</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (void)longPress:(UILongPressGestureRecognizer *)longPress
+</span><span class='line'>{
+</span><span class='line'>    if (longPress.state == UIGestureRecognizerStateBegan) {
+</span><span class='line'>        [UIView animateWithDuration:0.25 animations:^{
+</span><span class='line'>            self.imageV.alpha = 0;
+</span><span class='line'>        } completion:^(BOOL finished) {
+</span><span class='line'>            [UIView animateWithDuration:0.25 animations:^{
+</span><span class='line'>                self.imageV.alpha = 1;
+</span><span class='line'>            } completion:^(BOOL finished){
+</span><span class='line'>                UIGraphicsBeginImageContext(self.bounds.size);
+</span><span class='line'>                CGContextRef ctx = UIGraphicsGetCurrentContext();
+</span><span class='line'>                [self.layer renderInContext:ctx];
+</span><span class='line'>                UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+</span><span class='line'>                UIGraphicsEndImageContext();
+</span><span class='line'>                if (self.handleCompletionBlock) {
+</span><span class='line'>                    self.handleCompletionBlock(newImage);
+</span><span class='line'>                }
+</span><span class='line'>                [self removeFromSuperview];
+</span><span class='line'>            }];
+</span><span class='line'>        }];
+</span><span class='line'>    }
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013-06-25-ping-mu-jie-tu-shi-xian-si-lu/">屏幕截图实现思路</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2013-06-25T10:27:58+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>25</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>10:27 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/Snip20150625_6.png" alt="屏幕截图" />
+<img src="/images/2015-06-25.png" alt="屏幕截图" />
+<img src="/images/Snip20150625_7.png" alt="屏幕截图" /></p>
+
+<ul>
+<li>屏幕截图:把屏幕的内容截屏生成一张新的图片</li>
+<li>把layer渲染到位图上下文</li>
+<li>注意：图层只能用渲染，图片和文字可以用draw</li>
+<li>渲染在哪?新的图片</li>
+<li>开启图片上下文,和视图一样的尺寸</li>
+<li>写入桌面</li>
+</ul>
+
+
+<h3>具体思路:封装一个自定义的截图器,继承自UIImageView,传入一张图片就可以进行截图</h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>+ (instancetype)clipView
+</span><span class='line'>{
+</span><span class='line'>    return [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass(self) owner:nil options:nil] lastObject];
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>- (void)awakeFromNib
+</span><span class='line'>{
+</span><span class='line'>    [self setUp];
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>- (instancetype)initWithFrame:(CGRect)frame
+</span><span class='line'>{
+</span><span class='line'>    if (self = [super initWithFrame:frame]) {
+</span><span class='line'>        [self setUp];
+</span><span class='line'>    }
+</span><span class='line'>    return self;
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>在setUp方法进行初始化,给自定义封装的截图器,添加pan手势</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (void)setUp
+</span><span class='line'>{
+</span><span class='line'>    
+</span><span class='line'>    UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(pan:)];
+</span><span class='line'>    [self addGestureRecognizer:pan];
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>主要功能就在pan方法中实现,在这之前先懒加载一个随手势改变大小的透明黑色view</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (UIView *)clipView
+</span><span class='line'>{
+</span><span class='line'>    if (_clipView == nil) {
+</span><span class='line'>        UIView *view = [[UIView alloc] init];
+</span><span class='line'>        [self addSubview:view];
+</span><span class='line'>        _clipView = view;
+</span><span class='line'>    }
+</span><span class='line'>    return _clipView;
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>跟据pan手势状态实时改变clipView的frame</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (void)pan:(UIPanGestureRecognizer *)pan
+</span><span class='line'>{
+</span><span class='line'>    if (pan.state == UIGestureRecognizerStateBegan) {
+</span><span class='line'>        self.startP = [pan locationInView:self];
+</span><span class='line'>    }else if (pan.state == UIGestureRecognizerStateChanged){
+</span><span class='line'>        CGPoint endP = [pan locationInView:self];
+</span><span class='line'>        CGFloat rectX = self.startP.x;
+</span><span class='line'>        CGFloat rectY = self.startP.y;
+</span><span class='line'>        CGFloat rectW = endP.x - rectX;
+</span><span class='line'>        CGFloat rectH = endP.y - rectY;
+</span><span class='line'>        CGRect clipRect = CGRectMake(rectX, rectY, rectW, rectH);
+</span><span class='line'>        self.clipView.frame = clipRect;
+</span><span class='line'>        self.clipView.backgroundColor = [UIColor blackColor];
+</span><span class='line'>        self.clipView.alpha = 0.5;
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li><p>当pan手势停止时开始开启上下文进行渲染画图</p></li>
+<li><p>渲染在哪?新的图片</p></li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>}else if (pan.state == UIGestureRecognizerStateEnded){
+</span><span class='line'>    self.clipView.alpha = 0;
+</span><span class='line'>    
+</span><span class='line'>  // 开启图片上下文,和视图一样的尺寸
+</span><span class='line'>    UIGraphicsBeginImageContextWithOptions(self.bounds.size, NO, 0);
+</span><span class='line'>    UIBezierPath *path = [UIBezierPath bezierPathWithRect:self.clipView.frame];
+</span><span class='line'>    [path addClip];
+</span><span class='line'>    CGContextRef ctx = UIGraphicsGetCurrentContext();
+</span><span class='line'>    
+</span><span class='line'>  // 把layer渲染到位图上下文
+</span><span class='line'>  // 注意：图层只能用渲染，图片和文字可以用draw
+</span><span class='line'>    [self.layer renderInContext:ctx];
+</span><span class='line'>    
+</span><span class='line'>    
+</span><span class='line'>  // 把屏幕的内容截屏生成一张新的图片
+</span><span class='line'>    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+</span><span class='line'>    self.image = newImage;
+</span><span class='line'>    NSData *data = UIImagePNGRepresentation(newImage);
+</span><span class='line'>    
+</span><span class='line'>    
+</span><span class='line'>  // 写入桌面
+</span><span class='line'>    [data writeToFile:@"/Users/mac/Desktop/image.png" atomically:YES];
+</span><span class='line'>    UIGraphicsEndImageContext();
+</span><span class='line'>    [self.clipView removeFromSuperview];
+</span><span class='line'>    self.clipView = nil;
+</span><span class='line'>}
+</span><span class='line'>}
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013-06-25-yuan-xing-tu-pian-cai-jian/">圆形图片裁剪</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2013-06-25T10:18:49+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>25</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>10:18 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/Snip20150625_4.png" alt="图片裁剪" />
+<img src="/images/Snip20150625_3.png" alt="图片裁剪" /></p>
+
+<h3>分析思路</h3>
+
+<ul>
+<li>先画一个大圆，在设置裁剪区域，把图片画上去，超出裁剪区域的自动裁剪掉。</li>
+<li>加载旧图片，根据旧图片，获取上下文尺寸。</li>
+<li>确定圆环宽度 borderW</li>
+<li>上下文的尺寸 = 新图片的尺寸(就图片+圆环宽度)</li>
+<li>确定新的上下文尺寸: newImageW : oldImageW + 2 * borderW  newImageH : oldImageH + 2 * borderW，</li>
+<li>绘制大圆：
+1.获取上下文 2.添加路径到上下文 3.设置大圆的颜色 = 圆环的颜色 4.渲染</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>+ (UIImage *)imageWithClipImage:(UIImage *)image borderWidth:(CGFloat)border borderColor:(UIColor *)color{
+</span><span class='line'>    CGFloat bigSizeW = image.size.width + 2 * border;
+</span><span class='line'>    CGFloat bigSizeH = image.size.height + 2 * border;
+</span><span class='line'>    CGSize bigSize = CGSizeMake(bigSizeW, bigSizeH);
+</span><span class='line'>    UIGraphicsBeginImageContextWithOptions(bigSize, NO, 0);
+</span><span class='line'>    UIBezierPath *path = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(0, 0, bigSizeW, bigSizeH)];
+</span><span class='line'>    [color set];
+</span><span class='line'>    [path fill];</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>设置裁剪区域,和图片尺寸一样大，只不过，x,y不一样，x=borderW,y=borderW.</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>UIBezierPath *innerPath = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(border, border, image.size.width, image.size.height)];
+</span><span class='line'>[innerPath addClip];</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>绘制旧图片</li>
+<li>获取新图片</li>
+<li>关闭上下文</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>CGPoint ctxPoint = CGPointMake(border, border);
+</span><span class='line'>[image drawAtPoint:ctxPoint];
+</span><span class='line'>UIImage *clipImage = UIGraphicsGetImageFromCurrentImageContext();
+</span><span class='line'>UIGraphicsEndImageContext();
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>这样一个图片裁剪的类方法就封装好了.在控制器中直接调用</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (void)viewDidLoad {
+</span><span class='line'>    [super viewDidLoad];
+</span><span class='line'>    UIImage *image = [UIImage imageNamed:@"阿狸头像"];
+</span><span class='line'>    UIImage *clipImage = [UIImage imageWithClipImage:image borderWidth:5 borderColor:HYWRandomColor];
+</span><span class='line'>    UIImageView *imageview = [[UIImageView alloc] initWithImage:clipImage];
+</span><span class='line'>    imageview.center = self.view.center;
+</span><span class='line'>    [self.view addSubview:imageview];
+</span><span class='line'>    self.view.backgroundColor = HYWRandomColor;
+</span><span class='line'>}
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013-06-25-tu-pian-shui-yin-xiao-guo/">图片水印效果</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2013-06-25T09:01:14+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>25</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>9:01 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/Snip20150625_1.png" alt="水印效果" />
+<img src="/images/Snip20150625_2.png" alt="水印效果" /></p>
+
+<h3>水印PPT简介</h3>
+
+<ul>
+<li>图片水印作用：防止他人盗取图片，加一些Logo，生成一张新的图片。</li>
+<li>怎么生成新的图片?和绘图一样的，需要拿到上下文做事情，这里也需要拿到上下文，生成一个新的图片。</li>
+<li>什么上下文？位图上下文，在这个上下文画东西，就能输出到新的图片上。</li>
+<li>怎么获取？之前用的都是图层上下文，系统会自动创建，但是我们位图上下文，需要手动创建</li>
+<li>总结：只要不和view有关系的上下文，都需要我们手动创建。</li>
+<li>在哪获取图像上下文，viewDidLoad, 不需要拿到系统创建的图层上下文，没必要在drawRect方法里写,直接viewDidLoad就行了。</li>
+<li>怎么创建图像上下文了？之前说过跟上下文有关的以什么开头，UIGraphicsBeginImageContextWithOptions:创建一个位图上下文,而且这种方法得到的图片最清晰。</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (void)viewDidLoad {
+</span><span class='line'>[super viewDidLoad];
+</span><span class='line'>CGSize size = CGSizeMake(200, 300);
+</span><span class='line'>UIGraphicsBeginImageContextWithOptions(size, NO, 0);</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li><p>解释参数（size:新图片尺寸 opaque: YES:不透明 NO:透明 scale:0.0 不伸缩）</p></li>
+<li><p>绘制内容(图片，文字)</p></li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>UIImage *image = [UIImage imageNamed:@"小黄人"];
+</span><span class='line'>[image drawInRect:CGRectMake(0, 0, 200, 300)];
+</span><span class='line'>
+</span><span class='line'>NSString *str = @"贺彦文";
+</span><span class='line'>NSMutableDictionary *attr = [NSMutableDictionary dictionary];
+</span><span class='line'>attr[NSForegroundColorAttributeName] = [UIColor whiteColor];
+</span><span class='line'>attr[NSFontAttributeName] = [UIFont systemFontOfSize:25];
+</span><span class='line'>attr[NSStrokeWidthAttributeName] = @8;
+</span><span class='line'>attr[NSKernAttributeName] = @5;
+</span><span class='line'>[str drawAtPoint:CGPointMake(80, 250) withAttributes:attr];
+</span><span class='line'>    </span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>获取图片：把位图上下文的内容生成一个图片给你。</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>关闭上下文，不关闭一直占用着内存。</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>UIGraphicsEndImageContext();</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>显示UIImageView上</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>UIImageView *imageView = [[UIImageView alloc] initWithImage:newImage];
+</span><span class='line'>    [self.view addSubview:imageView];
+</span><span class='line'>    imageView.center = self.view.center;</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013-06-24-tu-pian-zhe-die-xiao-guo/">图片折叠效果</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2013-06-24T10:24:41+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>24</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>10:24 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/Snip20150624_2.png" alt="折叠图片" />
+<img src="/images/Snip20150624_3.png" alt="折叠图片" /></p>
+
+<ul>
+<li>一张图片必须要通过两个控件展示，旋转的时候，只旋转上部分控件</li>
+<li>如何让一张完整的图片通过两个控件显示</li>
+<li>通过layer控制图片的显示内容</li>
+<li>如果快速把两个控件拼接成一个完整图片</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (void)viewDidLoad {
+</span><span class='line'>    [super viewDidLoad];
+</span><span class='line'>    // Do any additional setup after loading the view, typically from a nib.
+</span><span class='line'>    // 通过设置contentsRect可以设置图片显示的尺寸，取值0~1
+</span><span class='line'>    _topView.layer.contentsRect = CGRectMake(0, 0, 1, 0.5);
+</span><span class='line'>    _topView.layer.anchorPoint = CGPointMake(0.5, 1);
+</span><span class='line'>    
+</span><span class='line'>    _bottomView.layer.contentsRect = CGRectMake(0, 0.5, 1, 0.5);
+</span><span class='line'>    _bottomView.layer.anchorPoint = CGPointMake(0.5, 0);
+</span><span class='line'>    
+</span><span class='line'>    // 添加手势
+</span><span class='line'>    UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(pan:)];
+</span><span class='line'>    
+</span><span class='line'>    [_dragView addGestureRecognizer:pan];
+</span><span class='line'>    
+</span><span class='line'>    // 渐变图层
+</span><span class='line'>    CAGradientLayer *gradientL = [CAGradientLayer layer];
+</span><span class='line'>    
+</span><span class='line'>    // 注意图层需要设置尺寸
+</span><span class='line'>    gradientL.frame = _bottomView.bounds;
+</span><span class='line'>
+</span><span class='line'>    gradientL.opacity = 0;
+</span><span class='line'>    gradientL.colors = @[(id)[UIColor clearColor].CGColor,(id)[UIColor blackColor].CGColor];
+</span><span class='line'>    _gradientL = gradientL;
+</span><span class='line'>    // 设置渐变颜色
+</span><span class='line'>//    gradientL.colors = @[(id)[UIColor redColor].CGColor,(id)[UIColor greenColor].CGColor,(id)[UIColor yellowColor].CGColor];
+</span><span class='line'>    
+</span><span class='line'>    // 设置渐变定位点
+</span><span class='line'>//    gradientL.locations = @[@0.1,@0.4,@0.5];
+</span><span class='line'>    
+</span><span class='line'>    // 设置渐变开始点，取值0~1
+</span><span class='line'>//    gradientL.startPoint = CGPointMake(0, 1);
+</span><span class='line'>    
+</span><span class='line'>    [_bottomView.layer addSublayer:gradientL];
+</span><span class='line'>    
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>拖动的时候旋转上部分内容，200 M_PI</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (void)pan:(UIPanGestureRecognizer *)pan
+</span><span class='line'>{
+</span><span class='line'>    // 获取偏移量
+</span><span class='line'>   CGPoint transP = [pan translationInView:_dragView];
+</span><span class='line'>    
+</span><span class='line'>    // 旋转角度,往下逆时针旋转
+</span><span class='line'>    CGFloat angle = -transP.y / 200.0 * M_PI;
+</span><span class='line'>    
+</span><span class='line'>    CATransform3D transfrom = CATransform3DIdentity;
+</span><span class='line'>    
+</span><span class='line'>    
+</span><span class='line'>    // 增加旋转的立体感，近大远小,d：距离图层的距离
+</span><span class='line'>    transfrom.m34 = -1 / 500.0;
+</span><span class='line'>    
+</span><span class='line'>    transfrom = CATransform3DRotate(transfrom, angle, 1, 0, 0);
+</span><span class='line'>    
+</span><span class='line'>    _topView.layer.transform = transfrom;
+</span><span class='line'>    
+</span><span class='line'>    // 设置阴影效果
+</span><span class='line'>    _gradientL.opacity = transP.y * 1 / 200.0;
+</span><span class='line'>    
+</span><span class='line'>    if (pan.state == UIGestureRecognizerStateEnded) { // 反弹
+</span><span class='line'>        
+</span><span class='line'>        // 弹簧效果的动画
+</span><span class='line'>        // SpringWithDamping:弹性系数,越小，弹簧效果越明显
+</span><span class='line'>        [UIView animateWithDuration:0.6 delay:0 usingSpringWithDamping:0.2 initialSpringVelocity:10 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+</span><span class='line'>            
+</span><span class='line'>            _topView.layer.transform = CATransform3DIdentity;
+</span><span class='line'>            
+</span><span class='line'>        } completion:^(BOOL finished) {
+</span><span class='line'>            
+</span><span class='line'>        }];
+</span><span class='line'>    }
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013-06-24-he-xin-dong-hua/">旋转转盘控件封装</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2013-06-24T09:24:05+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>24</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>9:24 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/Snip20150624_1.png" alt="核心动画展示" /></p>
+
+<ul>
+<li>根据素材分析控件(2个UIImgeView,1个按钮)</li>
+<li>自定义WheelView(处理转盘功能，封装成一个自定义的控件,以后其他项目直接拷贝就好了)</li>
+<li>xib描述(界面固定，按钮有两种状态的图片)</li>
+<li>添加按钮，父控件是中间的那个UIImgeView,只有他需要旋转。</li>
+<li>在awakeFormNib添加，initWithCoder还没连线。</li>
+<li>并且也一并在- (instancetype)initWithFrame:(CGRect)frame方法中设置</li>
+<li>把设置子控件的代码抽出为一个setUp的方法</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>+ (instancetype)wheelView
+</span><span class='line'>{
+</span><span class='line'>    return [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass(self) owner:nil options:nil] lastObject];
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>- (void)awakeFromNib
+</span><span class='line'>{
+</span><span class='line'>    [self setUp];
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>- (instancetype)initWithFrame:(CGRect)frame
+</span><span class='line'>{
+</span><span class='line'>    if (self = [super initWithFrame:frame]) {
+</span><span class='line'>        [self setUp];
+</span><span class='line'>    }
+</span><span class='line'>    return self;
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>- (void)setUp
+</span><span class='line'>{
+</span><span class='line'>    self.centerView.userInteractionEnabled = YES;
+</span><span class='line'>    UIImage *bigImage = [UIImage imageNamed:@"LuckyAstrology"];
+</span><span class='line'>    UIImage *bigSelectedImage = [UIImage imageNamed:@"LuckyAstrologyPressed"];
+</span><span class='line'>    // 裁减区域是以像素为基准
+</span><span class='line'>    // 获取当前使用的图片像素和点的比例
+</span><span class='line'>    CGFloat scale = [UIScreen mainScreen].scale;
+</span><span class='line'>    CGFloat imageW = bigImage.size.width / 12 * scale;
+</span><span class='line'>    CGFloat imageH = bigImage.size.height * scale;
+</span><span class='line'>    for (int i = 0;i &lt; 12 ; i++) {
+</span><span class='line'>        HYWWheelButton *btn = [HYWWheelButton buttonWithType:UIButtonTypeCustom];
+</span><span class='line'>        [btn setBackgroundImage:[UIImage imageNamed:@"LuckyRototeSelected"] forState:UIControlStateSelected];
+</span><span class='line'>        // 按钮的旋转角度
+</span><span class='line'>        CGFloat radion = (30 * i) / 180.0 * M_PI;
+</span><span class='line'>        // 设置按钮的图片
+</span><span class='line'>        CGImageRef bigImageRef = bigImage.CGImage;
+</span><span class='line'>        CGImageRef imgR = CGImageCreateWithImageInRect(bigImageRef, CGRectMake(i * imageW, 0, imageW, imageH));
+</span><span class='line'>        [btn setImage:[UIImage imageWithCGImage:imgR] forState:UIControlStateNormal];
+</span><span class='line'>        // 设置选中状态下图片
+</span><span class='line'>        CGImageRef bigSelectedImageRef = bigSelectedImage.CGImage;
+</span><span class='line'>        CGImageRef imgSelectedR = CGImageCreateWithImageInRect(bigSelectedImageRef, CGRectMake(i * imageW, 0, imageW, imageH));
+</span><span class='line'>        [btn setImage:[UIImage imageWithCGImage:imgSelectedR] forState:UIControlStateSelected];
+</span><span class='line'>        btn.transform = CGAffineTransformMakeRotation(radion);
+</span><span class='line'>        [self.centerView addSubview:btn];
+</span><span class='line'>        [btn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
+</span><span class='line'>        if (i == 0) {
+</span><span class='line'>            [self btnClick:btn];
+</span><span class='line'>        }
+</span><span class='line'>    }
+</span><span class='line'>}
+</span><span class='line'>- (void)layoutSubviews
+</span><span class='line'>{
+</span><span class='line'>    [super layoutSubviews];
+</span><span class='line'>    CGFloat btnW = 68;
+</span><span class='line'>    CGFloat btnH = 143;
+</span><span class='line'>    CGFloat wh = self.centerView.bounds.size.width;
+</span><span class='line'>    for (UIButton *btn in self.centerView.subviews) {
+</span><span class='line'>        btn.layer.anchorPoint = CGPointMake(0.5, 1);
+</span><span class='line'>        btn.layer.position = CGPointMake(wh * 0.5, wh * 0.5);
+</span><span class='line'>        btn.bounds = CGRectMake(0, 0, btnW, btnH);
+</span><span class='line'>    }
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>- (void)btnClick:(HYWWheelButton *)btn
+</span><span class='line'>{
+</span><span class='line'>    self.selectedBtn.selected = NO;
+</span><span class='line'>    btn.selected = YES;
+</span><span class='line'>    self.selectedBtn = btn;
+</span><span class='line'>}
+</span><span class='line'>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>旋转转盘:不能用核心动画</li>
+<li>搞个定时器，每隔一段时间旋转一点角度，一秒旋转45°，每次旋转45/60，因为一秒调用60次，那个方法</li>
+<li>给外界提供开始旋转和停止旋转两个方法</li>
+<li>监听开始旋转按钮
+  1> 不需要和用户交互，用核心动画
+  2> 快速旋转的时候，暂停定时器，不需要同时旋转，会有问题</li>
+<li>旋转完之后，需要处理的业务逻辑
+  1> 允许用户交互
+  2> 选中按钮回到最上面中间位置，只要旋转按钮才知道自己旋转了多少，反向旋转这么多角度就好了，用make，把之前的旋转全部清空。
+  3> 2秒后自动旋转</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (CADisplayLink *)link
+</span><span class='line'>{
+</span><span class='line'>    if (_link == nil) {
+</span><span class='line'>        
+</span><span class='line'>        _link = [CADisplayLink displayLinkWithTarget:self selector:@selector(angleChange)];
+</span><span class='line'>        
+</span><span class='line'>        [_link addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSDefaultRunLoopMode];
+</span><span class='line'>    }
+</span><span class='line'>    
+</span><span class='line'>    return _link;
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>- (void)start
+</span><span class='line'>{
+</span><span class='line'>    self.link.paused = NO;
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>// 1.搞个定时器，每隔一段时间就旋转一定的角度，1秒旋转45°
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>- (void)pause
+</span><span class='line'>{
+</span><span class='line'>    self.link.paused = YES;
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>- (void)angleChange
+</span><span class='line'>{
+</span><span class='line'>    // 每一次调用旋转多少 45 \ 60.0
+</span><span class='line'>    CGFloat angle = (45 / 60.0) * M_PI / 180.0;
+</span><span class='line'>    
+</span><span class='line'>    _centerView.transform = CGAffineTransformRotate(_centerView.transform, angle);
+</span><span class='line'>    
+</span><span class='line'>}
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/posts/6">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/posts/4">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015-09-15-ji-shi-tong-xun-ji-zhu/">即时通讯技术</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015-05-29-ioslan-ya-4-dot-0kai-fa/">iOS蓝牙4.0开发</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015-05-11-nsscannerchu-li-fu-wu-qi-shu-ju-yi-chang-,-shu-ju-chu-li/">NSScanner处理服务器数据异常、数据处理</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015-04-07-gcdde-di-ceng-yi-ji-gcdde-miao-yong/">GCD的底层以及GCD的妙用</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015-03-29-html5chang-yong-kuang-jia/">未来的技术 - HTML5</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015-02-27-shen-ru-yan-jiu-cadisplaylinkhe-nstimer/">深入研究CADisplayLink和NSTimer</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015-02-19-er-wei-ma-zhi-zuo/">二维码制作</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-30-shu-ju-jie-xi-mo-xing-she-zhi-de-ji-qiao/">数据解析模型设置的技巧</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-10-popmenucontrollerzhu-yi-shi-xiang/">popMenuController注意事项</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-08-zi-ding-yi-kong-jian-feng-zhuang-de-zhu-yi-shi-xiang/">自定义控件封装的注意事项</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-07-textfieldhe-textviewde-qu-bie/">Textfield和TextView的区别</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-06-appearancetong-%5B%3F%5D-she-zhi-zhu-ti-de-wen-ti/">Appearance统一设置主题的问题</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-05-webviewjia-zai-jin-du-tiao-de-bu-kai-fang-he-chang-jian-jie-jue-fang-an/">webView加载进度条的不开放和常见解决方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-05-bai-si-bu-de-jie-zong-jie-8yue-5ri/">Modal出来的控制器再modal一个控制器的问题</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-04-layer-dot-cornerradiusxing-neng-wen-ti-ji-jie-jue-fang-an/">layer.cornerRadius性能问题及解决方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-03-bai-si-bu-de-jie-xiang-mu-geng-duo-zong-jie/">让一个普通控件弹出menuController的步骤</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-02-bai-si-bu-de-jie-xiang-mu-zong-jie/">多组表格网络请求加载失败可能引发的小问题</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-07-30-bai-si-bu-de-jie-xiang-mu-zong-jie/">Facebook第三方框架pop动画</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-07-29-bai-si-bu-de-jie-xiang-mu-zong-jie/">Quartz实现image缩放的技巧</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-07-26-gao-fang-bai-si-bu-de-jie-zong-jie/">Textfield魔法效果实现</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Heew -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,93 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
 
-<!DOCTYPE html>
-<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
-<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
-<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
-<head>
-  <meta charset="utf-8">
-  <title>Heew’s iOS Blog</title>
-  <meta name="author" content="Heew">
-
-  
-  <meta name="description" content="XMPP的现状 XMPP是用来做即时通讯的一套即时通讯技术－IM 常见的应用如:QQ，微信，陌陌，比邻 目前国内的即时通讯领域，有向"垂直"发展的趋势 未来移动互联网应用，即时通讯有潜力的可发展的市场相对比较小，比较聚焦，聚集在某一个领域。 例如，淘宝－阿里旺旺, &hellip;">
-  
-
-  <!-- http://t.co/dKP3o1e -->
-  <meta name="HandheldFriendly" content="True">
-  <meta name="MobileOptimized" content="320">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  
-  <link rel="canonical" href="http://heeween.github.io/">
-  <link href="/favicon.png" rel="icon">
-  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
-  <link href="/atom.xml" rel="alternate" title="Heew’s iOS Blog" type="application/atom+xml">
-  <script src="/javascripts/modernizr-2.0.js"></script>
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
-  <script src="/javascripts/octopress.js" type="text/javascript"></script>
-  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-
-  
-
-</head>
-
-<body   >
-  <header role="banner"><hgroup>
-  <h1><a href="/">Heew’s iOS Blog</a></h1>
-  
-    <h2>A personal blog accounting problems for iOS.</h2>
-  
-</hgroup>
-
-</header>
-  <nav role="navigation"><ul class="subscription" data-subscription="rss">
-  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
-  
-</ul>
-  
-<form action="https://www.baidu.com" method="get">
-  <fieldset role="search">
-    <input type="hidden" name="sitesearch" value="heeween.github.io">
-    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
-  </fieldset>
-</form>
-  
-<ul class="main-navigation">
-  <li><a href="/">Blog</a></li>
-  <li><a href="/blog/archives">Archives</a></li>
-</ul>
-
-</nav>
-  <div id="main">
-    <div id="content">
-      <div class="blog-index">
-  
-  
-  
-    <article>
-      
-  <header>
+  <title><![CDATA[Heew’s iOS Blog]]></title>
+  <link href="http://heeween.github.io/atom.xml" rel="self"/>
+  <link href="http://heeween.github.io/"/>
+  <updated>2015-09-01T22:14:05+08:00</updated>
+  <id>http://heeween.github.io/</id>
+  <author>
+    <name><![CDATA[Heew]]></name>
     
-      <h1 class="entry-title"><a href="/blog/2015-09-15-ji-shi-tong-xun-ji-zhu/">即时通讯技术</a></h1>
-    
-    
-      <p class="meta">
-        
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
 
-
-
-
-<time class='entry-date' datetime='2015-09-15T15:33:41+08:00'><span class='date'><span class='date-month'>Sep</span> <span class='date-day'>15</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>3:33 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>XMPP的现状</h3>
+  
+  <entry>
+    <title type="html"><![CDATA[即时通讯技术]]></title>
+    <link href="http://heeween.github.io/blog/2015-09-15-ji-shi-tong-xun-ji-zhu/"/>
+    <updated>2015-09-15T15:33:41+08:00</updated>
+    <id>http://heeween.github.io/blog/ji-shi-tong-xun-ji-zhu</id>
+    <content type="html"><![CDATA[<h3>XMPP的现状</h3>
 
 <p>XMPP是用来做即时通讯的一套即时通讯技术－IM</p>
 
@@ -280,35 +211,15 @@ $ sudo apachectl -k start</p>
 
 
 <p>客户端软件是开发XMPP应用时必备的工具！</p>
-</div>
+]]></content>
+  </entry>
   
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015-05-29-ioslan-ya-4-dot-0kai-fa/">iOS蓝牙4.0开发</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-05-29T13:19:08+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>29</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>1:19 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h4>小引</h4>
+  <entry>
+    <title type="html"><![CDATA[iOS蓝牙4.0开发]]></title>
+    <link href="http://heeween.github.io/blog/2015-05-29-ioslan-ya-4-dot-0kai-fa/"/>
+    <updated>2015-05-29T13:19:08+08:00</updated>
+    <id>http://heeween.github.io/blog/ioslan-ya-4-dot-0kai-fa</id>
+    <content type="html"><![CDATA[<h4>小引</h4>
 
 <p>随着穿戴设备和智能家居的热情不断，app蓝牙的开发也很火热，基于iOS蓝牙的开发资料有不少，但是最最值得学习的必然是apple自家的文档啦，我之前的项目基于蓝牙4.0，开发过程中用到Core Bluetooth框架，算是我学习的笔记吧！涉及到几个部分，我打算分开把他们整理出来，本篇文章通过对Core Bluetooth Programming Guide的翻译，为大家介绍iOS蓝牙4.0编程的一些术语和概念，后续文章将会简单介绍下代码的流程。本人实力有限，了解的深度不是很广，还请各位看官轻点拍砖！</p>
 
@@ -323,7 +234,7 @@ $ sudo apachectl -k start</p>
 <p>Central 和 Peripheral 在蓝牙交互中的角色
 所有涉及蓝牙低功耗的交互中有两个主要的角色：中心Central和外围设备Perpheral。根据一些传统的客户端-服务端结构，Peripheral通常具有其他设备所需要的数据，而Central通常通过使用Perpheral的信息来实现一些特定的功能。如下图所示，例如，一个心率监听器可能含有一些有用的信息，你的 Mac/iOS app 可能需要以用户友好的方式显示用户的心率。</p>
 
-<p><img src="/images/figure1-1.png" alt="" /></p>
+<p><img src="http://heeween.github.io/images/figure1-1.png" alt="" /></p>
 
 <h4>Central 发现并连接广播中的 Peripheral</h4>
 
@@ -331,7 +242,7 @@ $ sudo apachectl -k start</p>
 
 <p>从另一方面说，Central可以扫描和监听任何对广播内容感兴趣的Peripheral。如下图，Central可以请求连接任何已对外广播内容的Peripheral。</p>
 
-<p><img src="/images/figure1-2.png" alt="" /></p>
+<p><img src="http://heeween.github.io/images/figure1-2.png" alt="" /></p>
 
 <h4>数据在 Peripheral 中如何构成</h4>
 
@@ -341,7 +252,7 @@ $ sudo apachectl -k start</p>
 
 <p>而Service本身由Characteristic或者其他被包含的Service所组成。Characteristic提供了更多有关Peripheral的Service中的详细内容。例如，刚才描述的心率service中可以包含一个用来描述该设备的心率传感器所记录身体位置的characteristic或者包含发送测量心率数据的Characteristic。如下图，表示了一个心率监听器可能包含的Service和Characteristic。</p>
 
-<p><img src="/images/figure1-3.png" alt="" /></p>
+<p><img src="http://heeween.github.io/images/figure1-3.png" alt="" /></p>
 
 <h4>Central 在 Peripheral 上的数据探索及交互</h4>
 
@@ -361,13 +272,13 @@ $ sudo apachectl -k start</p>
 
 <p>在Central端，本地Central设备表示为CBCentralManager。这些对象用来管理发现或连接远程Peripheral设备(表示为CBPeripheral)，包括扫描，发现和连接广播中的Peripheral。如下图所示：</p>
 
-<p><img src="/images/figure1-4.png" alt="" /></p>
+<p><img src="http://heeween.github.io/images/figure1-4.png" alt="" /></p>
 
 <h4>远程 Peripheral 数据表示为 CBService 和CBCharacteristic</h4>
 
 <p>当你与远程Peripheral(表示为CBPeripheral)进行数据交互时，你将处理它的Service和Characteristic。在Core Bluetooth框架中，远程Peripheral的Service表示为CBService。相类似的，远程Peripheral中Service的Characteritic表示为CBCharacteristic。如下图所示：</p>
 
-<p><img src="/images/figure1-5.png" alt="" /></p>
+<p><img src="http://heeween.github.io/images/figure1-5.png" alt="" /></p>
 
 <h4>Peripheral 端的对象</h4>
 
@@ -378,42 +289,22 @@ $ sudo apachectl -k start</p>
 <p>在Peripheral端，一个Peripheral设备表示为CBPeripheralManager
 。该对象用于管理那些包含本地Peripheral设备的Service和Characteristic数据的Service，通过广播这些服务的方式发布到远程Central设备(表示为CBCentral)。Peripheral manager对象同样可以响应远程Central的读取和写入请求。如下图所示：</p>
 
-<p><img src="/images/figure1-6.png" alt="" /></p>
+<p><img src="http://heeween.github.io/images/figure1-6.png" alt="" /></p>
 
 <h4>本地 Peripheral 数据表示为 CBMutableService 和 CBMutableCharacteristic</h4>
 
 <p>当你设置好和本地Peripheral(表示为CBPeripheralManager)数据交互，就可以处理Service和Characteristic的可变版本。在Core Bluetooth框架中，本地Peripheral的Service表示为CBMutableService。同样地，本地Peripheral中Service的Characteristic表示为CBMutableCharacteristic。如下图所示：</p>
 
-<p><img src="/images/figure1-7.png" alt="" /></p>
-</div>
+<p><img src="http://heeween.github.io/images/figure1-7.png" alt="" /></p>
+]]></content>
+  </entry>
   
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015-05-11-nsscannerchu-li-fu-wu-qi-shu-ju-yi-chang-,-shu-ju-chu-li/">NSScanner处理服务器数据异常、数据处理</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-05-11T14:53:13+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>11</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>2:53 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>今天来介绍一下NSScanner, 并讲述一下如何使用这个东西来避免服务器传回的数组类型的数据错误的问题。</p>
+  <entry>
+    <title type="html"><![CDATA[NSScanner处理服务器数据异常、数据处理]]></title>
+    <link href="http://heeween.github.io/blog/2015-05-11-nsscannerchu-li-fu-wu-qi-shu-ju-yi-chang-,-shu-ju-chu-li/"/>
+    <updated>2015-05-11T14:53:13+08:00</updated>
+    <id>http://heeween.github.io/blog/nsscannerchu-li-fu-wu-qi-shu-ju-yi-chang-,-shu-ju-chu-li</id>
+    <content type="html"><![CDATA[<p>今天来介绍一下NSScanner, 并讲述一下如何使用这个东西来避免服务器传回的数组类型的数据错误的问题。</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -574,35 +465,15 @@ $ sudo apachectl -k start</p>
 </span><span class='line'><span class="c1">// 1.38</span>
 </span></code></pre></td></tr></table></div></figure>
 
-</div>
+]]></content>
+  </entry>
   
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015-04-07-gcdde-di-ceng-yi-ji-gcdde-miao-yong/">GCD的底层以及GCD的妙用</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-04-07T12:36:14+08:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>7</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>12:36 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>虽然 GCD 已经出现过一段时间了，但不是每个人都明了其主要内容。这是可以理解的；并发一直很棘手，而 GCD 是基于 C 的 API ，它们就像一组尖锐的棱角戳进 Objective-C 的平滑世界。我们将分两个部分的教程来深入学习 GCD 。</p>
+  <entry>
+    <title type="html"><![CDATA[GCD的底层以及GCD的妙用]]></title>
+    <link href="http://heeween.github.io/blog/2015-04-07-gcdde-di-ceng-yi-ji-gcdde-miao-yong/"/>
+    <updated>2015-04-07T12:36:14+08:00</updated>
+    <id>http://heeween.github.io/blog/gcdde-di-ceng-yi-ji-gcdde-miao-yong</id>
+    <content type="html"><![CDATA[<p>虽然 GCD 已经出现过一段时间了，但不是每个人都明了其主要内容。这是可以理解的；并发一直很棘手，而 GCD 是基于 C 的 API ，它们就像一组尖锐的棱角戳进 Objective-C 的平滑世界。我们将分两个部分的教程来深入学习 GCD 。</p>
 
 <p>在这两部分的系列中，第一个部分的将解释 GCD 是做什么的，并从许多基本的 GCD 函数中找出几个来展示。在第二部分，你将学到几个 GCD 提供的高级函数。</p>
 
@@ -1287,35 +1158,15 @@ dispatch_once() 以线程安全的方式执行且仅执行其代码块一次。�
 <p>同时请确保在真实设备上分析，而在模拟器上测试会对程序速度产生非常不准确的印象。</p>
 
 <p>在教程的下一部分，你将更加深入到 GCD 的 API 中，做一些更 Cool 的东西。</p>
-</div>
+]]></content>
+  </entry>
   
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015-03-29-html5chang-yong-kuang-jia/">未来的技术 - HTML5</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-03-29T09:30:00+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>29</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>9:30 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h5>1. 什么是HTML5?&lt;html+5></h5>
+  <entry>
+    <title type="html"><![CDATA[未来的技术 - HTML5]]></title>
+    <link href="http://heeween.github.io/blog/2015-03-29-html5chang-yong-kuang-jia/"/>
+    <updated>2015-03-29T09:30:00+08:00</updated>
+    <id>http://heeween.github.io/blog/html5chang-yong-kuang-jia</id>
+    <content type="html"><![CDATA[<h5>1. 什么是HTML5?&lt;html+5></h5>
 
 <p>  1> 2014年才定制完HTML5的标准，历时8年
   2> 移动先行
@@ -1810,35 +1661,15 @@ object: 对象类型，（注意：数组[]也是对象类型）、{}</li>
 <li>对象</li>
 </ul>
 
-</div>
+]]></content>
+  </entry>
   
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015-02-27-shen-ru-yan-jiu-cadisplaylinkhe-nstimer/">深入研究CADisplayLink和NSTimer</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-02-27T12:05:24+08:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>27</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>12:05 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>一、CADisplayLink</h3>
+  <entry>
+    <title type="html"><![CDATA[深入研究CADisplayLink和NSTimer]]></title>
+    <link href="http://heeween.github.io/blog/2015-02-27-shen-ru-yan-jiu-cadisplaylinkhe-nstimer/"/>
+    <updated>2015-02-27T12:05:24+08:00</updated>
+    <id>http://heeween.github.io/blog/shen-ru-yan-jiu-cadisplaylinkhe-nstimer</id>
+    <content type="html"><![CDATA[<h3>一、CADisplayLink</h3>
 
 <p>CADisplayLink 是一个定时器对象可以让你的应用以与显示器的刷新界面相同的频率进行绘图。
 应用如果想要创建 display link ，需要提供一个目标对象和一个当屏幕刷新时被调用的选择器方法。之后再将 display link 添加到主线程中。
@@ -1909,35 +1740,15 @@ CADisplayLink 不能被继承。</p>
 注意： NSRunLoop 类一般不认为是线程安全的，其方法应该只在其当前的线程上下文中被调用。你不能尝试在别的线程中去调用 NSRunLoop 对象的方法，如果这样做将导致无法预料的结果。
 小结
 在动画中最好用CADisplayLink，因为由于每秒的刷新频率较高，所以用它所生成的动画会显得非常流畅。</p>
-</div>
+]]></content>
+  </entry>
   
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015-02-19-er-wei-ma-zhi-zuo/">二维码制作</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-02-19T09:22:09+08:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>19</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>9:22 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3>从iOS7开始集成了二维码的生成和读取功能</h3>
+  <entry>
+    <title type="html"><![CDATA[二维码制作]]></title>
+    <link href="http://heeween.github.io/blog/2015-02-19-er-wei-ma-zhi-zuo/"/>
+    <updated>2015-02-19T09:22:09+08:00</updated>
+    <id>http://heeween.github.io/blog/er-wei-ma-zhi-zuo</id>
+    <content type="html"><![CDATA[<h3>从iOS7开始集成了二维码的生成和读取功能</h3>
 
 <h3>此前被广泛使用的zbarsdk目前不支持64位处理器</h3>
 
@@ -1992,7 +1803,7 @@ CADisplayLink 不能被继承。</p>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p><img src="/images/Snip20150819_1.png" alt="" /></p>
+<p><img src="http://heeween.github.io/images/Snip20150819_1.png" alt="" /></p>
 
 <h2>读取二维码需要导入AVFoundation框架</h2>
 
@@ -2088,35 +1899,15 @@ CADisplayLink 不能被继承。</p>
 
 
 
-</div>
+]]></content>
+  </entry>
   
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014-08-30-shu-ju-jie-xi-mo-xing-she-zhi-de-ji-qiao/">数据解析模型设置的技巧</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-08-30T11:50:05+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>30</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>11:50 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>最直接的计算cell高度的方法</h2>
+  <entry>
+    <title type="html"><![CDATA[数据解析模型设置的技巧]]></title>
+    <link href="http://heeween.github.io/blog/2014-08-30-shu-ju-jie-xi-mo-xing-she-zhi-de-ji-qiao/"/>
+    <updated>2014-08-30T11:50:05+08:00</updated>
+    <id>http://heeween.github.io/blog/shu-ju-jie-xi-mo-xing-she-zhi-de-ji-qiao</id>
+    <content type="html"><![CDATA[<h2>最直接的计算cell高度的方法</h2>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -2153,7 +1944,7 @@ CADisplayLink 不能被继承。</p>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p><img src="/images/Snip20150729_1.png" alt="" /></p>
+<p><img src="http://heeween.github.io/images/Snip20150729_1.png" alt="" /></p>
 
 <h2>set方法和get方法都重写的话,成员变量也不会自动生成</h2>
 
@@ -2186,69 +1977,29 @@ CADisplayLink 不能被继承。</p>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p><img src="/images/Snip20150729_2.png" alt="" /></p>
+<p><img src="http://heeween.github.io/images/Snip20150729_2.png" alt="" /></p>
 
 <h2>MJExtension模型属性名和键值名替换可以统一处理,如果有规律的话</h2>
 
-<p><img src="/images/Snip20150729_4.png" alt="" /></p>
-</div>
+<p><img src="http://heeween.github.io/images/Snip20150729_4.png" alt="" /></p>
+]]></content>
+  </entry>
   
+  <entry>
+    <title type="html"><![CDATA[popMenuController注意事项]]></title>
+    <link href="http://heeween.github.io/blog/2014-08-10-popmenucontrollerzhu-yi-shi-xiang/"/>
+    <updated>2014-08-10T11:03:34+08:00</updated>
+    <id>http://heeween.github.io/blog/popmenucontrollerzhu-yi-shi-xiang</id>
+    <content type="html"><![CDATA[<h2>popMenuController</h2>
+]]></content>
+  </entry>
   
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014-08-10-popmenucontrollerzhu-yi-shi-xiang/">popMenuController注意事项</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-08-10T11:03:34+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>10</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>11:03 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>popMenuController</h2>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014-08-08-zi-ding-yi-kong-jian-feng-zhuang-de-zhu-yi-shi-xiang/">自定义控件封装的注意事项</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-08-08T11:38:43+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>8</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>11:38 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>封装控件时,一定要留意属性是否需要重写set方法,以便时时监听属性修改,添加修改之后的操作</h2>
+  <entry>
+    <title type="html"><![CDATA[自定义控件封装的注意事项]]></title>
+    <link href="http://heeween.github.io/blog/2014-08-08-zi-ding-yi-kong-jian-feng-zhuang-de-zhu-yi-shi-xiang/"/>
+    <updated>2014-08-08T11:38:43+08:00</updated>
+    <id>http://heeween.github.io/blog/zi-ding-yi-kong-jian-feng-zhuang-de-zhu-yi-shi-xiang</id>
+    <content type="html"><![CDATA[<h2>封装控件时,一定要留意属性是否需要重写set方法,以便时时监听属性修改,添加修改之后的操作</h2>
 
 <ul>
 <li>而且还要考虑封装控件继承父类的属性也可能时时会被修改</li>
@@ -2333,136 +2084,1124 @@ CADisplayLink 不能被继承。</p>
 </span><span class='line'> <span class="o">*</span> <span class="nl">initWithNibName</span><span class="p">:</span> <span class="nl">bundle</span><span class="p">:</span><span class="nb">nil</span> <span class="o">:</span> <span class="err">会在恰当的时刻加载</span><span class="n">nib</span>
 </span></code></pre></td></tr></table></div></figure>
 
-</div>
+]]></content>
+  </entry>
   
+  <entry>
+    <title type="html"><![CDATA[Textfield和TextView的区别]]></title>
+    <link href="http://heeween.github.io/blog/2014-08-07-textfieldhe-textviewde-qu-bie/"/>
+    <updated>2014-08-07T11:37:21+08:00</updated>
+    <id>http://heeween.github.io/blog/textfieldhe-textviewde-qu-bie</id>
+    <content type="html"><![CDATA[<h2>Textfield和TextView的区别</h2>
+
+<ul>
+<li><p>UITextField *textField默认的情况
+1.只能显示一行文字
+2.有占位文字</p></li>
+<li><p>UITextView *textView默认的情况
+2.能显示任意行文字
+2.没有占位文字</p></li>
+<li><p>文本输入控件,最终希望拥有的功能
+1.能显示任意行文字
+2.有占位文字</p></li>
+<li><p>最终的方案:
+1.继承自UITextView
+2.在UITextView能显示任意行文字的基础上,增加"有占位文字"的功能</p></li>
+</ul>
+
+
+<h2>另类的一种监听textfield输入文字的方法</h2>
+
+<ul>
+<li>自定义一个textfield,重写- (void)insetText:(NSString *)text;</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// 也能在这个方法中监听键盘的输入，比如输入“换行”</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">insertText:</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nv">text</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="nb">super</span> <span class="nl">insertText</span><span class="p">:</span><span class="n">text</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">HYWLog</span><span class="p">(</span><span class="s">@&quot;%d&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">text</span> <span class="nl">isEqualToString</span><span class="p">:</span><span class="s">@&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">]);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>代理和通知的另一个区别</h2>
+
+<ul>
+<li>textview监听自己的占位文字变化,以便及时清除占位文字,如果使用代理,自己设置为自己的代理,监听文字改变,就会有这样的坏处&mdash;-外部用到这个对象时再设置代理时,就会覆盖自己的代理属性</li>
+<li>所以textView自己应该监听自己文字变化的通知,这样自己的监听不会影响外部用textview的监听</li>
+<li>所以代理更适合那些获得数据的情况,点击执行特定操作的情况,这样能保证数据的唯一性</li>
+</ul>
+
+]]></content>
+  </entry>
   
+  <entry>
+    <title type="html"><![CDATA[Appearance统一设置主题的问题]]></title>
+    <link href="http://heeween.github.io/blog/2014-08-06-appearancetong-%5B%3F%5D-she-zhi-zhu-ti-de-wen-ti/"/>
+    <updated>2014-08-06T11:35:44+08:00</updated>
+    <id>http://heeween.github.io/blog/appearancetong-[?]-she-zhi-zhu-ti-de-wen-ti</id>
+    <content type="html"><![CDATA[<h2>通过APPearance修改navigationbarItem后,状态不会默认高亮,也不会马上渲染</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// 设置item</span>
+</span><span class='line'>    <span class="bp">UIBarButtonItem</span> <span class="o">*</span><span class="n">item</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIBarButtonItem</span> <span class="n">appearance</span><span class="p">];</span>
+</span><span class='line'>    <span class="c1">// UIControlStateNormal</span>
+</span><span class='line'>    <span class="bp">NSMutableDictionary</span> <span class="o">*</span><span class="n">itemAttrs</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSMutableDictionary</span> <span class="n">dictionary</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">itemAttrs</span><span class="p">[</span><span class="n">NSForegroundColorAttributeName</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIColor</span> <span class="n">blackColor</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">itemAttrs</span><span class="p">[</span><span class="n">NSFontAttributeName</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIFont</span> <span class="nl">systemFontOfSize</span><span class="p">:</span><span class="mi">17</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">item</span> <span class="nl">setTitleTextAttributes</span><span class="p">:</span><span class="n">itemAttrs</span> <span class="nl">forState</span><span class="p">:</span><span class="n">UIControlStateNormal</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
-    </article>
+<ul>
+<li>这样设置以后导航栏的按钮点击高亮消失了,所以还需要再设置disable或者hilight的状态</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'>    <span class="c1">// UIControlStateDisabled</span>
+</span><span class='line'>    <span class="bp">NSMutableDictionary</span> <span class="o">*</span><span class="n">itemDisabledAttrs</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSMutableDictionary</span> <span class="n">dictionary</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">itemDisabledAttrs</span><span class="p">[</span><span class="n">NSForegroundColorAttributeName</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIColor</span> <span class="n">lightGrayColor</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">item</span> <span class="nl">setTitleTextAttributes</span><span class="p">:</span><span class="n">itemDisabledAttrs</span> <span class="nl">forState</span><span class="p">:</span><span class="n">UIControlStateDisabled</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 在post控制中设置默认不能点击</span>
+</span><span class='line'>    <span class="nb">self</span><span class="p">.</span><span class="n">navigationItem</span><span class="p">.</span><span class="n">rightBarButtonItem</span><span class="p">.</span><span class="n">enabled</span> <span class="o">=</span> <span class="nb">NO</span><span class="p">;</span> <span class="c1">// 默认不能点击</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>设置disable后发现,导航栏的按钮并不会显示默认的disable状态,这是因为通过appearance设置渲染延迟的问题,需要强制刷新控制</li>
+</ul>
+
+
+<p><img src="http://heeween.github.io/images/Snip20150805_2.png" alt="" /></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// 强制刷新</span>
+</span><span class='line'><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">navigationController</span><span class="p">.</span><span class="n">navigationBar</span> <span class="n">layoutIfNeeded</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img src="http://heeween.github.io/images/Snip20150805_3.png" alt="" /></p>
+
+<ul>
+<li>另外,当导航栏用在NavigationController中, appearance设置才会生效</li>
+</ul>
+
+]]></content>
+  </entry>
   
-  <div class="pagination">
-    
-      <a class="prev" href="/posts/2">&larr; Older</a>
-    
-    <a href="/blog/archives">Blog Archives</a>
-    
-  </div>
-</div>
-<aside class="sidebar">
+  <entry>
+    <title type="html"><![CDATA[webView加载进度条的不开放和常见解决方案]]></title>
+    <link href="http://heeween.github.io/blog/2014-08-05-webviewjia-zai-jin-du-tiao-de-bu-kai-fang-he-chang-jian-jie-jue-fang-an/"/>
+    <updated>2014-08-05T11:32:37+08:00</updated>
+    <id>http://heeween.github.io/blog/webviewjia-zai-jin-du-tiao-de-bu-kai-fang-he-chang-jian-jie-jue-fang-an</id>
+    <content type="html"><![CDATA[<h2>webView加载进度的实现&mdash;APP所有加载进度都是假象</h2>
+
+<p><img src="http://heeween.github.io/images/Snip20150803_10.png" alt="" /></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// 将第三方框架设置为webView代理</span>
+</span><span class='line'><span class="nb">self</span><span class="p">.</span><span class="n">progress</span> <span class="o">=</span> <span class="p">[[</span><span class="n">NJKWebViewProgress</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+</span><span class='line'><span class="nb">self</span><span class="p">.</span><span class="n">webView</span><span class="p">.</span><span class="n">delegate</span> <span class="o">=</span> <span class="nb">self</span><span class="p">.</span><span class="n">progress</span><span class="p">;</span>
+</span><span class='line'><span class="k">__weak</span> <span class="k">typeof</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span> <span class="n">weakSelf</span> <span class="o">=</span> <span class="nb">self</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// 通过给代理的blcok赋值,拿到progress进度进行赋值</span>
+</span><span class='line'><span class="nb">self</span><span class="p">.</span><span class="n">progress</span><span class="p">.</span><span class="n">progressBlock</span> <span class="o">=</span> <span class="o">^</span><span class="p">(</span><span class="kt">float</span> <span class="n">progress</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">weakSelf</span><span class="p">.</span><span class="n">progressView</span><span class="p">.</span><span class="n">progress</span> <span class="o">=</span> <span class="n">progress</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">weakSelf</span><span class="p">.</span><span class="n">progressView</span><span class="p">.</span><span class="n">hidden</span> <span class="o">=</span> <span class="p">(</span><span class="n">progress</span> <span class="o">==</span> <span class="mf">1.0</span><span class="p">);</span>
+</span><span class='line'><span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// 再设置第三方框架的代理为控制器,以便控制器还可以正常监听webview的代理方法</span>
+</span><span class='line'><span class="nb">self</span><span class="p">.</span><span class="n">progress</span><span class="p">.</span><span class="n">webViewProxyDelegate</span> <span class="o">=</span> <span class="nb">self</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// webview加载网络请求</span>
+</span><span class='line'><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">webView</span> <span class="nl">loadRequest</span><span class="p">:[</span><span class="bp">NSURLRequest</span> <span class="nl">requestWithURL</span><span class="p">:[</span><span class="bp">NSURL</span> <span class="nl">URLWithString</span><span class="p">:</span><span class="nb">self</span><span class="p">.</span><span class="n">url</span><span class="p">]]];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Button通过网络加载图片不能使用SDWebimage的&lt;UIImageView+WebCache.h>方法,否则图片不显示</h2>
+
+<p><img src="http://heeween.github.io/images/Snip20150803_13.png" alt="" /></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// 使用UIButton的分类方法,附近状态参数</span>
+</span><span class='line'><span class="p">[</span><span class="nb">self</span> <span class="nl">sd_setImageWithURL</span><span class="p">:[</span><span class="bp">NSURL</span> <span class="nl">URLWithString</span><span class="p">:</span><span class="n">square</span><span class="p">.</span><span class="n">icon</span><span class="p">]</span> <span class="nl">forState</span><span class="p">:</span><span class="n">UIControlStateNormal</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img src="http://heeween.github.io/images/Snip20150803_11.png" alt="" /></p>
+]]></content>
+  </entry>
   
-    <section>
-  <h1>Recent Posts</h1>
-  <ul id="recent_posts">
-    
-      <li class="post">
-        <a href="/blog/2015-09-15-ji-shi-tong-xun-ji-zhu/">即时通讯技术</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015-05-29-ioslan-ya-4-dot-0kai-fa/">iOS蓝牙4.0开发</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015-05-11-nsscannerchu-li-fu-wu-qi-shu-ju-yi-chang-,-shu-ju-chu-li/">NSScanner处理服务器数据异常、数据处理</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015-04-07-gcdde-di-ceng-yi-ji-gcdde-miao-yong/">GCD的底层以及GCD的妙用</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015-03-29-html5chang-yong-kuang-jia/">未来的技术 - HTML5</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015-02-27-shen-ru-yan-jiu-cadisplaylinkhe-nstimer/">深入研究CADisplayLink和NSTimer</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015-02-19-er-wei-ma-zhi-zuo/">二维码制作</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014-08-30-shu-ju-jie-xi-mo-xing-she-zhi-de-ji-qiao/">数据解析模型设置的技巧</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014-08-10-popmenucontrollerzhu-yi-shi-xiang/">popMenuController注意事项</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014-08-08-zi-ding-yi-kong-jian-feng-zhuang-de-zhu-yi-shi-xiang/">自定义控件封装的注意事项</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014-08-07-textfieldhe-textviewde-qu-bie/">Textfield和TextView的区别</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014-08-06-appearancetong-%5B%3F%5D-she-zhi-zhu-ti-de-wen-ti/">Appearance统一设置主题的问题</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014-08-05-webviewjia-zai-jin-du-tiao-de-bu-kai-fang-he-chang-jian-jie-jue-fang-an/">webView加载进度条的不开放和常见解决方案</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014-08-05-bai-si-bu-de-jie-zong-jie-8yue-5ri/">Modal出来的控制器再modal一个控制器的问题</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014-08-04-layer-dot-cornerradiusxing-neng-wen-ti-ji-jie-jue-fang-an/">layer.cornerRadius性能问题及解决方案</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014-08-03-bai-si-bu-de-jie-xiang-mu-geng-duo-zong-jie/">让一个普通控件弹出menuController的步骤</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014-08-02-bai-si-bu-de-jie-xiang-mu-zong-jie/">多组表格网络请求加载失败可能引发的小问题</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014-07-30-bai-si-bu-de-jie-xiang-mu-zong-jie/">Facebook第三方框架pop动画</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014-07-29-bai-si-bu-de-jie-xiang-mu-zong-jie/">Quartz实现image缩放的技巧</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014-07-26-gao-fang-bai-si-bu-de-jie-zong-jie/">Textfield魔法效果实现</a>
-      </li>
-    
-  </ul>
-</section>
+  <entry>
+    <title type="html"><![CDATA[Modal出来的控制器再modal一个控制器的问题]]></title>
+    <link href="http://heeween.github.io/blog/2014-08-05-bai-si-bu-de-jie-zong-jie-8yue-5ri/"/>
+    <updated>2014-08-05T09:23:46+08:00</updated>
+    <id>http://heeween.github.io/blog/bai-si-bu-de-jie-zong-jie-8yue-5ri</id>
+    <content type="html"><![CDATA[<h2>modal出来的控制器再modal一个控制器的问题</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// 如果是先弹出再消失当前控制器</span>
+</span><span class='line'>
+</span><span class='line'>                <span class="o">!</span><span class="n">completionBlock</span> <span class="o">?</span> <span class="o">:</span> <span class="n">completionBlock</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>                <span class="p">[</span><span class="nb">self</span> <span class="nl">dismissViewControllerAnimated</span><span class="p">:</span><span class="nb">NO</span> <span class="nl">completion</span><span class="p">:</span><span class="nb">nil</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="mi">2014</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mo">05</span> <span class="mi">09</span><span class="o">:</span><span class="mi">22</span><span class="o">:</span><span class="mf">54.949</span> <span class="mo">01</span><span class="o">-</span><span class="err">百思不得姐</span><span class="p">[</span><span class="mi">11162</span><span class="o">:</span><span class="mi">25568</span><span class="p">]</span> <span class="nl">Warning</span><span class="p">:</span> <span class="n">Attempt</span> <span class="n">to</span> <span class="n">present</span> <span class="o">&lt;</span><span class="nl">HYWPostWordViewController</span><span class="p">:</span> <span class="mh">0x7fba697714c0</span><span class="o">&gt;</span> <span class="n">on</span> <span class="o">&lt;</span><span class="nl">HYWTabBarController</span><span class="p">:</span> <span class="mh">0x7fba6944bce0</span><span class="o">&gt;</span> <span class="n">whose</span> <span class="n">view</span> <span class="n">is</span> <span class="n">not</span> <span class="k">in</span> <span class="n">the</span> <span class="n">window</span> <span class="n">hierarchy</span><span class="o">!</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 
 
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// 如果是先消失再弹出当前控制器</span>
+</span><span class='line'>
+</span><span class='line'>                <span class="o">!</span><span class="n">completionBlock</span> <span class="o">?</span> <span class="o">:</span> <span class="n">completionBlock</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>                <span class="p">[</span><span class="nb">self</span> <span class="nl">dismissViewControllerAnimated</span><span class="p">:</span><span class="nb">NO</span> <span class="nl">completion</span><span class="p">:</span><span class="nb">nil</span><span class="p">];</span>
+</span><span class='line'>
+</span></code></pre></td></tr></table></div></figure>
 
+
+<p><img src="http://heeween.github.io/images/Snip20150805_1.png" alt="" /></p>
+
+<ul>
+<li>原因是互相引用,两个控制器都不会死
+//                self.presentationController  // self - > postWordVc
+//                postWord.presentingViewController   // postWord - > self</li>
+</ul>
+
+
+<h2>控制器View的宽度问题</h2>
+
+<ul>
+<li>如果控制器从xib或者storyboard中创建处理的,默认宽高是600*600;</li>
+<li>如果控制器是代码创建的,view的宽高是屏幕宽高</li>
+<li>如果再viewdidload里设置为屏幕宽度,显示出来可能会变得大概为100多的宽度,这又是为什么</li>
+<li>因为view里的子控件默认是autoresizing的,一开始控制器view宽度是600,子控件设置为375,那么当显示出来后,子控件也会按照比例缩小</li>
+<li>所以要设置为autoresizingnone属性</li>
+</ul>
+
+]]></content>
+  </entry>
   
-</aside>
+  <entry>
+    <title type="html"><![CDATA[layer.cornerRadius性能问题及解决方案]]></title>
+    <link href="http://heeween.github.io/blog/2014-08-04-layer-dot-cornerradiusxing-neng-wen-ti-ji-jie-jue-fang-an/"/>
+    <updated>2014-08-04T11:30:42+08:00</updated>
+    <id>http://heeween.github.io/blog/layer-dot-cornerradiusxing-neng-wen-ti-ji-jie-jue-fang-an</id>
+    <content type="html"><![CDATA[<h2>圆角设置的性能问题layer.cornerRadius方法会造成程序卡顿,利用Quartz2D性能更好</h2>
 
-    </div>
-  </div>
-  <footer role="contentinfo"><p>
-  Copyright &copy; 2015 - Heew -
-  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
-</p>
+<p><img src="http://heeween.github.io/images/Snip20150803_9.png" alt="" />
+* C语言绘图方式</p>
 
-</footer>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="bp">UIImage</span> <span class="o">*</span><span class="p">)</span><span class="nf">circleImage</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="c1">// NO代表透明</span>
+</span><span class='line'>    <span class="n">UIGraphicsBeginImageContextWithOptions</span><span class="p">(</span><span class="nb">self</span><span class="p">.</span><span class="n">size</span><span class="p">,</span> <span class="nb">NO</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 获得上下文</span>
+</span><span class='line'>    <span class="n">CGContextRef</span> <span class="n">ctx</span> <span class="o">=</span> <span class="n">UIGraphicsGetCurrentContext</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 添加一个圆</span>
+</span><span class='line'>    <span class="bp">CGRect</span> <span class="n">rect</span> <span class="o">=</span> <span class="n">CGRectMake</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">self</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="nb">self</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">CGContextAddEllipseInRect</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">rect</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 裁剪</span>
+</span><span class='line'>    <span class="n">CGContextClip</span><span class="p">(</span><span class="n">ctx</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 将图片画上去</span>
+</span><span class='line'>    <span class="p">[</span><span class="nb">self</span> <span class="nl">drawInRect</span><span class="p">:</span><span class="n">rect</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="bp">UIImage</span> <span class="o">*</span><span class="n">image</span> <span class="o">=</span> <span class="n">UIGraphicsGetImageFromCurrentImageContext</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">UIGraphicsEndImageContext</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="n">image</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>UIBezierPath绘图方式</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="bp">UIImage</span> <span class="o">*</span><span class="p">)</span><span class="nf">clipImage</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="c1">// 1.开启位图上下文，跟图片尺寸一样大</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="bp">CGSize</span> <span class="n">imageSize</span> <span class="o">=</span> <span class="nb">self</span><span class="p">.</span><span class="n">size</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">UIGraphicsBeginImageContextWithOptions</span><span class="p">(</span><span class="n">imageSize</span><span class="p">,</span> <span class="nb">NO</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 2.设置圆形裁剪区域，正切与图片</span>
+</span><span class='line'>    <span class="bp">UIBezierPath</span> <span class="o">*</span><span class="n">path</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIBezierPath</span> <span class="nl">bezierPathWithOvalInRect</span><span class="p">:</span><span class="n">CGRectMake</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">imageSize</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="n">imageSize</span><span class="p">.</span><span class="n">height</span><span class="p">)];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 2.2把路径设置为裁剪区域</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">path</span> <span class="n">addClip</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 3.绘制图片</span>
+</span><span class='line'>    <span class="p">[</span><span class="nb">self</span> <span class="nl">drawAtPoint</span><span class="p">:</span><span class="n">CGPointZero</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 4.从上下文中获取图片</span>
+</span><span class='line'>    <span class="bp">UIImage</span> <span class="o">*</span><span class="n">clipImage</span> <span class="o">=</span> <span class="n">UIGraphicsGetImageFromCurrentImageContext</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 5.关闭上下文</span>
+</span><span class='line'>    <span class="n">UIGraphicsEndImageContext</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="n">clipImage</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
+  <entry>
+    <title type="html"><![CDATA[让一个普通控件弹出menuController的步骤]]></title>
+    <link href="http://heeween.github.io/blog/2014-08-03-bai-si-bu-de-jie-xiang-mu-geng-duo-zong-jie/"/>
+    <updated>2014-08-03T21:50:10+08:00</updated>
+    <id>http://heeween.github.io/blog/bai-si-bu-de-jie-xiang-mu-geng-duo-zong-jie</id>
+    <content type="html"><![CDATA[<h2>状态栏修改的两种方式</h2>
+
+<ul>
+<li>iOS7之后默认infolist里View controller-based status bar appearance值为YES,默认的状态栏也为黑色,意思就是状态栏修改都交给每个控制器,每个控制器实现</li>
+</ul>
 
 
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="cm">/**</span>
+</span><span class='line'><span class="cm"> * 让当前控制器对应的状态栏是白色</span>
+</span><span class='line'><span class="cm"> */</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="n">UIStatusBarStyle</span><span class="p">)</span><span class="nf">preferredStatusBarStyle</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">UIStatusBarStyleLightContent</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
+<p><img src="http://heeween.github.io/images/Snip20150803_1.png" alt="" /></p>
+
+<ul>
+<li>但是项目中登陆控制器需要显示之后,才修改为白色,所以就可以将infoplist中默认修改权改为NO,修改权还交给UIApplication,可以在控制器view显示后和销毁后修改两次</li>
+</ul>
 
 
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">IBAction</span><span class="p">)</span><span class="nf">back</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="bp">UIApplication</span> <span class="n">sharedApplication</span><span class="p">].</span><span class="n">statusBarStyle</span> <span class="o">=</span> <span class="n">UIStatusBarStyleDefault</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">[</span><span class="nb">self</span> <span class="nl">dismissViewControllerAnimated</span><span class="p">:</span><span class="nb">YES</span> <span class="nl">completion</span><span class="p">:</span><span class="nb">nil</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">viewDidAppear:</span><span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nv">animated</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="nb">super</span> <span class="nl">viewDidAppear</span><span class="p">:</span><span class="n">animated</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="p">[</span><span class="bp">UIApplication</span> <span class="n">sharedApplication</span><span class="p">].</span><span class="n">statusBarStyle</span> <span class="o">=</span> <span class="n">UIStatusBarStyleLightContent</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
+<p><img src="http://heeween.github.io/images/Snip20150803_2.png" alt="" /></p>
+
+<h2>让一个普通控件弹出menuController的步骤</h2>
+
+<ul>
+<li>给控件添加Tap手势</li>
+<li>让label有资格成为第一响应者,</li>
+</ul>
 
 
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">canBecomeFirstResponder</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nb">YES</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
-</body>
-</html>
+
+<p><img src="http://heeween.github.io/images/Snip20150803_3.png" alt="" /></p>
+
+<ul>
+<li>label能执行哪些操作(比如copy, paste等等)</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="nf">canPerformAction:</span><span class="p">(</span><span class="kt">SEL</span><span class="p">)</span><span class="nv">action</span> <span class="nf">withSender:</span><span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nv">sender</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">action</span> <span class="o">==</span> <span class="k">@selector</span><span class="p">(</span><span class="nl">cut</span><span class="p">:)</span> <span class="o">||</span> <span class="n">action</span> <span class="o">==</span> <span class="k">@selector</span><span class="p">(</span><span class="k">copy</span><span class="o">:</span><span class="p">)</span> <span class="o">||</span> <span class="n">action</span> <span class="o">==</span> <span class="k">@selector</span><span class="p">(</span><span class="nl">paste</span><span class="p">:))</span> <span class="k">return</span> <span class="nb">YES</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="nb">NO</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img src="http://heeween.github.io/images/Snip20150803_4.png" alt="" /></p>
+
+<ul>
+<li>实现各种操作方法,要在label所在的控制器重实现</li>
+</ul>
+
+
+<p><img src="http://heeween.github.io/images/Snip20150803_5.png" alt="" /></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">cut:</span><span class="p">(</span><span class="bp">UIMenuController</span> <span class="o">*</span><span class="p">)</span><span class="nv">menu</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="c1">// 将自己的文字复制到粘贴板</span>
+</span><span class='line'>    <span class="p">[</span><span class="nb">self</span> <span class="k">copy</span><span class="o">:</span><span class="n">menu</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 清空文字</span>
+</span><span class='line'>    <span class="nb">self</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">copy:</span><span class="p">(</span><span class="bp">UIMenuController</span> <span class="o">*</span><span class="p">)</span><span class="nv">menu</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="c1">// 将自己的文字复制到粘贴板</span>
+</span><span class='line'>    <span class="bp">UIPasteboard</span> <span class="o">*</span><span class="n">board</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIPasteboard</span> <span class="n">generalPasteboard</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">board</span><span class="p">.</span><span class="n">string</span> <span class="o">=</span> <span class="nb">self</span><span class="p">.</span><span class="n">text</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">paste:</span><span class="p">(</span><span class="bp">UIMenuController</span> <span class="o">*</span><span class="p">)</span><span class="nv">menu</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="c1">// 将粘贴板的文字 复制 到自己身上</span>
+</span><span class='line'>    <span class="bp">UIPasteboard</span> <span class="o">*</span><span class="n">board</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIPasteboard</span> <span class="n">generalPasteboard</span><span class="p">];</span>
+</span><span class='line'>    <span class="nb">self</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">board</span><span class="p">.</span><span class="n">string</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img src="http://heeween.github.io/images/Snip20150803_7.png" alt="" /></p>
+
+<ul>
+<li>让label成为第一响应者</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// 这里的self是label</span>
+</span><span class='line'><span class="p">[</span><span class="nb">self</span> <span class="n">becomeFirstResponder</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>显示UIMenuController,指定弹出的矩形框</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="bp">UIMenuController</span> <span class="o">*</span><span class="n">menu</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIMenuController</span> <span class="n">sharedMenuController</span><span class="p">];</span>
+</span><span class='line'><span class="c1">// targetRect: MenuController需要指向的矩形框</span>
+</span><span class='line'><span class="c1">// targetView: targetRect会以targetView的左上角为坐标原点</span>
+</span><span class='line'><span class="p">[</span><span class="n">menu</span> <span class="nl">setTargetRect</span><span class="p">:</span><span class="nb">self</span><span class="p">.</span><span class="n">bounds</span> <span class="nl">inView</span><span class="p">:</span><span class="nb">self</span><span class="p">];</span>
+</span><span class='line'><span class="c1">// [menu setTargetRect:self.frame inView:self.superview];</span>
+</span><span class='line'><span class="p">[</span><span class="n">menu</span> <span class="nl">setMenuVisible</span><span class="p">:</span><span class="nb">YES</span> <span class="nl">animated</span><span class="p">:</span><span class="nb">YES</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img src="http://heeween.github.io/images/Snip20150803_6.png" alt="" /></p>
+
+<ul>
+<li>自定义menuController弹出的文字,添加item</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// 添加MenuItem(点击item, 默认会调用控制器的方法)</span>
+</span><span class='line'><span class="bp">UIMenuItem</span> <span class="o">*</span><span class="n">ding</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">UIMenuItem</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithTitle</span><span class="p">:</span><span class="s">@&quot;顶&quot;</span> <span class="nl">action</span><span class="p">:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">ding</span><span class="p">:)];</span>
+</span><span class='line'><span class="bp">UIMenuItem</span> <span class="o">*</span><span class="n">replay</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">UIMenuItem</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithTitle</span><span class="p">:</span><span class="s">@&quot;回复&quot;</span> <span class="nl">action</span><span class="p">:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">replay</span><span class="p">:)];</span>
+</span><span class='line'><span class="bp">UIMenuItem</span> <span class="o">*</span><span class="n">report</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">UIMenuItem</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithTitle</span><span class="p">:</span><span class="s">@&quot;举报&quot;</span> <span class="nl">action</span><span class="p">:</span><span class="k">@selector</span><span class="p">(</span><span class="nl">report</span><span class="p">:)];</span>
+</span><span class='line'><span class="n">menu</span><span class="p">.</span><span class="n">menuItems</span> <span class="o">=</span> <span class="l">@[</span><span class="n">ding</span><span class="p">,</span> <span class="n">replay</span><span class="p">,</span> <span class="n">report</span><span class="l">]</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>group样式TableView的Frame默认给Y值增加35</h2>
+
+<p><img src="http://heeween.github.io/images/Snip20150803_8.png" alt="" /></p>
+
+<ul>
+<li>改回来的话,就在viewDidLoad方法中,修改TableView的contentInset</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// 调整inset</span>
+</span><span class='line'>    <span class="nb">self</span><span class="p">.</span><span class="n">tableView</span><span class="p">.</span><span class="n">contentInset</span> <span class="o">=</span> <span class="n">UIEdgeInsetsMake</span><span class="p">(</span><span class="n">HYWTopicCellMargin</span> <span class="o">-</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[多组表格网络请求加载失败可能引发的小问题]]></title>
+    <link href="http://heeween.github.io/blog/2014-08-02-bai-si-bu-de-jie-xiang-mu-zong-jie/"/>
+    <updated>2014-08-02T15:42:54+08:00</updated>
+    <id>http://heeween.github.io/blog/bai-si-bu-de-jie-xiang-mu-zong-jie</id>
+    <content type="html"><![CDATA[<h2>KVC的keypath下划线写不写都能找到</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// 恢复帖子的top_cmt</span>
+</span><span class='line'><span class="k">if</span> <span class="p">(</span><span class="nb">self</span><span class="p">.</span><span class="n">saved_top_cmt</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nb">self</span><span class="p">.</span><span class="n">topic</span><span class="p">.</span><span class="n">top_cmt</span> <span class="o">=</span> <span class="nb">self</span><span class="p">.</span><span class="n">saved_top_cmt</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">topic</span> <span class="nl">setValue</span><span class="p">:</span><span class="mi">@0</span> <span class="nl">forKeyPath</span><span class="p">:</span><span class="s">@&quot;_cellHeight&quot;</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img src="http://heeween.github.io/images/Snip20150802_1.png" alt="" /></p>
+
+<h2>MJExtension的无限映射,注意不要打全局断点,否则会卡住</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">+</span> <span class="p">(</span><span class="bp">NSDictionary</span> <span class="o">*</span><span class="p">)</span><span class="nf">replacedKeyFromPropertyName</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">return</span> <span class="l">@{</span>
+</span><span class='line'>             <span class="s">@&quot;small_image&quot;</span> <span class="o">:</span> <span class="s">@&quot;image0&quot;</span><span class="p">,</span>
+</span><span class='line'>             <span class="s">@&quot;large_image&quot;</span> <span class="o">:</span> <span class="s">@&quot;image1&quot;</span><span class="p">,</span>
+</span><span class='line'>             <span class="s">@&quot;middle_image&quot;</span> <span class="o">:</span> <span class="s">@&quot;image2&quot;</span><span class="p">,</span>
+</span><span class='line'>             <span class="s">@&quot;ID&quot;</span> <span class="o">:</span> <span class="s">@&quot;id&quot;</span><span class="p">,</span>
+</span><span class='line'>             <span class="s">@&quot;top_cmt&quot;</span> <span class="o">:</span> <span class="s">@&quot;top_cmt[0]&quot;</span> <span class="c1">//,</span>
+</span><span class='line'><span class="c1">//             @&quot;qzone_uid&quot; : @&quot;top_cmt[0].user.qzone_uid&quot;</span>
+</span><span class='line'>             <span class="l">}</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img src="http://heeween.github.io/images/Snip20150802_4.png" alt="" /></p>
+
+<h2>字符串是否为nil的判断</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">if</span> <span class="p">(</span><span class="n">comment</span><span class="p">.</span><span class="n">voiceuri</span><span class="p">.</span><span class="n">length</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nb">self</span><span class="p">.</span><span class="n">voiceButton</span><span class="p">.</span><span class="n">hidden</span> <span class="o">=</span> <span class="nb">NO</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">voiceButton</span> <span class="nl">setTitle</span><span class="p">:[</span><span class="bp">NSString</span> <span class="nl">stringWithFormat</span><span class="p">:</span><span class="s">@&quot;%zd&#39;&#39;&quot;</span><span class="p">,</span> <span class="n">comment</span><span class="p">.</span><span class="n">voicetime</span><span class="p">]</span> <span class="nl">forState</span><span class="p">:</span><span class="n">UIControlStateNormal</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nb">self</span><span class="p">.</span><span class="n">voiceButton</span><span class="p">.</span><span class="n">hidden</span> <span class="o">=</span> <span class="nb">YES</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img src="http://heeween.github.io/images/Snip20150802_5.png" alt="" /></p>
+
+<h2>实现cell的分割线的小技巧</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">awakeFromNib</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="bp">UIImageView</span> <span class="o">*</span><span class="n">bgView</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">UIImageView</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">bgView</span><span class="p">.</span><span class="n">image</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIImage</span> <span class="nl">imageNamed</span><span class="p">:</span><span class="s">@&quot;mainCellBackground&quot;</span><span class="p">];</span>
+</span><span class='line'>    <span class="nb">self</span><span class="p">.</span><span class="n">backgroundView</span> <span class="o">=</span> <span class="n">bgView</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img src="http://heeween.github.io/images/Snip20150802_7.png" alt="" /></p>
+
+<h2>网络请求刷新更多数据,加载失败可能引发的小问题</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// 结束之前的所有请求</span>
+</span><span class='line'><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">manager</span><span class="p">.</span><span class="n">tasks</span> <span class="nl">makeObjectsPerformSelector</span><span class="p">:</span><span class="k">@selector</span><span class="p">(</span><span class="n">cancel</span><span class="p">)];</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// 页码</span>
+</span><span class='line'><span class="bp">NSInteger</span> <span class="n">page</span> <span class="o">=</span> <span class="nb">self</span><span class="p">.</span><span class="n">page</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// 参数</span>
+</span><span class='line'><span class="bp">NSMutableDictionary</span> <span class="o">*</span><span class="n">params</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSMutableDictionary</span> <span class="n">dictionary</span><span class="p">];</span>
+</span><span class='line'><span class="n">params</span><span class="p">[</span><span class="s">@&quot;a&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s">@&quot;dataList&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="n">params</span><span class="p">[</span><span class="s">@&quot;c&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s">@&quot;comment&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="n">params</span><span class="p">[</span><span class="s">@&quot;data_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">self</span><span class="p">.</span><span class="n">topic</span><span class="p">.</span><span class="n">ID</span><span class="p">;</span>
+</span><span class='line'><span class="n">params</span><span class="p">[</span><span class="s">@&quot;page&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="l">@(</span><span class="n">page</span><span class="l">)</span><span class="p">;</span>
+</span><span class='line'><span class="n">HYWComment</span> <span class="o">*</span><span class="n">cmt</span> <span class="o">=</span> <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">latestComments</span> <span class="n">lastObject</span><span class="p">];</span>
+</span><span class='line'><span class="n">params</span><span class="p">[</span><span class="s">@&quot;lastcid&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cmt</span><span class="p">.</span><span class="n">ID</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">manager</span> <span class="nl">GET</span><span class="p">:</span><span class="s">@&quot;http://api.budejie.com/api/api_open.php&quot;</span> <span class="nl">parameters</span><span class="p">:</span><span class="n">params</span> <span class="nl">success</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="bp">NSURLSessionDataTask</span> <span class="o">*</span><span class="n">task</span><span class="p">,</span> <span class="kt">id</span> <span class="n">responseObject</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="c1">// 最新评论</span>
+</span><span class='line'>    <span class="bp">NSArray</span> <span class="o">*</span><span class="n">newComments</span> <span class="o">=</span> <span class="p">[</span><span class="n">HYWComment</span> <span class="nl">objectArrayWithKeyValuesArray</span><span class="p">:</span><span class="n">responseObject</span><span class="p">[</span><span class="s">@&quot;data&quot;</span><span class="p">]];</span>
+</span><span class='line'>    <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">latestComments</span> <span class="nl">addObjectsFromArray</span><span class="p">:</span><span class="n">newComments</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 页码</span>
+</span><span class='line'>    <span class="nb">self</span><span class="p">.</span><span class="n">page</span> <span class="o">=</span> <span class="n">page</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 刷新数据</span>
+</span><span class='line'>    <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">tableView</span> <span class="n">reloadData</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 控制footer的状态</span>
+</span><span class='line'>    <span class="bp">NSInteger</span> <span class="n">total</span> <span class="o">=</span> <span class="p">[</span><span class="n">responseObject</span><span class="p">[</span><span class="s">@&quot;total&quot;</span><span class="p">]</span> <span class="n">integerValue</span><span class="p">];</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nb">self</span><span class="p">.</span><span class="n">latestComments</span><span class="p">.</span><span class="n">count</span> <span class="o">&gt;=</span> <span class="n">total</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// 全部加载完毕</span>
+</span><span class='line'>        <span class="nb">self</span><span class="p">.</span><span class="n">tableView</span><span class="p">.</span><span class="n">footer</span><span class="p">.</span><span class="n">hidden</span> <span class="o">=</span> <span class="nb">YES</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>        <span class="c1">// 结束刷新状态</span>
+</span><span class='line'>        <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">tableView</span><span class="p">.</span><span class="n">footer</span> <span class="n">endRefreshing</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span> <span class="nl">failure</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="bp">NSURLSessionDataTask</span> <span class="o">*</span><span class="n">task</span><span class="p">,</span> <span class="bp">NSError</span> <span class="o">*</span><span class="n">error</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">tableView</span><span class="p">.</span><span class="n">footer</span> <span class="n">endRefreshing</span><span class="p">];</span>
+</span><span class='line'><span class="p">}];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img src="http://heeween.github.io/images/Snip20150802_9.png" alt="" /></p>
+
+<h2>递归找到所有window的scrollView</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">+</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">searchScrollViewInView:</span><span class="p">(</span><span class="bp">UIView</span> <span class="o">*</span><span class="p">)</span><span class="nv">superview</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="bp">UIScrollView</span> <span class="o">*</span><span class="n">subview</span> <span class="k">in</span> <span class="n">superview</span><span class="p">.</span><span class="n">subviews</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">// 如果是scrollview, 滚动最顶部</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">([</span><span class="n">subview</span> <span class="nl">isKindOfClass</span><span class="p">:[</span><span class="bp">UIScrollView</span> <span class="k">class</span><span class="p">]])</span> <span class="p">{</span>
+</span><span class='line'>            <span class="bp">CGPoint</span> <span class="n">offset</span> <span class="o">=</span> <span class="n">subview</span><span class="p">.</span><span class="n">contentOffset</span><span class="p">;</span>
+</span><span class='line'>            <span class="n">offset</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="o">-</span> <span class="n">subview</span><span class="p">.</span><span class="n">contentInset</span><span class="p">.</span><span class="n">top</span><span class="p">;</span>
+</span><span class='line'>            <span class="p">[</span><span class="n">subview</span> <span class="nl">setContentOffset</span><span class="p">:</span><span class="n">offset</span> <span class="nl">animated</span><span class="p">:</span><span class="nb">YES</span><span class="p">];</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c1">// 继续查找子控件</span>
+</span><span class='line'>        <span class="p">[</span><span class="nb">self</span> <span class="nl">searchScrollViewInView</span><span class="p">:</span><span class="n">subview</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img src="http://heeween.github.io/images/Snip20150802_10.png" alt="" /></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Facebook第三方框架pop动画]]></title>
+    <link href="http://heeween.github.io/blog/2014-07-30-bai-si-bu-de-jie-xiang-mu-zong-jie/"/>
+    <updated>2014-07-30T09:14:35+08:00</updated>
+    <id>http://heeween.github.io/blog/bai-si-bu-de-jie-xiang-mu-zong-jie</id>
+    <content type="html"><![CDATA[<h2>基于CADisplayLisk的Facebook第三方框架pop动画</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="cm">/**</span>
+</span><span class='line'><span class="cm"> pop和Core Animation的区别</span>
+</span><span class='line'><span class="cm"> 1.Core Animation的动画只能添加到layer上</span>
+</span><span class='line'><span class="cm"> 2.pop的动画能添加到任何对象</span>
+</span><span class='line'><span class="cm"> 3.pop的底层并非基于Core Animation, 是基于CADisplayLink</span>
+</span><span class='line'><span class="cm"> 4.Cora Animationd的动画仅仅是表象,并不会真正修改对象的frame和size等值</span>
+</span><span class='line'><span class="cm"> 5.pop的动画实时修改对象的属性,真正的修改了对象的属性</span>
+</span><span class='line'><span class="cm"> */</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>基于pop做的各种绚丽动画,的示例程序&mdash;poping(太帅了) \ learnCube</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'>    <span class="n">POPSpringAnimation</span> <span class="o">*</span><span class="n">anim</span> <span class="o">=</span> <span class="p">[</span><span class="n">POPSpringAnimation</span> <span class="nl">animationWithPropertyNamed</span><span class="p">:</span><span class="n">kPOPViewCenter</span><span class="p">];</span>
+</span><span class='line'>    <span class="c1">// 要添加动画的对象</span>
+</span><span class='line'><span class="bp">NSString</span> <span class="o">*</span> <span class="k">const</span> <span class="n">kPOPViewAlpha</span> <span class="o">=</span> <span class="s">@&quot;view.alpha&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="bp">NSString</span> <span class="o">*</span> <span class="k">const</span> <span class="n">kPOPViewBackgroundColor</span> <span class="o">=</span> <span class="s">@&quot;view.backgroundColor&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="bp">NSString</span> <span class="o">*</span> <span class="k">const</span> <span class="n">kPOPViewBounds</span> <span class="o">=</span> <span class="n">kPOPLayerBounds</span><span class="p">;</span>
+</span><span class='line'><span class="bp">NSString</span> <span class="o">*</span> <span class="k">const</span> <span class="n">kPOPViewCenter</span> <span class="o">=</span> <span class="s">@&quot;view.center&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="bp">NSString</span> <span class="o">*</span> <span class="k">const</span> <span class="n">kPOPViewFrame</span> <span class="o">=</span> <span class="s">@&quot;view.frame&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="bp">NSString</span> <span class="o">*</span> <span class="k">const</span> <span class="n">kPOPViewScaleX</span> <span class="o">=</span> <span class="s">@&quot;view.scaleX&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="bp">NSString</span> <span class="o">*</span> <span class="k">const</span> <span class="n">kPOPViewScaleXY</span> <span class="o">=</span> <span class="s">@&quot;view.scaleXY&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="bp">NSString</span> <span class="o">*</span> <span class="k">const</span> <span class="n">kPOPViewScaleY</span> <span class="o">=</span> <span class="s">@&quot;view.scaleY&quot;</span><span class="p">;</span>
+</span><span class='line'><span class="bp">NSString</span> <span class="o">*</span> <span class="k">const</span> <span class="n">kPOPViewSize</span> <span class="o">=</span> <span class="n">kPOPLayerSize</span><span class="p">;</span>
+</span><span class='line'><span class="bp">NSString</span> <span class="o">*</span> <span class="k">const</span> <span class="n">kPOPViewTintColor</span> <span class="o">=</span> <span class="s">@&quot;view.tintColor&quot;</span><span class="p">;</span>
+</span><span class='line'>  <span class="c1">// 动画从哪到哪,速度等属性</span>
+</span><span class='line'>  <span class="n">anim</span><span class="p">.</span><span class="n">springBounciness</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span> <span class="c1">// 弹性</span>
+</span><span class='line'>    <span class="n">anim</span><span class="p">.</span><span class="n">springSpeed</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span> <span class="c1">// 速度</span>
+</span><span class='line'>    <span class="n">anim</span><span class="p">.</span><span class="n">fromValue</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSValue</span> <span class="nl">valueWithCGPoint</span><span class="p">:</span><span class="n">CGPointMake</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">)];</span> <span class="c1">// 从哪出发</span>
+</span><span class='line'>    <span class="n">anim</span><span class="p">.</span><span class="n">toValue</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSValue</span> <span class="nl">valueWithCGPoint</span><span class="p">:</span><span class="n">CGPointMake</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">200</span><span class="p">)];</span> <span class="c1">// 到哪结束</span>
+</span><span class='line'>    <span class="n">anim</span><span class="p">.</span><span class="n">beginTime</span> <span class="o">=</span> <span class="n">CACurrentMediaTime</span><span class="p">()</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">;</span> <span class="c1">// 什么时候开始</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>tabBar弹出一个控制器的方法</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">publishClick</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 缺点:modal会让下面的控制器view移出窗口,但有时候下面view需要半透明化,并不想直接移出</span>
+</span><span class='line'>    <span class="n">HYWPublishViewController</span> <span class="o">*</span><span class="n">publish</span> <span class="o">=</span> <span class="p">[[</span><span class="n">HYWPublishViewController</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[[</span><span class="bp">UIApplication</span> <span class="n">sharedApplication</span><span class="p">].</span><span class="n">keyWindow</span><span class="p">.</span><span class="n">rootViewController</span> <span class="nl">presentViewController</span><span class="p">:</span><span class="n">publish</span> <span class="nl">animated</span><span class="p">:</span><span class="nb">NO</span> <span class="nl">completion</span><span class="p">:</span><span class="nb">nil</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 缺点:当前根控制器是tabBarcontroller,添加子控制器会影响tabBar的排布</span>
+</span><span class='line'>    <span class="bp">UIViewController</span> <span class="o">*</span><span class="n">root</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIApplication</span> <span class="n">sharedApplication</span><span class="p">].</span><span class="n">keyWindow</span><span class="p">.</span><span class="n">rootViewController</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">root</span><span class="p">.</span><span class="n">view</span> <span class="nl">addSubview</span><span class="p">:</span><span class="n">publish</span><span class="p">.</span><span class="n">view</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">root</span> <span class="nl">addChildViewController</span><span class="p">:</span><span class="n">publish</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 解决方法,换成普通view添加到主窗口,但是点击事件会传到下面的view</span>
+</span><span class='line'>    <span class="n">HYWPublishView</span> <span class="o">*</span><span class="n">publish</span> <span class="o">=</span> <span class="p">[</span><span class="n">HYWPublishView</span> <span class="n">publishView</span><span class="p">];</span>
+</span><span class='line'>    <span class="bp">UIWindow</span> <span class="o">*</span><span class="n">window</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIApplication</span> <span class="n">sharedApplication</span><span class="p">].</span><span class="n">keyWindow</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">publish</span><span class="p">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">window</span><span class="p">.</span><span class="n">bounds</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">window</span> <span class="nl">addSubview</span><span class="p">:</span><span class="n">publish</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 更牛逼的做法,直接自定义window,完全独立一个window,响应事件也独立,任然还可以看到下面view</span>
+</span><span class='line'>    <span class="n">window</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">UIWindow</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">window</span><span class="p">.</span><span class="n">frame</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIScreen</span> <span class="n">mainScreen</span><span class="p">].</span><span class="n">bounds</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">window</span><span class="p">.</span><span class="n">backgroundColor</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">UIColor</span> <span class="n">yellowColor</span><span class="p">]</span> <span class="nl">colorWithAlphaComponent</span><span class="p">:</span><span class="mf">0.5</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">window</span><span class="p">.</span><span class="n">hidden</span> <span class="o">=</span> <span class="nb">NO</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img src="http://heeween.github.io/images/Snip20150730_1.png" alt="" />
+<img src="http://heeween.github.io/images/Snip20150730_3.png" alt="" /></p>
+
+<h2>iOS命名规范</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">static</span> <span class="bp">UIWindow</span> <span class="o">*</span><span class="n">window_</span><span class="p">;</span> <span class="c1">// 全局变量</span>
+</span><span class='line'><span class="bp">UIWindow</span> <span class="o">*</span><span class="n">_window</span><span class="p">;</span> <span class="c1">// 成员变量</span>
+</span><span class='line'><span class="k">static</span> <span class="n">NSStrin</span> <span class="o">*</span> <span class="k">const</span> <span class="n">HYWKeyVersion</span> <span class="o">=</span> <span class="s">@&quot;213984723784&quot;</span><span class="p">;</span> <span class="c1">// 普通变量</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>手动计算文字高度方法</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// 文字的最大尺寸</span>
+</span><span class='line'>    <span class="bp">CGSize</span> <span class="n">maxSize</span> <span class="o">=</span> <span class="n">CGSizeMake</span><span class="p">([</span><span class="bp">UIScreen</span> <span class="n">mainScreen</span><span class="p">].</span><span class="n">bounds</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span> <span class="o">-</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">HYWTopicCellMargin</span><span class="p">,</span> <span class="n">MAXFLOAT</span><span class="p">);</span>
+</span><span class='line'>  <span class="c1">// 根据最大尺寸和字体,计算出size,取出高度,这个方法从7.0之后就被苹果废弃了NS_DEPRECATED_IOS(2_0, 7_0, </span>
+</span><span class='line'>    <span class="n">CGFloat</span> <span class="n">textH</span> <span class="o">=</span> <span class="p">[</span><span class="n">topic</span><span class="p">.</span><span class="n">text</span> <span class="nl">sizeWithFont</span><span class="p">:[</span><span class="bp">UIFont</span> <span class="nl">systemFontOfSize</span><span class="p">:</span><span class="mi">14</span><span class="p">]</span> <span class="nl">constrainedToSize</span><span class="p">:</span><span class="n">maxSize</span><span class="p">].</span><span class="n">height</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 苹果推荐的算法, NSStringDrawingUsesLineFragmentOrigin属性</span>
+</span><span class='line'>    <span class="n">CGFloat</span> <span class="n">textH</span> <span class="o">=</span> <span class="p">[</span><span class="n">topic</span><span class="p">.</span><span class="n">text</span> <span class="nl">boundingRectWithSize</span><span class="p">:</span><span class="n">maxSize</span> <span class="nl">options</span><span class="p">:</span><span class="n">NSStringDrawingUsesLineFragmentOrigin</span> <span class="nl">attributes</span><span class="p">:</span><span class="l">@{</span><span class="nl">NSFontAttributeName</span> <span class="p">:</span> <span class="p">[</span><span class="bp">UIFont</span> <span class="nl">systemFontOfSize</span><span class="p">:</span><span class="mi">14</span><span class="p">]</span><span class="l">}</span> <span class="nl">context</span><span class="p">:</span><span class="nb">nil</span><span class="p">].</span><span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Quartz实现image缩放的技巧]]></title>
+    <link href="http://heeween.github.io/blog/2014-07-29-bai-si-bu-de-jie-xiang-mu-zong-jie/"/>
+    <updated>2014-07-29T11:55:38+08:00</updated>
+    <id>http://heeween.github.io/blog/bai-si-bu-de-jie-xiang-mu-zong-jie</id>
+    <content type="html"><![CDATA[<h2>利用Quartz实现image缩放的技巧</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'>    <span class="c1">// 开启图形上下文</span>
+</span><span class='line'>    <span class="n">UIGraphicsBeginImageContextWithOptions</span><span class="p">(</span><span class="n">topic</span><span class="p">.</span><span class="n">pictureF</span><span class="p">.</span><span class="n">size</span><span class="p">,</span> <span class="nb">YES</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 将下载完的image对象绘制到图形上下文</span>
+</span><span class='line'>    <span class="n">CGFloat</span> <span class="n">width</span> <span class="o">=</span> <span class="n">topic</span><span class="p">.</span><span class="n">pictureF</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">CGFloat</span> <span class="n">height</span> <span class="o">=</span> <span class="n">width</span> <span class="o">*</span> <span class="n">image</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span> <span class="o">/</span> <span class="n">image</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">image</span> <span class="nl">drawInRect</span><span class="p">:</span><span class="n">CGRectMake</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 获得图片</span>
+</span><span class='line'>    <span class="nb">self</span><span class="p">.</span><span class="n">imageView</span><span class="p">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">UIGraphicsGetImageFromCurrentImageContext</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 结束图形上下文</span>
+</span><span class='line'>    <span class="n">UIGraphicsEndImageContext</span><span class="p">();</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img src="http://heeween.github.io/images/Snip20150729_13.png" alt="" /></p>
+
+<h2>图片拉伸属性的区别</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="n">UIViewContentModeScaleAspectFit</span><span class="p">,</span>      <span class="c1">// contents scaled to fit with fixed aspect. remainder is transparent</span>
+</span><span class='line'><span class="c1">// 宽且高都要缩放到iamgeview框中才可以</span>
+</span><span class='line'><span class="n">UIViewContentModeScaleAspectFill</span><span class="p">,</span>     <span class="c1">// contents scaled to fill with fixed aspect. some portion of content may be clipped.</span>
+</span><span class='line'><span class="c1">// 宽或者高缩放到imageView框中就可以</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>写入手机相册image的方法</h2>
+
+<p><img src="http://heeween.github.io/images/Snip20150729_9.png" alt="" />
+<img src="http://heeween.github.io/images/Snip20150729_10.png" alt="" /></p>
+
+<h3>制作动画一般只用frame</h3>
+
+<p><img src="http://heeween.github.io/images/Snip20150729_14.png" alt="" /></p>
+
+<h2>弹簧效果的类</h2>
+
+<p><img src="http://heeween.github.io/images/Snip20150729_15.png" alt="" /></p>
+
+<h2>直接获得字符串的扩展名和变为小写的方法</h2>
+
+<p><img src="http://heeween.github.io/images/Snip20150729_5.png" alt="" /></p>
+
+<p><img src="http://heeween.github.io/images/Snip20150729_6.png" alt="" /></p>
+
+<p><img src="http://heeween.github.io/images/Snip20150729_7.png" alt="" /></p>
+
+<h2>SDWebimage自动解析image显示gif</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">setTopic:</span><span class="p">(</span><span class="n">HYWTopic</span> <span class="o">*</span><span class="p">)</span><span class="nv">topic</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">_topic</span> <span class="o">=</span> <span class="n">topic</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 设置图片</span>
+</span><span class='line'>    <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">imageView</span> <span class="nl">sd_setImageWithURL</span><span class="p">:[</span><span class="bp">NSURL</span> <span class="nl">URLWithString</span><span class="p">:</span><span class="n">topic</span><span class="p">.</span><span class="n">large_image</span><span class="p">]];</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img src="http://heeween.github.io/images/Snip20150729_3.png" alt="" /></p>
+
+<h2>SDwebimage下载任务的单独性</h2>
+
+<p><img src="http://heeween.github.io/images/Snip20150729_12.png" alt="" /></p>
+
+<h2>xib中不可以对imageview添加子控件</h2>
+
+<p><img src="http://heeween.github.io/images/Snip20150729_8.png" alt="" /></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Textfield魔法效果实现]]></title>
+    <link href="http://heeween.github.io/blog/2014-07-26-gao-fang-bai-si-bu-de-jie-zong-jie/"/>
+    <updated>2014-07-26T21:24:27+08:00</updated>
+    <id>http://heeween.github.io/blog/gao-fang-bai-si-bu-de-jie-zong-jie</id>
+    <content type="html"><![CDATA[<h2>修改每个控制器的状态栏样式</h2>
+
+<p><img src="http://heeween.github.io/images/Snip20150726_1.png" alt="" /></p>
+
+<h2>设置button的圆角还需要同时设置clipstobound</h2>
+
+<p><img src="http://heeween.github.io/images/Snip20150726_2.png" alt="" /></p>
+
+<h2>寻找系统方法的步骤</h2>
+
+<p><img src="http://heeween.github.io/images/Snip20150726_3.png" alt="" /></p>
+
+<h2>有override注释的方法意味着是官方推荐改写以实现特定功能的</h2>
+
+<p><img src="http://heeween.github.io/images/Snip20150726_4.png" alt="" /></p>
+
+<h2>实现富文本,需要在上下文中调用字符串的draw方法</h2>
+
+<p><img src="http://heeween.github.io/images/Snip20150726_5.png" alt="" /></p>
+
+<h2>运行时可以找到某些系统的属性,然后使用KVC修改</h2>
+
+<p><img src="http://heeween.github.io/images/Snip20150726_8.png" alt="" /></p>
+
+<h2>textfield被点击后会调用setHightlighed方法</h2>
+
+<p><img src="http://heeween.github.io/images/Snip20150726_9.png" alt="" /></p>
+
+<h2>textfield成为和取消第一响应者会调用以下两个方法,可以在这两个方法添加个性化功能</h2>
+
+<p><img src="http://heeween.github.io/images/Snip20150726_11.png" alt="" /></p>
+]]></content>
+  </entry>
+  
+</feed>

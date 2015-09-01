@@ -1,0 +1,1367 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Heew’s iOS Blog</title>
+  <meta name="author" content="Heew">
+
+  
+  <meta name="description" content="自定义键盘和键盘的工具条的属性 xib的File&rsquo;s owner的理解 可变数组和另一个数组拼接,一定要用addObjectsFromArray:方法 切记不要使用arrayM addObject:array
+否则arrayM的对象数量就变成了1, &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://heeween.github.io/posts/3/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Heew’s iOS Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Heew’s iOS Blog</a></h1>
+  
+    <h2>A personal blog accounting problems for iOS.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.baidu.com" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="heeween.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014-07-23-gao-fang-bai-si-bu-de-jie-xiang-mu-zong-jie/">自定义键盘与数组使用的坑</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-07-23T09:08:24+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>23</span><span class='date-suffix'>rd</span>, <span class='date-year'>2014</span></span> <span class='time'>9:08 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>自定义键盘和键盘的工具条的属性</h2>
+
+<p><img src="/images/Snip20150723_1.png" alt="" /></p>
+
+<h2>xib的File&rsquo;s owner的理解</h2>
+
+<p><img src="/images/Snip20150723_2.png" alt="" /></p>
+
+<h2>可变数组和另一个数组拼接,一定要用addObjectsFromArray:方法</h2>
+
+<ul>
+<li>切记不要使用arrayM addObject:array</li>
+<li>否则arrayM的对象数量就变成了1,结果就是把array这个数组对象放到了arrayM中</li>
+<li>因此还按照角标取值就会数组越界,或者报对象找不到方法</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'> <span class="c1">// 网络请求</span>
+</span><span class='line'>    <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">manager</span> <span class="nl">GET</span><span class="p">:</span><span class="s">@&quot;http://api.budejie.com/api/api_open.php&quot;</span> <span class="nl">parameters</span><span class="p">:</span><span class="n">params</span> <span class="nl">success</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="bp">NSURLSessionDataTask</span> <span class="o">*</span><span class="n">task</span><span class="p">,</span> <span class="kt">id</span> <span class="n">responseObject</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="p">[</span><span class="n">category</span><span class="p">.</span><span class="n">users</span> <span class="nl">addObjectsFromArray</span><span class="p">:[</span><span class="n">HYWRecommendUser</span> <span class="nl">objectArrayWithKeyValuesArray</span><span class="p">:</span><span class="n">responseObject</span><span class="p">[</span><span class="s">@&quot;list&quot;</span><span class="p">]]];</span>
+</span><span class='line'>        <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">recommendUserTableView</span> <span class="n">reloadData</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">}</span> <span class="nl">failure</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="bp">NSURLSessionDataTask</span> <span class="o">*</span><span class="n">task</span><span class="p">,</span> <span class="bp">NSError</span> <span class="o">*</span><span class="n">error</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">HYWLog</span><span class="p">(</span><span class="s">@&quot;%@&quot;</span><span class="p">,</span><span class="n">error</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}];</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// TableView中每一个行的细节</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="bp">UITableViewCell</span> <span class="o">*</span><span class="p">)</span><span class="nf">tableView:</span><span class="p">(</span><span class="bp">UITableView</span> <span class="o">*</span><span class="p">)</span><span class="nv">tableView</span> <span class="nf">cellForRowAtIndexPath:</span><span class="p">(</span><span class="bp">NSIndexPath</span> <span class="o">*</span><span class="p">)</span><span class="nv">indexPath</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">HYWRecommendUserCell</span> <span class="o">*</span><span class="n">cell</span> <span class="o">=</span> <span class="p">[</span><span class="n">HYWRecommendUserCell</span> <span class="nl">cellWithTableView</span><span class="p">:</span><span class="n">tableView</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">cell</span><span class="p">.</span><span class="n">user</span> <span class="o">=</span> <span class="nb">self</span><span class="p">.</span><span class="n">recommentdCategory</span><span class="p">.</span><span class="n">users</span><span class="p">[</span><span class="n">indexPath</span><span class="p">.</span><span class="n">row</span><span class="p">];</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">cell</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// cell的set方法中</span>
+</span><span class='line'>  <span class="o">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nl">setUser</span><span class="p">:(</span><span class="n">HYWRecommendUser</span> <span class="o">*</span><span class="p">)</span><span class="n">user</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">_user</span> <span class="o">=</span> <span class="n">user</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">headerView</span> <span class="nl">sd_setImageWithURL</span><span class="p">:[</span><span class="bp">NSURL</span> <span class="nl">URLWithString</span><span class="p">:</span><span class="n">user</span><span class="p">.</span><span class="n">header</span><span class="p">]</span> <span class="nl">placeholderImage</span><span class="p">:[</span><span class="bp">UIImage</span> <span class="nl">imageNamed</span><span class="p">:</span><span class="s">@&quot;defaultUserIcon&quot;</span><span class="p">]];</span>
+</span><span class='line'>    <span class="nb">self</span><span class="p">.</span><span class="n">screen_name_label</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">user</span><span class="p">.</span><span class="n">screen_name</span><span class="p">;</span>
+</span><span class='line'>    <span class="bp">NSInteger</span> <span class="n">fansCount</span> <span class="o">=</span> <span class="p">[</span><span class="n">user</span><span class="p">.</span><span class="n">fans_count</span> <span class="n">integerValue</span><span class="p">];</span>
+</span><span class='line'>    <span class="nb">self</span><span class="p">.</span><span class="n">fans_count_label</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">fansCount</span> <span class="o">&gt;</span> <span class="mi">10000</span> <span class="o">?</span> <span class="p">[</span><span class="bp">NSString</span> <span class="nl">stringWithFormat</span><span class="p">:</span><span class="s">@&quot;%.1f人关注&quot;</span><span class="p">,</span><span class="n">fansCount</span> <span class="o">/</span><span class="mf">1000.0</span><span class="p">]</span> <span class="o">:</span> <span class="p">[</span><span class="bp">NSString</span> <span class="nl">stringWithFormat</span><span class="p">:</span><span class="s">@&quot;%zd人关注&quot;</span><span class="p">,</span><span class="n">fansCount</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>报错结果,数组找不到方法</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="mi">2015</span><span class="o">-</span><span class="mo">07</span><span class="o">-</span><span class="mi">24</span> <span class="mi">09</span><span class="o">:</span><span class="mi">15</span><span class="o">:</span><span class="mf">23.091</span> <span class="err">百思不得姐</span><span class="p">[</span><span class="mi">3711</span><span class="o">:</span><span class="mi">13214</span><span class="p">]</span> <span class="o">-</span><span class="p">[</span><span class="n">__NSArrayM</span> <span class="n">header</span><span class="p">]</span><span class="o">:</span> <span class="n">unrecognized</span> <span class="n">selector</span> <span class="n">sent</span> <span class="n">to</span> <span class="n">instance</span> <span class="mh">0x7fa6f45c8340</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014-07-22-bai-si-bu-de-qi-jie-xiang-mu-zong-jie/">主流框架搭建常用技巧</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-07-22T09:58:12+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>22</span><span class='date-suffix'>nd</span>, <span class='date-year'>2014</span></span> <span class='time'>9:58 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>通过appearance统一设置所有UITabBarItem的文字属性</h2>
+
+<p><img src="/images/Snip20150722_1.png" alt="" />
+<img src="/images/Snip20150722_2.png" alt="" /></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// </span>
+</span><span class='line'><span class="c1">// 后面带有UI_APPEARANCE_SELECTOR的方法, 都可以通过appearance对象来统一设置</span>
+</span><span class='line'><span class="bp">NSMutableDictionary</span> <span class="o">*</span><span class="n">attrs</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSMutableDictionary</span> <span class="n">dictionary</span><span class="p">];</span>
+</span><span class='line'><span class="n">attrs</span><span class="p">[</span><span class="n">NSFontAttributeName</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIFont</span> <span class="nl">systemFontOfSize</span><span class="p">:</span><span class="mi">12</span><span class="p">];</span>
+</span><span class='line'><span class="n">attrs</span><span class="p">[</span><span class="n">NSForegroundColorAttributeName</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIColor</span> <span class="n">grayColor</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="bp">NSMutableDictionary</span> <span class="o">*</span><span class="n">selectedAttrs</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSMutableDictionary</span> <span class="n">dictionary</span><span class="p">];</span>
+</span><span class='line'><span class="n">selectedAttrs</span><span class="p">[</span><span class="n">NSFontAttributeName</span><span class="p">]</span> <span class="o">=</span> <span class="n">attrs</span><span class="p">[</span><span class="n">NSFontAttributeName</span><span class="p">];</span>
+</span><span class='line'><span class="n">selectedAttrs</span><span class="p">[</span><span class="n">NSForegroundColorAttributeName</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIColor</span> <span class="n">darkGrayColor</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="bp">UITabBarItem</span> <span class="o">*</span><span class="n">item</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UITabBarItem</span> <span class="n">appearance</span><span class="p">];</span>
+</span><span class='line'><span class="p">[</span><span class="n">item</span> <span class="nl">setTitleTextAttributes</span><span class="p">:</span><span class="n">attrs</span> <span class="nl">forState</span><span class="p">:</span><span class="n">UIControlStateNormal</span><span class="p">];</span>
+</span><span class='line'><span class="p">[</span><span class="n">item</span> <span class="nl">setTitleTextAttributes</span><span class="p">:</span><span class="n">selectedAttrs</span> <span class="nl">forState</span><span class="p">:</span><span class="n">UIControlStateSelected</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>在分类中声明@property, 只会生成方法的声明, 不会生成方法的实现和带有_下划线的成员变量</h2>
+
+<p><img src="/images/Snip20150722_5.png" alt="" /></p>
+
+<h2>在TabBar中访问子控制器的view,会把子控制器view提前加载,影响性能</h2>
+
+<p><img src="/images/Snip20150722_3.png" alt="" /></p>
+
+<h2>如果想要访问苹果私有的类,可以使用NSClassFromString方法,实现</h2>
+
+<p><img src="/images/Snip20150722_4.png" alt="" /></p>
+
+<h2>在navigation控制器的push方法可以统一设置子控制器某些特性</h2>
+
+<p><img src="/images/Snip20150722_8.png" alt="" /></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014-07-19-shi-yong-svnxie-tong-kai-fa-xcodexiang-mu/">使用SVN协同开发Xcode项目</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-07-19T16:05:57+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>19</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>4:05 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>使用Cornerstone创建代码仓库,协同开发</h3>
+
+<ul>
+<li>使用Cornerstone提交代码</li>
+</ul>
+
+
+<p><img src="/images/Snip20150719_30.png" alt="" /></p>
+
+<ul>
+<li>使用Xcode提交代码</li>
+</ul>
+
+
+<p><img src="/images/Snip20150719_31.png" alt="" /></p>
+
+<ul>
+<li>Xcode提交会提交很多额外的,不需要提交给同事的内容</li>
+</ul>
+
+
+<p><img src="/images/Snip20150719_32.png" alt="" /></p>
+
+<ul>
+<li><p>Cornerstone可以选择提交</p></li>
+<li><p>Xcode需要忽略的文件和不可以忽略的文件</p></li>
+</ul>
+
+
+<p><img src="/images/Snip20150719_33.png" alt="" />
+<img src="/images/Snip20150719_34.png" alt="" /></p>
+
+<ul>
+<li>Xcode的冲突</li>
+</ul>
+
+
+<p><img src="/images/Snip20150719_35.png" alt="" />
+<img src="/images/Snip20150719_36.png" alt="" /></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014-07-19-svnda-jian-he-shi-yong/">SVN搭建和使用</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-07-19T10:19:37+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>19</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>10:19 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>安装服务端软件</h3>
+
+<p><img src="/images/Snip20150719_4.png" alt="" /></p>
+
+<h3>配置服务端仓库和权限等</h3>
+
+<ul>
+<li>选empty仓库</li>
+<li>选nobody权限,不让任何人访问</li>
+</ul>
+
+
+<p><img src="/images/Snip20150719_5.png" alt="" /></p>
+
+<h3>创建用户配置权限</h3>
+
+<p><img src="/images/Snip20150719_7.png" alt="" /></p>
+
+<p><img src="/images/Snip20150719_9.png" alt="" /></p>
+
+<h3>创建工作组,方便整体切换到其他工作项目</h3>
+
+<p><img src="/images/Snip20150719_10.png" alt="" /></p>
+
+<h3>在客户端访问服务端</h3>
+
+<p><img src="/images/Snip20150719_11.png" alt="" /></p>
+
+<h3>终端命令</h3>
+
+<p><img src="/images/Snip20150719_12.png" alt="" /></p>
+
+<h3>在经理工作组账号里初始化代码</h3>
+
+<p><img src="/images/Snip20150719_14.png" alt="" />
+<img src="/images/Snip20150719_16.png" alt="" />
+<img src="/images/Snip20150719_17.png" alt="" />
+<img src="/images/Snip20150719_18.png" alt="" />
+<img src="/images/Snip20150719_20.png" alt="" /></p>
+
+<h3>删除代码</h3>
+
+<p><img src="/images/Snip20150719_21.png" alt="" /></p>
+
+<h3>多人开发</h3>
+
+<p><img src="/images/Snip20150719_21.png" alt="" />
+<img src="/images/Snip20150719_22.png" alt="" />
+<img src="/images/Snip20150719_23.png" alt="" /></p>
+
+<h3>多人开发冲突如何解决</h3>
+
+<p><img src="/images/Snip20150719_1.png" alt="" /></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014-07-18-dao-hang-lan-she-zhi-ji-qiao/">导航栏设置技巧</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-07-18T16:55:21+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>18</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>4:55 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>1：statusBar字体为白色</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="err">在</span><span class="n">plist</span><span class="err">里面设置</span><span class="n">View</span> <span class="n">controller</span><span class="o">-</span><span class="n">based</span> <span class="n">status</span> <span class="n">bar</span> <span class="n">appearance</span> <span class="err">为</span> <span class="nb">NO</span><span class="err">；设置</span><span class="n">statusBarStyle</span> <span class="err">为</span> <span class="n">UIStatusBarStyleLightContent</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>2:设置statusBar和navigationbar为一体</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[</span><span class="n">nav</span><span class="p">.</span><span class="n">navigationBar</span> <span class="nl">setBackgroundImage</span><span class="p">:[</span><span class="bp">UIImage</span> <span class="nl">imageNamed</span><span class="p">:</span><span class="s">@&quot;bg_navbar.png&quot;</span><span class="p">]</span> <span class="nl">forBarPosition</span><span class="p">:</span><span class="n">UIBarPositionTopAttached</span> <span class="nl">barMetrics</span><span class="p">:</span><span class="n">UIBarMetricsDefault</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>3：tabBarItem被选中没效果，需要调用sdk7中的方法：</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">//兼容ios7以前</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">[</span><span class="n">viewController</span><span class="p">.</span><span class="n">tabBarItem</span> <span class="nl">setFinishedSelectedImage</span><span class="p">:</span><span class="n">actionMenu</span><span class="p">.</span><span class="n">selectedIcon</span> <span class="nl">withFinishedUnselectedImage</span><span class="p">:</span><span class="n">actionMenu</span><span class="p">.</span><span class="n">icon</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//ios7的方法</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">viewController</span><span class="p">.</span><span class="n">tabBarItem</span><span class="p">.</span><span class="n">selectedImage</span> <span class="o">=</span> <span class="n">actionMenu</span><span class="p">.</span><span class="n">selectedIcon</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>4：刷新状态栏statusBar</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[</span><span class="nb">self</span> <span class="n">setNeedsStatusBarAppearanceUpdate</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>5：navigationbar上面的BarButtonItem字看不见问题，backBarItem箭头没有，则需要</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">//ios7设置BarButtonItem字体颜色，则会显示出来，不包括返回箭头</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">[[</span><span class="bp">UIBarButtonItem</span> <span class="n">appearance</span><span class="p">]</span> <span class="nl">setBackButtonTitlePositionAdjustment</span><span class="p">:</span><span class="n">UIOffsetMake</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="nl">forBarMetrics</span><span class="p">:</span><span class="n">UIBarMetricsDefault</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">//设置BarButtonItem颜色，包括返回箭头</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">[[</span><span class="bp">UINavigationBar</span> <span class="n">appearance</span><span class="p">]</span> <span class="nl">setTintColor</span><span class="p">:[</span><span class="bp">UIColor</span> <span class="n">whiteColor</span><span class="p">]];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>6:取消ios7自带手势，比如navigationcontroller的右滑返回</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="nb">self</span><span class="p">.</span><span class="n">navigationController</span><span class="p">.</span><span class="n">interactivePopGestureRecognizer</span><span class="p">.</span><span class="n">enabled</span> <span class="o">=</span> <span class="nb">NO</span> <span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014-07-16-ru-he-qiang-zhi-qu-chu-xcodezhong-de-huang-se-jing-gao/">如何强制去除Xcode中的黄色警告</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-07-16T11:08:55+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>16</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>11:08 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="../../images/Snip20150716_2.png" alt="如何找到警告类型" /></p>
+
+<h5>在Xcode中输入以下代码,并且把出现警告的代码包起来</h5>
+
+<p><img src="../../images/Snip20150716_1.png" alt="Xcode代码" /></p>
+
+<h2>如何利用第三方工具统计崩溃信息</h2>
+
+<p>1 友盟
+2 flurry
+3 crashlytics</p>
+
+<h5>一般如果自己收集程序中的崩溃信息方法如下</h5>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="cm">/**</span>
+</span><span class='line'><span class="cm"> * 拦截异常</span>
+</span><span class='line'><span class="cm"> */</span>
+</span><span class='line'><span class="kt">void</span> <span class="nf">handleException</span><span class="p">(</span><span class="bp">NSException</span> <span class="o">*</span><span class="n">exception</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="bp">NSMutableDictionary</span> <span class="o">*</span><span class="n">info</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSMutableDictionary</span> <span class="n">dictionary</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">info</span><span class="p">[</span><span class="s">@&quot;callStack&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">exception</span> <span class="n">callStackSymbols</span><span class="p">];</span> <span class="c1">// 调用栈信息（错误来源于哪个方法）</span>
+</span><span class='line'>    <span class="n">info</span><span class="p">[</span><span class="s">@&quot;name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">exception</span> <span class="n">name</span><span class="p">];</span> <span class="c1">// 异常名字</span>
+</span><span class='line'>    <span class="n">info</span><span class="p">[</span><span class="s">@&quot;reason&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">exception</span> <span class="n">reason</span><span class="p">];</span> <span class="c1">// 异常描述（报错理由）</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="p">[</span><span class="n">info</span> <span class="nl">writeToFile</span><span class="p">:</span><span class="o">&lt;</span><span class="err">#</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="err">#</span><span class="o">&gt;</span> <span class="nl">atomically</span><span class="p">:</span><span class="o">&lt;</span><span class="err">#</span><span class="p">(</span><span class="kt">BOOL</span><span class="p">)</span><span class="err">#</span><span class="o">&gt;</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 设置捕捉异常的回调</span>
+</span><span class='line'>    <span class="n">NSSetUncaughtExceptionHandler</span><span class="p">(</span><span class="n">handleException</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>也可以在main函数中,使用try catch捕捉错误信息</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">argv</span><span class="p">[])</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">@try</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">@autoreleasepool</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">return</span> <span class="n">UIApplicationMain</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">,</span> <span class="nb">nil</span><span class="p">,</span> <span class="n">NSStringFromClass</span><span class="p">([</span><span class="n">AppDelegate</span> <span class="k">class</span><span class="p">]));</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span> <span class="k">@catch</span> <span class="p">(</span><span class="bp">NSException</span> <span class="o">*</span><span class="n">exception</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;main------%@&quot;</span><span class="p">,</span> <span class="p">[</span><span class="n">exception</span> <span class="n">callStackSymbols</span><span class="p">]);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>如何在程序闪退之前弹出警告窗口</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="kt">void</span> <span class="nf">handleException</span><span class="p">(</span><span class="bp">NSException</span> <span class="o">*</span><span class="n">exception</span><span class="p">)</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="p">[[</span><span class="bp">UIApplication</span> <span class="n">sharedApplication</span><span class="p">].</span><span class="n">delegate</span> <span class="nl">performSelector</span><span class="p">:</span><span class="k">@selector</span><span class="p">(</span><span class="n">handle</span><span class="p">)];</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">handle</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="bp">UIAlertView</span> <span class="o">*</span><span class="n">alertView</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">UIAlertView</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithTitle</span><span class="p">:</span><span class="s">@&quot;哈哈&quot;</span> <span class="nl">message</span><span class="p">:</span><span class="s">@&quot;傻逼了把&quot;</span> <span class="nl">delegate</span><span class="p">:</span><span class="nb">self</span> <span class="nl">cancelButtonTitle</span><span class="p">:</span><span class="s">@&quot;好的&quot;</span> <span class="nl">otherButtonTitles</span><span class="p">:</span><span class="nb">nil</span><span class="p">,</span> <span class="nb">nil</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">alertView</span> <span class="n">show</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 重新启动RunLoop</span>
+</span><span class='line'>    <span class="p">[[</span><span class="bp">NSRunLoop</span> <span class="n">currentRunLoop</span><span class="p">]</span> <span class="nl">addPort</span><span class="p">:[</span><span class="bp">NSPort</span> <span class="n">port</span><span class="p">]</span> <span class="nl">forMode</span><span class="p">:</span><span class="n">NSDefaultRunLoopMode</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">[[</span><span class="bp">NSRunLoop</span> <span class="n">currentRunLoop</span><span class="p">]</span> <span class="n">run</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;handleException-----&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">alertView:</span><span class="p">(</span><span class="bp">UIAlertView</span> <span class="o">*</span><span class="p">)</span><span class="nv">alertView</span> <span class="nf">clickedButtonAtIndex:</span><span class="p">(</span><span class="bp">NSInteger</span><span class="p">)</span><span class="nv">buttonIndex</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;-------点击了好的&quot;</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>网页javascript通过webview调用OC方法&mdash;NSInvocation类</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">id</span><span class="p">)</span><span class="nf">performSelector:</span><span class="p">(</span><span class="kt">SEL</span><span class="p">)</span><span class="nv">selector</span> <span class="nf">withObjects:</span><span class="p">(</span><span class="bp">NSArray</span> <span class="o">*</span><span class="p">)</span><span class="nv">objects</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>    <span class="c1">// 方法签名(方法的描述)</span>
+</span><span class='line'>    <span class="bp">NSMethodSignature</span> <span class="o">*</span><span class="n">signature</span> <span class="o">=</span> <span class="p">[[</span><span class="nb">self</span> <span class="k">class</span><span class="p">]</span> <span class="nl">instanceMethodSignatureForSelector</span><span class="p">:</span><span class="n">selector</span><span class="p">];</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">signature</span> <span class="o">==</span> <span class="nb">nil</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'><span class="c1">//        @throw [NSException exceptionWithName:@&quot;牛逼的错误&quot; reason:@&quot;方法找不到&quot; userInfo:nil];</span>
+</span><span class='line'>        <span class="p">[</span><span class="bp">NSException</span> <span class="nl">raise</span><span class="p">:</span><span class="s">@&quot;牛逼的错误&quot;</span> <span class="nl">format</span><span class="p">:</span><span class="s">@&quot;%@方法找不到&quot;</span><span class="p">,</span> <span class="n">NSStringFromSelector</span><span class="p">(</span><span class="n">selector</span><span class="p">)];</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// NSInvocation : 利用一个NSInvocation对象包装一次方法调用（方法调用者、方法名、方法参数、方法返回值）</span>
+</span><span class='line'>    <span class="bp">NSInvocation</span> <span class="o">*</span><span class="n">invocation</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSInvocation</span> <span class="nl">invocationWithMethodSignature</span><span class="p">:</span><span class="n">signature</span><span class="p">];</span>
+</span><span class='line'>    <span class="n">invocation</span><span class="p">.</span><span class="n">target</span> <span class="o">=</span> <span class="nb">self</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">invocation</span><span class="p">.</span><span class="n">selector</span> <span class="o">=</span> <span class="n">selector</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 设置参数</span>
+</span><span class='line'>    <span class="bp">NSInteger</span> <span class="n">paramsCount</span> <span class="o">=</span> <span class="n">signature</span><span class="p">.</span><span class="n">numberOfArguments</span> <span class="o">-</span> <span class="mi">2</span><span class="p">;</span> <span class="c1">// 除self、_cmd以外的参数个数</span>
+</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="bp">NSInteger</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">paramsCount</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="kt">id</span> <span class="n">object</span> <span class="o">=</span> <span class="n">objects</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+</span><span class='line'>        <span class="k">if</span> <span class="p">([</span><span class="n">object</span> <span class="nl">isKindOfClass</span><span class="p">:[</span><span class="bp">NSNull</span> <span class="k">class</span><span class="p">]])</span> <span class="k">continue</span><span class="p">;</span>
+</span><span class='line'>        <span class="p">[</span><span class="n">invocation</span> <span class="nl">setArgument</span><span class="p">:</span><span class="o">&amp;</span><span class="n">object</span> <span class="nl">atIndex</span><span class="p">:</span><span class="n">i</span> <span class="o">+</span> <span class="mi">2</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 调用方法</span>
+</span><span class='line'>    <span class="p">[</span><span class="n">invocation</span> <span class="n">invoke</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// 获取返回值</span>
+</span><span class='line'>    <span class="kt">id</span> <span class="n">returnValue</span> <span class="o">=</span> <span class="nb">nil</span><span class="p">;</span>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="n">signature</span><span class="p">.</span><span class="n">methodReturnLength</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// 有返回值类型，才去获得返回值</span>
+</span><span class='line'>        <span class="p">[</span><span class="n">invocation</span> <span class="nl">getReturnValue</span><span class="p">:</span><span class="o">&amp;</span><span class="n">returnValue</span><span class="p">];</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="n">returnValue</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014-07-13-cocoapodan-zhuang/">cocoaPod安装</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-07-13T21:27:56+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>13</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>9:27 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>更换源</h2>
+
+<ul>
+<li>Gem是一个管理Ruby库和程序的标准包，它通过Ruby Gem(如 <a href="http://rubygems.org/">http://rubygems.org/</a> )源来查找、安装、升级和卸载软件包</li>
+<li>gem sources &ndash;remove <a href="https://rubygems.org/">https://rubygems.org/</a></li>
+<li>gem sources -a <a href="http://ruby.taobao.org/">http://ruby.taobao.org/</a></li>
+<li>gem sources -l</li>
+</ul>
+
+
+<h2>更新升级gem</h2>
+
+<ul>
+<li>sudo gem update &ndash;system</li>
+</ul>
+
+
+<h2>安装</h2>
+
+<ul>
+<li>sudo gem install cocoapods</li>
+</ul>
+
+
+<h2>更换repo镜像为国内服务器</h2>
+
+<ul>
+<li>pod repo remove master</li>
+<li>pod repo add master <a href="https://gitcafe.com/akuandev/Specs.git">https://gitcafe.com/akuandev/Specs.git</a></li>
+<li>pod repo add master <a href="http://git.oschina.net/akuandev/Specs.git">http://git.oschina.net/akuandev/Specs.git</a>(貌似不行)</li>
+</ul>
+
+
+<h2>初始化第三方库信息</h2>
+
+<ul>
+<li>pod setup</li>
+</ul>
+
+
+<h2>以后更新第三方库信息</h2>
+
+<ul>
+<li>pod repo update</li>
+</ul>
+
+
+<h2>搜索</h2>
+
+<ul>
+<li>pod search</li>
+</ul>
+
+
+<h2>新建Podfile</h2>
+
+<ul>
+<li>vim Podfile</li>
+<li>输入i：进入编辑状态</li>
+<li>输入dd：删除当前行</li>
+<li>按ESC：退出编辑模式</li>
+<li>输入:wq：保存并退出</li>
+<li>Podfile文件的格式</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>platform :ios, '8.0'
+</span><span class='line'>pod '框架名字'
+</span><span class='line'>pod '框架名字', '~&gt; 版本号'</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>解析Podfile，安装第三方框架</h2>
+
+<ul>
+<li>pod install</li>
+</ul>
+
+
+<h2>解析Podfile，升级第三方框架</h2>
+
+<ul>
+<li>pod update</li>
+</ul>
+
+
+<h2>以后使用CocoaPods过程中出现了莫名其妙的问题</h2>
+
+<ul>
+<li>sudo gem update &ndash;system</li>
+<li>sudo gem install cocoapods</li>
+<li>pod setup</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014-07-12-yun-xing-shi-jie-du/">运行时解读</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-07-12T09:21:39+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>12</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>9:21 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h5>CFRunLoopSourceRef是事件源（输入源）</h5>
+
+<ul>
+<li><p>按照官方文档，Source的分类</p>
+
+<ul>
+<li>Port-Based Sources</li>
+<li>Custom Input Sources</li>
+<li>Cocoa Perform Selector Sources</li>
+</ul>
+</li>
+<li><p>按照函数调用栈，Source的分类</p>
+
+<ul>
+<li>Source0：非基于Port的</li>
+<li>Source1：基于Port的，通过内核和其他线程通信，接收、分发系统事件</li>
+</ul>
+</li>
+</ul>
+
+
+<p><img src="/images/Snip20150712_1.png" alt="运行时按钮点击sourcetype" /></p>
+
+<h5>CFRunLoopObserverRef是观察者，能够监听RunLoop的状态改变</h5>
+
+<ul>
+<li>可以监听的时间点有以下几个
+<img src="/images/Snip20150712_3.png" alt="观察者类" /></li>
+</ul>
+
+
+<h5>如何让一个线程不被销毁,而且随时可以使用</h5>
+
+<ul>
+<li>NSThread调用start方法可以执行一个任务,但是之后就进入销毁状态,即便有强引用指针引用,不会被销毁,也不能再次调用start方法</li>
+<li>也不能通过[self performselector:@selector(run) onThread:self.thread withObject:nil waitUnitlDone:nil]在这个线程处理任务</li>
+<li>所以只能让运行循环添加了mode,并且添加事件源(source)\timer\observe等</li>
+</ul>
+
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="nb">self</span><span class="p">.</span><span class="kr">thread</span> <span class="o">=</span> <span class="p">[[</span><span class="n">HYWThread</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithTarget</span><span class="p">:</span><span class="nb">self</span> <span class="nl">selector</span><span class="p">:</span><span class="k">@selector</span><span class="p">(</span><span class="n">run</span><span class="p">)</span> <span class="nl">object</span><span class="p">:</span><span class="nb">nil</span><span class="p">];</span>
+</span><span class='line'><span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="kr">thread</span> <span class="n">start</span><span class="p">];</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// 在run方法中配置运行循环</span>
+</span><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">run</span>
+</span><span class='line'><span class="p">{</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">[[</span><span class="bp">NSRunLoop</span> <span class="n">currentRunLoop</span><span class="p">]</span> <span class="nl">addPort</span><span class="p">:[</span><span class="bp">NSPort</span> <span class="n">port</span><span class="p">]</span> <span class="nl">forMode</span><span class="p">:</span><span class="n">NSDefaultRunLoopMode</span><span class="p">];</span>
+</span><span class='line'><span class="p">[[</span><span class="bp">NSRunLoop</span> <span class="n">currentRunLoop</span><span class="p">]</span> <span class="n">run</span><span class="p">];</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>所以一个线程能不能持久运行,第一看有没有运行循环,再看运行循环有没有mode,在mode里有没有(source)\timer\observe,如果没有,运行循环退出,线程进入死亡状态</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014-07-11-sdwebimagejie-du/">SDWebImage解读</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-07-11T17:54:46+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>11</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>5:54 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/0711-%E5%B8%B8%E7%94%A8%E6%A1%86%E6%9E%B6.png" alt="常用框架" />
+<img src="/images/Snip20150711_4.png" alt="SDWebimage解读" /></p>
+
+<h4>图片文件缓存的时间有多长：1周</h4>
+
+<pre><code>_maxCacheAge ＝ kDefaultCacheMaxCacheAge
+</code></pre>
+
+<h4>SDWebImage 的内存缓存是用什么实现的？</h4>
+
+<pre><code>NSCache！
+</code></pre>
+
+<h4>SDWebImage 的最大并发数是多少？</h4>
+
+<pre><code>maxConcurrentDownloads ＝ 6 是程序固定死了，可以通过属性进行调整！
+</code></pre>
+
+<h4>SDWebImage 支持动图吗？GIF</h4>
+
+<pre><code>支持
+// #import &lt;ImageIO/ImageIO.h&gt;
+[UIImage animatedImageWithImages:images duration:duration];
+</code></pre>
+
+<h4>SDWebImage是如何区分不同格式的图像的</h4>
+
+<pre><code>根据图像数据第一个字节来判断的！
+
+PNG：压缩比没有JPG高，但是无损压缩，解压缩性能高，苹果推荐的图像格式！
+JPG：压缩比最高的一种图片格式，有损压缩！最多使用的场景，照相机！
+    解压缩的性能不好！
+GIF：序列桢动图，特点：只支持256种颜色！最流行的时候在1998～1999，有专利的！
+</code></pre>
+
+<h4>SDWebImage 缓存图片的名称是怎么确定的！</h4>
+
+<pre><code>www.baidu.com/logo.png
+
+如果单纯使用 文件名保存，重名的几率很高！
+
+使用 MD5 的散列函数！对完整的 URL 进行 md5，结果是一个 32 个字符长度的字符串！
+</code></pre>
+
+<h4>SDWebImage 的内存警告是如何处理的！</h4>
+
+<p><img src="/images/Snip20150711_5.png" alt="SDWebimage图片缓存" /></p>
+
+<h5>利用通知中心观察</h5>
+
+<pre><code>- UIApplicationDidReceiveMemoryWarningNotification 接收到内存警告的通知
+</code></pre>
+
+<h5>执行 clearMemory 方法，清理内存缓存！</h5>
+
+<pre><code>- UIApplicationWillTerminateNotification 接收到应用程序将要终止通知
+</code></pre>
+
+<h5>执行 cleanDisk 方法，清理磁盘缓存！</h5>
+
+<pre><code>- UIApplicationDidEnterBackgroundNotification 接收到应用程序进入后台通知
+</code></pre>
+
+<h5>执行 backgroundCleanDisk 方法，后台清理磁盘！</h5>
+
+<pre><code>通过以上退出的通知，能够保证缓存文件的大小始终在控制范围之内！
+</code></pre>
+
+<h4>clearDisk 清空磁盘缓存，将所有缓存目录中的文件，全部删除！实际工作，将缓存目录直接删除，再次创建一个同名空目录！</h4>
+
+<h3>位移枚举</h3>
+
+<ul>
+<li>利用位移枚举，可以通过按位或的方式，使用一个参数传递多个类型的组合！</li>
+<li>在所有 C 语言中，如果看到位移枚举做参数，第一个选项不是0</li>
+<li>暗示：传入 0 做参数，表示什么附加操作都不做！执行效率最高！</li>
+</ul>
+
+
+<p><img src="/images/Snip20150711_7.png" alt="位移操作" /></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014-07-11-iosde-yan-shi-cun-chu/">iOS的延时存储</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-07-11T11:22:42+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>11</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>11:22 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>查找沙盒路径</h2>
+
+<ul>
+<li>显示沙盒路径</li>
+</ul>
+
+
+<p><code>po NSHomeDirectory()</code></p>
+
+<ul>
+<li>显示 Bundle 路径</li>
+</ul>
+
+
+<p><code>po [[NSBundle mainBundle] bundlePath]</code></p>
+
+<ul>
+<li>po = print object 是 lldb 的指令，是非常重要的调试指令</li>
+</ul>
+
+
+<p>不用在开发时，写大量的 NSLog</p>
+
+<h2>沙盒的主要路径</h2>
+
+<p><img src="/images/Snip20150711_3.png" alt="沙盒路径" /></p>
+
+<ul>
+<li>Documents
+
+<ul>
+<li>需要保存由<strong>应用程序本身</strong>产生的文件或者数据，例如：游戏进度、涂鸦软件的绘图</li>
+<li>目录中的文件会被自动保存在 iCloud</li>
+<li>注意：不要保存从网络上下载的文件，否则会无法上架！</li>
+</ul>
+</li>
+<li>Caches
+
+<ul>
+<li>保存临时文件，<strong>后续需要使用</strong>，例如：缓存图片，离线数据(地图数据)</li>
+<li>系统不会清理 cache 目录中的文件</li>
+<li>就要求程序开发时，<strong>必须提供 cache 目录的清理解决方案</strong></li>
+</ul>
+</li>
+<li>tmp
+
+<ul>
+<li>保存临时文件，<strong>后续不需要使用</strong></li>
+<li>tmp 目录中的文件，系统会自动清理</li>
+<li>重新启动手机，tmp 目录会被清空</li>
+<li>系统磁盘空间不足时，系统也会自动清理</li>
+</ul>
+</li>
+<li>Preferences
+
+<ul>
+<li>用户偏好，使用 <code>NSUserDefault</code> 直接读写！</li>
+<li>如果要想数据及时写入磁盘，还需要调用一个同步方法 <code>synchronize</code></li>
+</ul>
+</li>
+</ul>
+
+
+<h2>路径对比</h2>
+
+<p><img src="/images/Snip20150711_1.png" alt="Xcode路径" /></p>
+
+<p>bundle 路径</p>
+
+<p>/Users/apple/Library/Developer/CoreSimulator/Devices/73ADBB27-9F61-4D2D-9C1B-D3340507F70A/data/Containers/Bundle/Application/4EAD4389-FEAB-46B0-B053-E4405CF75230/</p>
+
+<p>沙盒路径</p>
+
+<p>/Users/apple/Library/Developer/CoreSimulator/Devices/73ADBB27-9F61-4D2D-9C1B-D3340507F70A/data/Containers/Data/Application/AD1CEEEC-B8D7-415E-A254-32F31BE738DF</p>
+
+<p>UDID - 随即声成的一组唯一的字符串组合</p>
+
+<ol>
+<li>73ADBB27-9F61-4D2D-9C1B-D3340507F70A 表示模拟器，及时模拟器重新设置，该数字也不会改变</li>
+<li>4EAD4389-FEAB-46B0-B053-E4405CF75230 对应的是 &ldquo;bundle&rdquo;</li>
+<li>AD1CEEEC-B8D7-415E-A254-32F31BE738DF 对应的是 &ldquo;沙盒&rdquo; 会变化</li>
+</ol>
+
+
+<p>注意：以上的特点是在 iOS 8.0 以上才有的，会更安全！</p>
+
+<p>在 iOS 7.0 以及之前，Bunlde 的路径和沙盒的路径在一个目录下！</p>
+
+<p>iOS 程序员，一定要熟悉各个版本之间的变化！</p>
+
+<h2>iOS 6.0 的一些细节！</h2>
+
+<p>新出了一个非常流行的面试题：一个 iOS 6.0 的程序，直接在 iOS 7.0 的设备上运行，通常会出现什么问题？</p>
+
+<p><img src="/images/02-01-iOS6.0%E7%8A%B6%E6%80%81%E6%A0%8F.png" alt="状态栏" />
+<img src="/images/02-02-iOS6.0%E7%8A%B6%E6%80%81%E6%A0%8F&amp;TabBar.png" alt="tabBar" /></p>
+
+<ul>
+<li><p>状态栏高度 20 个点是不包含在 <code>view.frame</code> 中的，<code>self.view</code> 的左上角原点的坐标位置是从状态栏下方开始计算</p>
+
+<ul>
+<li>iOS 6.0 程序直接在 iOS 7.0 的系统中运行最常见的问题，就是少了20个点</li>
+</ul>
+</li>
+<li><p>如果包含有 <code>UINavigationController</code>，<code>self.view</code>的左上角坐标原点从状态栏下方开始计算</p>
+
+<ul>
+<li>因此，iOS 6.0的系统无法实现表格从导航条下方穿透的效果</li>
+</ul>
+</li>
+<li><p>如果包含有 <code>UITabBarController</code>，<code>self.view</code>的底部不包含 TabBar</p>
+
+<ul>
+<li>因此，iOS 6.0的系统无法实现表格从 TabBar 下方穿透效果</li>
+</ul>
+</li>
+</ul>
+
+
+<h1>设计模式</h1>
+
+<p>所谓设计模式，就是经过无数程序员的努力，在很多代码的基础上抽取出来的"模式"</p>
+
+<p>一种设计模式，通常用来解决一种问题</p>
+
+<h2>MVC体系架构</h2>
+
+<p>也是一个设计模式，主要解决：界面(V)，数据模型(M)，彼此之间的关联和控制&copy;
+目的：让UI交互与数据模型解耦！</p>
+
+<h2>观察者模式</h2>
+
+<p>定义对象间的一种一对多的依赖关系，当一个对象的状态发生改变时，所有依赖于它的对象都得到通知并被自动更新</p>
+
+<p>iOS 中，通知中心和 KVO 都属于观察者模式</p>
+
+<h2>单例设计模式</h2>
+
+<p>保证一个类仅有一个实例，并提供一个访问它的全局访问点</p>
+
+<p>iOS 中常见的单例
+- UIApplication
+- NSFileManager
+- NSUserDefaults
+- NSNotificationCenter</p>
+
+<p>在iOS开发中，单例的应用非常广，甚至有滥用的趋势！</p>
+
+<h2>在iOS8之后模型中默认只包含foundation框架</h2>
+
+<h2>Block的另一种写法</h2>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">//typedef void(^myBlock)(UIImage *image);</span>
+</span><span class='line'><span class="c1">//@property (nonatomic, copy) myBlock completion;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>但是：<code>苹果官方非常不推荐这种写法！</code></li>
+<li>原因：
+
+<ol>
+<li>block 的定义是写在头文件中的，其他的文件一旦 import，定义就会被导入！
+如果其他的头文件中也存在 myBlock，就会产生冲突！</li>
+<li>typedDefBlock 如果必须要用，也最好用在 .m 文件中！</li>
+</ol>
+</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/posts/4">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/posts/2">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015-09-15-ji-shi-tong-xun-ji-zhu/">即时通讯技术</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015-05-29-ioslan-ya-4-dot-0kai-fa/">iOS蓝牙4.0开发</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015-05-11-nsscannerchu-li-fu-wu-qi-shu-ju-yi-chang-,-shu-ju-chu-li/">NSScanner处理服务器数据异常、数据处理</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015-04-07-gcdde-di-ceng-yi-ji-gcdde-miao-yong/">GCD的底层以及GCD的妙用</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015-03-29-html5chang-yong-kuang-jia/">未来的技术 - HTML5</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015-02-27-shen-ru-yan-jiu-cadisplaylinkhe-nstimer/">深入研究CADisplayLink和NSTimer</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015-02-19-er-wei-ma-zhi-zuo/">二维码制作</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-30-shu-ju-jie-xi-mo-xing-she-zhi-de-ji-qiao/">数据解析模型设置的技巧</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-10-popmenucontrollerzhu-yi-shi-xiang/">popMenuController注意事项</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-08-zi-ding-yi-kong-jian-feng-zhuang-de-zhu-yi-shi-xiang/">自定义控件封装的注意事项</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-07-textfieldhe-textviewde-qu-bie/">Textfield和TextView的区别</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-06-appearancetong-%5B%3F%5D-she-zhi-zhu-ti-de-wen-ti/">Appearance统一设置主题的问题</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-05-webviewjia-zai-jin-du-tiao-de-bu-kai-fang-he-chang-jian-jie-jue-fang-an/">webView加载进度条的不开放和常见解决方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-05-bai-si-bu-de-jie-zong-jie-8yue-5ri/">Modal出来的控制器再modal一个控制器的问题</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-04-layer-dot-cornerradiusxing-neng-wen-ti-ji-jie-jue-fang-an/">layer.cornerRadius性能问题及解决方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-03-bai-si-bu-de-jie-xiang-mu-geng-duo-zong-jie/">让一个普通控件弹出menuController的步骤</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-02-bai-si-bu-de-jie-xiang-mu-zong-jie/">多组表格网络请求加载失败可能引发的小问题</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-07-30-bai-si-bu-de-jie-xiang-mu-zong-jie/">Facebook第三方框架pop动画</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-07-29-bai-si-bu-de-jie-xiang-mu-zong-jie/">Quartz实现image缩放的技巧</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-07-26-gao-fang-bai-si-bu-de-jie-zong-jie/">Textfield魔法效果实现</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Heew -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

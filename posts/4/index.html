@@ -1,0 +1,2557 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Heew’s iOS Blog</title>
+  <meta name="author" content="Heew">
+
+  
+  <meta name="description" content="在自定义非等高cell中,cell的子控件约束,y方向不能把约束定死,否则会崩溃 因为cell的高度是按照里面内容计算出来的,如果cellY方向约束定死的话
+约束和tableView代理方法返回的高度,两个高度会有冲突,当拖动tableView的时候逐渐变小
+打印tableView发现, &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://heeween.github.io/posts/4/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Heew’s iOS Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Heew’s iOS Blog</a></h1>
+  
+    <h2>A personal blog accounting problems for iOS.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.baidu.com" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="heeween.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014-07-09-zi-ding-yi-fei-deng-gao-cellchu-xian-de-keng/">自定义非等高cell出现的坑</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-07-09T15:46:39+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>3:46 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h5>在自定义非等高cell中,cell的子控件约束,y方向不能把约束定死,否则会崩溃</h5>
+
+<ul>
+<li>因为cell的高度是按照里面内容计算出来的,如果cellY方向约束定死的话</li>
+<li>约束和tableView代理方法返回的高度,两个高度会有冲突,当拖动tableView的时候逐渐变小</li>
+<li>打印tableView发现,tableView计算的高度有时候变为了负值,这时候程序就崩溃了</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>    NSLog(@"%f-------%zd",status.cellheight,indexPath.row);
+</span><span class='line'>    
+</span><span class='line'>    // 打印结果如下
+</span><span class='line'>2015-07-09 16:13:00.007 微博自定义xib[2877:51969] 30.000000-------2
+</span><span class='line'>2015-07-09 16:13:00.173 微博自定义xib[2877:51969] 19.500000-------2
+</span><span class='line'>2015-07-09 16:13:00.406 微博自定义xib[2877:51969] 9.000000-------2
+</span><span class='line'>2015-07-09 16:13:00.873 微博自定义xib[2877:51969] -1.500000-------2</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>Y方向设置约束留一个底部约束,这样以便每次根据内容算出高度,通过代理方法返回给tableView</li>
+</ul>
+
+
+<h5>但是一不注意,还是会有其他问题出现,例如,如果xib中cell的宽度拖的太宽,出来的cell就会出现如下状况</h5>
+
+<p><img src="/images/Snip20150709_1.png" alt="label的宽度出现异常" /></p>
+
+<ul>
+<li>拖动几下tableView又好了</li>
+</ul>
+
+
+<p><img src="/images/Snip20150709_2.png" alt="拖动之后的tableView" /></p>
+
+<ul>
+<li>原因是从xib创建的控件,如果约束不完整,会默认它的autoresizing属性是宽度和高度自适应的</li>
+<li>cell的宽度会根据xib中的宽度自适应</li>
+<li>所以label计算出来的宽度不准确,高度也不准确</li>
+<li>返回的cellheight也就不准确</li>
+<li>只有当cell刷新显示以后才会根据约束计算宽度和高度,才会显示正常</li>
+</ul>
+
+
+<h5>但是问题还没彻底解决,当label的文字过多时,就会发现,label的高度超过了实现的文字高度</h5>
+
+<p><img src="/images/Snip20150709_3.png" alt="label文字高度问题" /></p>
+
+<ul>
+<li>原因是label设置的问题,label不知道最大的宽度,计算出来高度会超过实现的高度</li>
+<li>要设置label的self.contentLabel.preferredMaxLayoutWidth = [UIScreen mainScreen].bounds.size.width - 20属性</li>
+</ul>
+
+
+<h5>紧接着又发现一个问题,label高度是正常了,但是文字显示有点问题</h5>
+
+<p><img src="/images/Snip20150709_4.png" alt="设置label最大宽度" /></p>
+
+<ul>
+<li>原因是什么呢,找了好久,终于发现问题所在了</li>
+<li>原来我的约束设置label对cell的左右宽度虽然都是10,但是是距离margin的约束是10</li>
+</ul>
+
+
+<p><img src="/images/Snip20150709_5.png" alt="xib中label的约束" /></p>
+
+<ul>
+<li>改好,显示完全正常了</li>
+<li>因此得出结论,label最大宽度一定要比约束算出来的值小</li>
+</ul>
+
+
+<p><img src="/images/Snip20150709_6.png" alt="显示正常" /></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014-07-09-nsoperation/">NSOperation</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-07-09T09:20:06+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>9:20 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h5>NSOperation的作用</h5>
+
+<ul>
+<li>配合使用NSOperation和NSOperationQueue也能实现多线程编程</li>
+</ul>
+
+
+<h5>NSOperation和NSOperationQueue实现多线程的具体步骤</h5>
+
+<ul>
+<li>先将需要执行的操作封装到一个NSOperation对象中</li>
+<li>然后将NSOperation对象添加到NSOperationQueue中</li>
+<li>系统会自动将NSOperationQueue中的NSOperation取出来</li>
+<li>将取出的NSOperation封装的操作放到一条新线程中执行</li>
+</ul>
+
+
+<h5>NSOperation是个抽象类，并不具备封装操作的能力，必须使用它的子类</h5>
+
+<ul>
+<li>使用NSOperation子类的方式有3种</li>
+<li>NSInvocationOperation</li>
+<li>NSBlockOperation</li>
+<li>自定义子类继承NSOperation，实现内部相应的方法</li>
+</ul>
+
+
+<h5>NSInvocationOperation,跟NSThread类相似</h5>
+
+<ul>
+<li><p>创建NSInvocationOperation对象</p>
+
+<ul>
+<li>(id)initWithTarget:(id)target selector:(SEL)sel object:(id)arg;</li>
+</ul>
+</li>
+<li><p>调用start方法开始执行操作</p>
+
+<ul>
+<li>(void)start;</li>
+<li>一旦执行操作，就会调用target的sel方法</li>
+</ul>
+</li>
+<li><p>注意,和NSThread不同点如下:</p>
+
+<ul>
+<li>默认情况下，调用了start方法后并不会开一条新线程去执行操作，而是在当前线程同步执行操作</li>
+<li>只有将NSOperation放到一个NSOperationQueue中，才会异步执行操作</li>
+<li>NSOperation是任务类,NSThread是线程类</li>
+</ul>
+</li>
+</ul>
+
+
+<h5>NSBlockOperation</h5>
+
+<ul>
+<li><p>创建NSBlockOperation对象</p>
+
+<ul>
+<li>(id)blockOperationWithBlock:(void (^)(void))block;</li>
+</ul>
+</li>
+<li><p>通过addExecutionBlock:方法添加更多的操作</p>
+
+<ul>
+<li>(void)addExecutionBlock:(void (^)(void))block;</li>
+</ul>
+</li>
+<li><p>注意：只要NSBlockOperation封装的操作数 > 1，就会异步执行操作</p></li>
+<li>与NSThread不同的是,一个线程可以添加多个方法去执行,NSThread只能添加一个方法,方法中添加多个任务</li>
+</ul>
+
+
+<h5>自定义Operation任务</h5>
+
+<ul>
+<li>继承自抽象类NSOperation</li>
+<li>外界创建就用[[HYWOperation alloc] init]</li>
+<li>具体任务,需要改写内部的main方法,在main方法写操作</li>
+<li>好处是,适合一个很长的任务,封装到自己的.m文件中,想执行的时候,直接[[HYWOperation alloc] init],添加到队列就可以执行了</li>
+<li><p><code>NSOperation 默认提供了一个 completionBlock 的参数，一旦设置，就会在操作执行完毕后，自动执行！</code></p>
+
+<p>  － completionBlock 会在后台线程执行，不会在主线程执行，所以如果要更新UI，需要注意线程
+  － completionBlock 不能接受参数，没有返回值，因此在使用的时候，会有很多限制！</p></li>
+</ul>
+
+
+<h5>NSOperationQueue的作用</h5>
+
+<ul>
+<li>NSOperation可以调用start方法来执行任务，但默认是同步执行的</li>
+<li>如果将NSOperation添加到NSOperationQueue（操作队列）中，系统会自动异步执行NSOperation中的操作</li>
+<li><p>NSOperationQueue队列类型:</p>
+
+<ul>
+<li>1.主队列[NSOperationQueue mainQueue];</li>
+<li>2.其他队列(既有串行又有并发功能)[[NSOperationQueue alloc] init]</li>
+</ul>
+</li>
+<li><p>添加操作到NSOperationQueue中</p>
+
+<ul>
+<li>只要添加到队列中,系统会自动调用NSOperation 的start方法,并且开启线程</li>
+<li>(void)addOperation:(NSOperation *)op;</li>
+<li>(void)addOperationWithBlock:(void (^)(void))block;</li>
+</ul>
+</li>
+<li><p>NSOpreation的最大并发数</p>
+
+<ul>
+<li>同时执行的任务数</li>
+<li>比如，同时开3个线程执行3个任务，并发数就是3</li>
+<li>如果设置为1 ,当前的NSOperationQueue就是串行队列</li>
+<li>如果设置为0,当前的NSOperationQueue,同时执行任务数为0,即不执行</li>
+</ul>
+</li>
+<li><p>最大并发数的相关方法</p>
+
+<ul>
+<li>(NSInteger)maxConcurrentOperationCount;</li>
+<li>(void)setMaxConcurrentOperationCount:(NSInteger)cnt;</li>
+</ul>
+</li>
+<li><p>暂停和恢复队列,为了增强用户体验,使用queue的挂起和开启来切换,GCD和NSThread都没有这个功能</p>
+
+<ul>
+<li>(void)setSuspended:(BOOL)b; // YES代表暂停队列，NO代表恢复队列</li>
+<li>(BOOL)isSuspended;</li>
+</ul>
+</li>
+<li><p>NSOperation取消的注意点:</p>
+
+<ul>
+<li>一旦开启后,正在执行的任务,不会受外界cancel方法的影响,会一直执行下去</li>
+<li>所以苹果建议,NSOperation里面,每执行完一段耗时操作就判断下,外界是否cancel</li>
+<li>手动强制取消下正在执行的任务,直接return</li>
+</ul>
+</li>
+<li><p>NSOperationQueue的依赖,任务执行顺序</p>
+
+<ul>
+<li>直接调用想依赖NSOperation对象的addDependency方法,就可以设置NSOperation依赖的对象</li>
+<li>千万注意,NSOperation对象,不能循环依赖,否则,进入死锁</li>
+<li>NSOperation对象还可以跨队列,设置依赖,不受队列的影响</li>
+<li>GCD的依赖是通过队列组来实现的,但不同的是NSOperation是可以跨队列的</li>
+</ul>
+</li>
+<li><p>NSOperationQueue还可以设置里面任务的完成监听方法</p>
+
+<ul>
+<li>执行设置NSOperation的comletionBlock方法,将提示写在Block里面即可</li>
+<li>任务完成的监听方法,也是在子线程执行</li>
+</ul>
+</li>
+</ul>
+
+
+<h5>NSOperationQueue和主队列之间的通信</h5>
+
+<ul>
+<li>直接在NSOperationQueue的任务执行完之后</li>
+<li>写[SNOperationQueue mainQueue] addOperationWithBlock方法执行UI线程</li>
+</ul>
+
+
+<p>Temp 下载的文件都是临时,随时删除
+Caches 下载的文件要永久保留
+Document里面禁止放下载文件,否则审核不通过</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014-07-08-gcdhe-nsoperation/">GCD</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-07-08T14:39:23+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>8</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>2:39 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/GCD.png" alt="GCD结构图" /></p>
+
+<h6>什么是GCD</h6>
+
+<ul>
+<li>全称是Grand Central Dispatch，可译为“牛逼的中枢调度器”</li>
+<li>纯C语言，提供了非常多强大的函数</li>
+</ul>
+
+
+<h5>GCD的优势</h5>
+
+<ul>
+<li>GCD是苹果公司为多核的并行运算提出的解决方案</li>
+<li>GCD会自动利用更多的CPU内核（比如双核、四核）</li>
+<li>GCD会自动管理线程的生命周期（创建线程、调度任务、销毁线程）</li>
+<li>程序员只需要告诉GCD想要执行什么任务，不需要编写任何线程管理代码</li>
+</ul>
+
+
+<h5>GCD中有2个核心概念</h5>
+
+<ul>
+<li>任务：执行什么操作</li>
+<li>队列：用来存放任务</li>
+</ul>
+
+
+<h5>GCD的使用就2个步骤</h5>
+
+<ul>
+<li>定制任务</li>
+<li>确定想做的事情</li>
+</ul>
+
+
+<h5>将任务添加到队列中</h5>
+
+<ul>
+<li>GCD会自动将队列中的任务取出，放到对应的线程中执行</li>
+<li>任务的取出遵循队列的FIFO原则：先进先出，后进后出</li>
+</ul>
+
+
+<h5>同步和异步主要影响：能不能开启新的线程</h5>
+
+<ul>
+<li>同步：只是在当前线程中执行任务，不具备开启新线程的能力</li>
+<li>异步：可以在新的线程中执行任务，具备开启新线程的能力</li>
+</ul>
+
+
+<h5>并发和串行主要影响：任务的执行方式</h5>
+
+<ul>
+<li>并发：允许多个任务并发（同时）执行</li>
+<li>串行：一个任务执行完毕后，再执行下一个任务
+<img src="/images/Snip20150708_1.png" alt="各种队列的执行效果" /></li>
+</ul>
+
+
+<h4>手动创建并发队列</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>dispatch_queue_t queue = dispatch_queue_create("com.520it.queue", DISPATCH_QUEUE_CONCURRENT);
+</span><span class='line'>dispatch_queue_t
+</span><span class='line'>dispatch_queue_create(const char *label, // 队列名称 
+</span><span class='line'>dispatch_queue_attr_t attr); // 队列的类型</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>获得全局并发队列</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0); 
+</span><span class='line'>使用dispatch_get_global_queue函数获得全局的并发队列
+</span><span class='line'>dispatch_queue_t dispatch_get_global_queue(
+</span><span class='line'>dispatch_queue_priority_t priority, // 队列的优先级
+</span><span class='line'>unsigned long flags); // 此参数暂时无用，用0即可
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>手动创建串行队列</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>使用dispatch_queue_create函数创建串行队列
+</span><span class='line'>// 创建串行队列（队列类型传递NULL或者DISPATCH_QUEUE_SERIAL）
+</span><span class='line'>dispatch_queue_t queue = dispatch_queue_create("com.520it.queue", NULL); 
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>获得GCD自带的串行队列(主队列)</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>主队列是GCD自带的一种特殊的串行队列
+</span><span class='line'>放在主队列中的任务，都会放到主线程中执行
+</span><span class='line'>使用dispatch_get_main_queue()获得主队列
+</span><span class='line'>dispatch_queue_t queue = dispatch_get_main_queue();
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>同步sync函数,以同步方式执行队列中的任务(不具备开线程能力)</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>用同步的方式执行任务
+</span><span class='line'>dispatch_sync(dispatch_queue_t queue, dispatch_block_t block);
+</span><span class='line'>queue：队列
+</span><span class='line'>block：任务
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>异步async函数,以异步方式执行队列中的任务(具备开线程能力)</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>用异步的方式执行任务
+</span><span class='line'>dispatch_async(dispatch_queue_t queue, dispatch_block_t block);
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>使用sync函数往当前串行队列中添加任务，会卡住当前的串行队列</h4>
+
+<h4>同步异步是函数,串行并行是参数,任务是block(可以是C语言代码,也可以是OC代码)</h4>
+
+<h5>同步函数执行必须是按照顺序来,绝对不等线程中排在它后面的任务先执行,也绝对不会前面任务没执行自己就先执行,所以当自己的任务放在前面任务里面,那么就会造成死锁</h5>
+
+<h5>异步函数执行是回等待主线程空闲后在调度队列中其他任务,所以当自己的任务放在前面的任务里面,也会等待前面任务先完成,然后自己的任务再执行.成功解锁.</h5>
+
+<h5>barrier函数是可以做到把前面的任务的后面的任务分开,一定要等到前面全部做完,才做后面的任务</h5>
+
+<h5>延时执行</h5>
+
+<ul>
+<li>调用NSObject的方法</li>
+<li>调用NSTimer的方法</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>调用NSObject的方法
+</span><span class='line'>[self performSelector:@selector(run) withObject:nil afterDelay:2.0];
+</span><span class='line'>// 2秒后再调用self的run方法
+</span><span class='line'>
+</span><span class='line'>使用NSTimer
+</span><span class='line'>[NSTimer scheduledTimerWithTimeInterval:2.0 target:self selector:@selector(test) userInfo:nil repeats:NO];
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>GCD方法</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>使用GCD函数
+</span><span class='line'>dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+</span><span class='line'>    // 2秒后执行这里的代码...
+</span><span class='line'>});</span></code></pre></td></tr></table></div></figure>
+
+
+<h5>GCD的一次性代码</h5>
+
+<ul>
+<li>比较适合程序中加载资源的操作</li>
+<li>和懒加载是不一样的</li>
+<li>懒加载的意思是每个对象的属性get方法,只初始化一次</li>
+<li>一次性代码是整个运行过程只运行一次,再创建的对象,get方法时,就相当于没有初始化,就位空值</li>
+<li>一次性代码也不用担心多条线程同时执行,导致被执行多次,一次性代码是自动加锁的</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>使用dispatch_once函数能保证某段代码在程序运行过程中只被执行1次
+</span><span class='line'>static dispatch_once_t onceToken;
+</span><span class='line'>dispatch_once(&onceToken, ^{
+</span><span class='line'>    // 只执行1次的代码(这里面默认是线程安全的)
+</span><span class='line'>});
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h5>GCD的快速迭代</h5>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>使用dispatch_apply函数能进行快速迭代遍历
+</span><span class='line'>dispatch_apply(10, dispatch_get_global_queue(0, 0), ^(size_t index){
+</span><span class='line'>    // 执行10次代码，index顺序不确定
+</span><span class='line'>});
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>利用GCD快速迭代 快速将一个文件夹的文件,剪切到另一个文件夹</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+</span><span class='line'>NSString *from = @"/Users/xiaomage/Desktop/From";
+</span><span class='line'>NSString *to = @"/Users/xiaomage/Desktop/To";
+</span><span class='line'>
+</span><span class='line'>NSFileManager *mgr = [NSFileManager defaultManager];
+</span><span class='line'>NSArray *subpaths = [mgr subpathsAtPath:from];
+</span><span class='line'>
+</span><span class='line'>dispatch_apply(subpaths.count, queue, ^(size_t index) {
+</span><span class='line'>    NSString *subpath = subpaths[index];
+</span><span class='line'>    NSString *fromFullpath = [from stringByAppendingPathComponent:subpath];
+</span><span class='line'>    NSString *toFullpath = [to stringByAppendingPathComponent:subpath];
+</span><span class='line'>    // 剪切
+</span><span class='line'>    [mgr moveItemAtPath:fromFullpath toPath:toFullpath error:nil];
+</span><span class='line'>    
+</span><span class='line'>    NSLog(@"%@---%@", [NSThread currentThread], subpath);
+</span><span class='line'>});</span></code></pre></td></tr></table></div></figure>
+
+
+<h5>GCD的队列组</h5>
+
+<ul>
+<li>获得全局并发队列去下载两张图片,调用异步函数执行,同时下载效率更高</li>
+<li>并且使这两个队列以组的形式执行</li>
+<li>合成图片用group_notify函数执行,就会等group的两个函数执行完,才执行合成图片</li>
+<li>然后在group_notify函数中,回到主线程异步或者同步执行,显示图片</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+</span><span class='line'>// 创建一个队列组
+</span><span class='line'>dispatch_group_t group = dispatch_group_create();
+</span><span class='line'>
+</span><span class='line'>// 1.下载图片1
+</span><span class='line'>dispatch_group_async(group, queue, ^{
+</span><span class='line'>    // 图片的网络路径
+</span><span class='line'>    NSURL *url = [NSURL URLWithString:@"http://img.pconline.com.cn/images/photoblog/9/9/8/1/9981681/200910/11/1255259355826.jpg"];
+</span><span class='line'>    
+</span><span class='line'>    // 加载图片
+</span><span class='line'>    NSData *data = [NSData dataWithContentsOfURL:url];
+</span><span class='line'>    
+</span><span class='line'>    // 生成图片
+</span><span class='line'>    self.image1 = [UIImage imageWithData:data];
+</span><span class='line'>});
+</span><span class='line'>
+</span><span class='line'>// 2.下载图片2
+</span><span class='line'>dispatch_group_async(group, queue, ^{
+</span><span class='line'>    // 图片的网络路径
+</span><span class='line'>    NSURL *url = [NSURL URLWithString:@"http://pic38.nipic.com/20140228/5571398_215900721128_2.jpg"];
+</span><span class='line'>    
+</span><span class='line'>    // 加载图片
+</span><span class='line'>    NSData *data = [NSData dataWithContentsOfURL:url];
+</span><span class='line'>    
+</span><span class='line'>    // 生成图片
+</span><span class='line'>    self.image2 = [UIImage imageWithData:data];
+</span><span class='line'>});
+</span><span class='line'>
+</span><span class='line'>// 3.将图片1、图片2合成一张新的图片
+</span><span class='line'>dispatch_group_notify(group, queue, ^{
+</span><span class='line'>    // 开启新的图形上下文
+</span><span class='line'>    UIGraphicsBeginImageContext(CGSizeMake(100, 100));
+</span><span class='line'>    
+</span><span class='line'>    // 绘制图片
+</span><span class='line'>    [self.image1 drawInRect:CGRectMake(0, 0, 50, 100)];
+</span><span class='line'>    [self.image2 drawInRect:CGRectMake(50, 0, 50, 100)];
+</span><span class='line'>    
+</span><span class='line'>    // 取得上下文中的图片
+</span><span class='line'>    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+</span><span class='line'>    
+</span><span class='line'>    // 结束上下文
+</span><span class='line'>    UIGraphicsEndImageContext();
+</span><span class='line'>    
+</span><span class='line'>    // 回到主线程显示图片
+</span><span class='line'>    dispatch_async(dispatch_get_main_queue(), ^{
+</span><span class='line'>        // 4.将新图片显示出来
+</span><span class='line'>        self.imageView.image = image;
+</span><span class='line'>    });
+</span><span class='line'>});</span></code></pre></td></tr></table></div></figure>
+
+
+<h5>GCD实现单例模式</h5>
+
+<ul>
+<li>单例是一种设计模式,保证在程序中一个类,只有一个对象,这个对象的属性都只有一份,实现共享同一份资源</li>
+</ul>
+
+
+<h4>ARC中，单例模式的实现</h4>
+
+<ul>
+<li>在内存中先定义一个只在当前文件访问的指针,默认是强指针</li>
+<li>再顶一个不可修改的dispatch_once_t变量,只有一份内存的变量</li>
+<li>调用dispatch_once,使得代码在整个程序中只执行一次</li>
+<li>创建的对象只存在一份代码,以后每次allocWithZone:都直接返回上次创建的对象</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>// 在.m中保留一个全局的static的实例
+</span><span class='line'>static id _instance;
+</span><span class='line'>
+</span><span class='line'>// 重写allocWithZone:方法，在这里创建唯一的实例（注意线程安全）
+</span><span class='line'>+ (instancetype)allocWithZone:(struct _NSZone *)zone
+</span><span class='line'>{
+</span><span class='line'>    static dispatch_once_t onceToken;
+</span><span class='line'>    dispatch_once(&onceToken, ^{
+</span><span class='line'>        _instance = [super allocWithZone:zone];
+</span><span class='line'>    });
+</span><span class='line'>    return _instance;
+</span><span class='line'>}
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>严谨起见,一把会提供一个类方法让外界直接访问唯一的实例</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>// 提供1个类方法让外界访问唯一的实例
+</span><span class='line'>+ (instancetype)sharedInstance
+</span><span class='line'>{
+</span><span class='line'>    static dispatch_once_t onceToken;
+</span><span class='line'>    dispatch_once(&onceToken, ^{
+</span><span class='line'>        _instance = [[self alloc] init];
+</span><span class='line'>    });
+</span><span class='line'>    return _instance;
+</span><span class='line'>}
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>并且单例写法都相同,直接定义为宏,定义多行代码为宏,需要在每一行结尾加'\&lsquo;,这样宏就认为\后面一行也属于宏的内容</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>// .h文件
+</span><span class='line'>/ #define HYWSingletonH + (instancetype)sharedInstance;
+</span><span class='line'>
+</span><span class='line'>// .m文件
+</span><span class='line'>/ #define HYWSingletonM \
+</span><span class='line'>static id _instace; \
+</span><span class='line'> \
+</span><span class='line'>+ (instancetype)allocWithZone:(struct _NSZone *)zone \
+</span><span class='line'>{ \
+</span><span class='line'>    static dispatch_once_t onceToken; \
+</span><span class='line'>    dispatch_once(&onceToken, ^{ \
+</span><span class='line'>        _instace = [super allocWithZone:zone]; \
+</span><span class='line'>    }); \
+</span><span class='line'>    return _instace; \
+</span><span class='line'>} \
+</span><span class='line'> \
+</span><span class='line'>+ (instancetype)sharedInstance \
+</span><span class='line'>{ \
+</span><span class='line'>    static dispatch_once_t onceToken; \
+</span><span class='line'>    dispatch_once(&onceToken, ^{ \
+</span><span class='line'>        _instace = [[self alloc] init]; \
+</span><span class='line'>    }); \
+</span><span class='line'>    return _instace; \
+</span><span class='line'>} \
+</span><span class='line'> \
+</span><span class='line'>- (id)copyWithZone:(NSZone *)zone \
+</span><span class='line'>{ \
+</span><span class='line'>    return _instace; \
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>如果想让每个类提供的类方法后缀个性化一点,需要带参数的宏</li>
+<li>带参数的宏是在需要参数的位置输入'##'</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>// .h文件
+</span><span class='line'>/ #define HYWSingletonH(name) + (instancetype)shared##name;
+</span><span class='line'>
+</span><span class='line'>// .m文件
+</span><span class='line'>/ #define HYWSingletonM(name) \
+</span><span class='line'>static id _instace; \
+</span><span class='line'> \
+</span><span class='line'>+ (instancetype)allocWithZone:(struct _NSZone *)zone \
+</span><span class='line'>{ \
+</span><span class='line'>    static dispatch_once_t onceToken; \
+</span><span class='line'>    dispatch_once(&onceToken, ^{ \
+</span><span class='line'>        _instace = [super allocWithZone:zone]; \
+</span><span class='line'>    }); \
+</span><span class='line'>    return _instace; \
+</span><span class='line'>} \
+</span><span class='line'> \
+</span><span class='line'>+ (instancetype)shared##name \
+</span><span class='line'>{ \
+</span><span class='line'>    static dispatch_once_t onceToken; \
+</span><span class='line'>    dispatch_once(&onceToken, ^{ \
+</span><span class='line'>        _instace = [[self alloc] init]; \
+</span><span class='line'>    }); \
+</span><span class='line'>    return _instace; \
+</span><span class='line'>} \
+</span><span class='line'> \
+</span><span class='line'>- (id)copyWithZone:(NSZone *)zone \
+</span><span class='line'>{ \
+</span><span class='line'>    return _instace; \
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li><h5>单例模式是不能继承的,否则以后创建的对象类型都是第一次创建的对象的类型,意味着只能创建一种类型的单例</h5></li>
+<li><h5>主要原因是static id _instance这个强指针是唯一的</h5></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014-06-10-duo-xian-cheng-zhi-shi/">多线程知识</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-06-10T09:09:19+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>10</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>9:09 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/NSthread.png" alt="NSThread结构图" /></p>
+
+<h6>进程</h6>
+
+<ul>
+<li>正在进行的程序,就叫程序</li>
+<li>从内存中杀掉的,就变成了程序,不叫进程</li>
+</ul>
+
+
+<h6>线程</h6>
+
+<ul>
+<li>一个进程要执行任务,必须得有线程(每个进程至少要有一个线程)</li>
+</ul>
+
+
+<h6>单线程的串行</h6>
+
+<ul>
+<li>一个线程的任务的执行是串行的</li>
+<li>同一时间内,一个线程只能执行一个任务</li>
+<li>所以一个线程执行多个任务,只能一个一个按顺序执行这些任务</li>
+<li>线程是进程执行的路径</li>
+</ul>
+
+
+<h5>多线程的并行</h5>
+
+<ul>
+<li>一个进程开启多条线程,每条线程可以并行执行不同的任务</li>
+<li>所以一个进程执行多个任务,可以开多条线程,每条线程执行一个任务,并行执行任务</li>
+<li>执行效率更高</li>
+</ul>
+
+
+<h5>多线程的原理</h5>
+
+<ul>
+<li>本质上同一时间CPU只能处理一条线程,只有一条线程在工作</li>
+<li>多线程并发执行,其实就是CPU快速地在多条线程之间调度</li>
+</ul>
+
+
+<h5>线程过多的弊端</h5>
+
+<ul>
+<li>CPU会再多线程之间调度,CPU会累死,消耗大量的CPU资源</li>
+<li>每条线程被调度的频率会降低,浪费了CPU资源</li>
+<li>创建线程是有开销的,iOS下主要成本包括:内核数据结构(1KB)/栈空间(子线程512KB/主线程1MB,也可以使用- setStackSize:设置,但必须是4K的倍数,而且最小是16K),创建线程大约需要90毫秒的创建时间</li>
+<li>线程越多,CPU在调度线程上得开销越大</li>
+<li>程序设计更加复杂:比如线程之间的通信\多线程的数据共享</li>
+</ul>
+
+
+<h5>主线程</h5>
+
+<ul>
+<li>一个iOS程序运行后,默认会开启1条线程,成为"主线程"或"UI线程"</li>
+<li>显示\刷新UI界面</li>
+<li>处理UI事件(比如点击事件\滚动时间\拖拽事件)</li>
+</ul>
+
+
+<h5>耗时操作的执行</h5>
+
+<ul>
+<li>耗时操作如果放在主线程,会影响UI界面的执行,刷新拖拽点击等事件,会让用户有卡的感觉</li>
+<li>所以一般把耗时操作放在子线程(后台线程\非主线程)</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>for (NSInteger i = 0; i &lt; 10000; i++) {
+</span><span class='line'>  NSLog(@"--------buttonClick----%d", i);
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<h5>iOS中多线程的实现方案</h5>
+
+<ul>
+<li>pthread 通用的多线程API,适用于Unix\Linx\Windows,跨平台可移植,使用难度大 纯C语言 程序员管理线程生命周期,几乎不用</li>
+<li>NSThread 使用更加面向对象,简单易用,可直接操作线程对象,OC语言,程序员管理线程生命周期,偶尔使用</li>
+<li>GCD 旨在替代NSThread等多线程技术,充分利用设备的多核,C语言,自动管理线程生命周期,经常使用</li>
+<li>NSOperation 基于GCD（底层是GCD) 比GCD多了一些更简单实用的功能 使用更加面向对象 OC语言,自动管理线程生命周期,经常使用</li>
+</ul>
+
+
+<h5>pthread使用</h5>
+
+<ul>
+<li>pthread需要导入pthread.h头文件</li>
+<li>pthread开启线程函数</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>void * run(void *param)
+</span><span class='line'>{
+</span><span class='line'>    for (NSInteger i = 0; i&lt;50000; i++) {
+</span><span class='line'>        NSLog(@"------buttonClick---%zd", i);
+</span><span class='line'>    }
+</span><span class='line'>    return NULL;
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>- (IBAction)buttonClick:(id)sender {
+</span><span class='line'>    for (NSInteger i = 0; i&lt;50000; i++) {
+</span><span class='line'>        NSLog(@"------buttonClick---%zd", i);
+</span><span class='line'>    }
+</span><span class='line'>    pthread_t thread;
+</span><span class='line'>    pthread_create(&thread, NULL, run, NULL);
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<h5>NSThread使用</h5>
+
+<ul>
+<li>NSThread不需要管理线程生命周期,线程执行完任务,会自动销毁线程对象</li>
+<li>线程实例化后需要调用start方法</li>
+<li>可以给线程命名</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>HYWThread *thread = [[HYWThread alloc] initWithTarget:self selector:@selector(run:) object:@"jack"];
+</span><span class='line'>// 启动线程
+</span><span class='line'>[thread start];</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (void)run:(NSString *)param
+</span><span class='line'>{
+</span><span class='line'>    for (NSInteger i = 0; i&lt;10000; i++) {
+</span><span class='line'>        NSLog(@"-----run-----%@--%@", param, [NSThread currentThread]);
+</span><span class='line'>    }
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>NSThread还有一个类方法,直接创建线程,并开启运行</li>
+<li>缺点是无法对线程设置线程的详细信息</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (void)createThread2
+</span><span class='line'>{
+</span><span class='line'>    [NSThread detachNewThreadSelector:@selector(run:) toTarget:self withObject:@"rose"];
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>除此之外,NSThread还有一种隐藏式创建线程的方法</li>
+<li>缺点是无法对线程设置线程的详细信息</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (void)createThread3
+</span><span class='line'>{
+</span><span class='line'>//    [self performSelectorInBackground:@selector(run:) withObject:@"jack"];
+</span><span class='line'>    [self performSelectorOnMainThread:&lt;#(SEL)#&gt; withObject:&lt;#(id)#&gt; waitUntilDone:&lt;#(BOOL)#&gt;];
+</span><span class='line'>    [self performSelectorOnMainThread:&lt;#(SEL)#&gt; withObject:&lt;#(id)#&gt; waitUntilDone:&lt;#(BOOL)#&gt; modes:&lt;#(NSArray *)#&gt;];
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<h5>线程的状态</h5>
+
+<p><img src="/images/Snip20150708_1.png" alt="线程的状态" /></p>
+
+<ul>
+<li>改变线程状态的方法,让线程睡眠从线程池中移出</li>
+<li>就绪和阻塞状态的线程都不在可调度线程池中,只在内存中</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>//    [NSThread sleepForTimeInterval:2]; // 让线程睡眠2秒（阻塞2秒）
+</span><span class='line'>//    [NSThread sleepUntilDate:[NSDate distantFuture]];
+</span><span class='line'>    [NSThread sleepUntilDate:[NSDate dateWithTimeIntervalSinceNow:2]];</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>让线程直接死亡,线程从内存中移出</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>for (NSInteger i = 0; i&lt;100; i++) {
+</span><span class='line'>    NSLog(@"-----%zd", i);
+</span><span class='line'>    
+</span><span class='line'>    if (i == 49) {
+</span><span class='line'>        [NSThread exit];
+</span><span class='line'>    }
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>一旦线程停止（死亡）了，就不能再次开启任务</li>
+</ul>
+
+
+<h5>多线程的安全隐患</h5>
+
+<ul>
+<li>1块资源可能会被多个线程共享，也就是多个线程可能会访问同一块资源</li>
+<li>比如多个线程访问同一个对象、同一个变量、同一个文件</li>
+<li>当多个线程访问同一块资源时，很容易引发数据错乱和数据安全问题</li>
+</ul>
+
+
+<p><img src="/images/Snip20150708_2.png" alt="多线程安全隐患" />
+<img src="/images/Snip20150708_3.png" alt="多线程安全隐患解决" /></p>
+
+<h6>多线程的互斥锁</h6>
+
+<ul>
+<li>互斥锁使用格式</li>
+<li>@synchronized(锁对象) { // 需要锁定的代码  }</li>
+<li><p>注意：锁定1份代码只用1把锁，用多把锁是无效的</p></li>
+<li><p>互斥锁的优缺点</p></li>
+<li>优点：能有效防止因多线程抢夺资源造成的数据安全问题</li>
+<li><p>缺点：需要消耗大量的CPU资源</p></li>
+<li><p>互斥锁的使用前提：多条线程抢夺同一块资源</p></li>
+<li><p>相关专业术语：线程同步</p></li>
+<li>线程同步的意思是：多条线程在同一条线上执行（按顺序地执行任务）</li>
+<li>互斥锁，就是使用了线程同步技术</li>
+</ul>
+
+
+<h5>原子和非原子属性</h5>
+
+<ul>
+<li>OC在定义属性时有nonatomic和atomic两种选择</li>
+<li>atomic：原子属性，为setter方法加锁（默认就是atomic）</li>
+<li><p>nonatomic：非原子属性，不会为setter方法加锁</p></li>
+<li><p>nonatomic和atomic对比</p></li>
+<li>atomic：线程安全，需要消耗大量的资源</li>
+<li>nonatomic：非线程安全，适合内存小的移动设备</li>
+</ul>
+
+
+<h5>iOS开发的建议</h5>
+
+<ul>
+<li>所有属性都声明为nonatomic</li>
+<li>尽量避免多线程抢夺同一块资源</li>
+<li>尽量将加锁、资源抢夺的业务逻辑交给服务器端处理，减小移动客户端的压力</li>
+</ul>
+
+
+<h5>线程间通信</h5>
+
+<ul>
+<li><p>什么叫做线程间通信</p>
+
+<ul>
+<li>在1个进程中，线程往往不是孤立存在的，多个线程之间需要经常进行通信</li>
+</ul>
+</li>
+<li><p>线程间通信的体现</p>
+
+<ul>
+<li>1个线程传递数据给另1个线程</li>
+<li>在1个线程中执行完特定任务后，转到另1个线程继续执行任务</li>
+</ul>
+</li>
+<li><p>线程间通信常用方法</p>
+
+<ul>
+<li>(void)performSelectorOnMainThread:(SEL)aSelector withObject:(id)arg waitUntilDone:(BOOL)wait;</li>
+<li>(void)performSelector:(SEL)aSelector onThread:(NSThread *)thr withObject:(id)arg waitUntilDone:(BOOL)wait;</li>
+</ul>
+</li>
+</ul>
+
+
+<p><img src="/images/Snip20150708_4.png" alt="线程之间的通信" /></p>
+
+<h5>NSPort实现线程之间的通信</h5>
+
+<ul>
+<li>主线程想要传子线程数据,需要返回一个port对象给子线程,子线程就可以通过port传送数据给主线程</li>
+<li>子线程想要传给主线程数据,需要返回一个port对象给主线程,主线程就可以通过port传送数据给子线程</li>
+</ul>
+
+
+<p><img src="/images/Snip20150708_6.png" alt="NSPort实现线程通信" /></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014-06-06-zi-ding-yi-dui-xiang-shu-xing-copy/">自定义对象属性copy</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-06-06T09:29:11+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>6</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>9:29 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h5>自定义对象属性类型为NSString用copy类型</h5>
+
+<ul>
+<li>set方法写法就如下面代码</li>
+<li>设计原理是为了赋值后的属性是一份新内存,修改外界变量不会影响属性值</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (void)setName:(NSString *)name
+</span><span class='line'>{
+</span><span class='line'>  _name = [name copy];
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>自定义对象属性用copy类型时,属性类型还用NSMutableString就可能会出现错误</li>
+<li>copy出来的对象都是不可变,如果还当做NSMutableString使用的话,程序就会报错</li>
+</ul>
+
+
+<h6>UIScrollView的约束</h6>
+
+<ul>
+<li>ScrollView的frame取决于scrollView与其他视图的约束</li>
+<li>scrollView的contentSize取决于scrollView与子视图的约束(间距)和子视图的大小</li>
+</ul>
+
+
+<h5>scrollView的子控件添加约束的注意点</h5>
+
+<ul>
+<li>子控件的位置可以相对scrollView来约束</li>
+<li>子控件大小必须相对其他控件来约束</li>
+<li>子控件大小还可以设置为固定值</li>
+</ul>
+
+
+<h5>const修饰的变量是苹果推荐的,定义的变量也是不能修改的</h5>
+
+<ul>
+<li>相比define const变量性能更好,define相当于替换,导致代码中会有很多临时存储空间</li>
+<li>而const的内存只有一份,其他都是</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>const CGFloat HYWRed = 0.4;
+</span><span class='line'>const CGFloat HYWGreen = 0.6;
+</span><span class='line'>const CGFloat HYWBlue = 0.7;
+</span><span class='line'>
+</span><span class='line'>//#define HYWRed 0.4
+</span><span class='line'>//#define HYWGreen 0.6
+</span><span class='line'>//#define HYWBlue 0.7</span></code></pre></td></tr></table></div></figure>
+
+
+<h5>同时为了避免全局变量的不安全性,还加static修饰</h5>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>static const CGFloat HYWRed = 0.4;
+</span><span class='line'>static const CGFloat HYWGreen = 0.6;
+</span><span class='line'>static const CGFloat HYWBlue = 0.7;</span></code></pre></td></tr></table></div></figure>
+
+
+<h5>引用一个全局变量,如果这个全局变量是const不可修改的,一般要再extern加const,用来标识这个变量是const的,通常编译时就会报错</h5>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>extern const CGFloat HYWRed;</span></code></pre></td></tr></table></div></figure>
+
+
+<h5>为了扩展性,一般把引用全局常用的代码写到一个HYWConst.h文件中,用到的地方直接#import就可以了</h5>
+
+<h5>同时再写一个同名字的HYWConst.m文件,用来定义常量</h5>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>HYWConst.h文件中
+</span><span class='line'>// #import &lt;UIKit/UIKit.h&gt;
+</span><span class='line'>
+</span><span class='line'>// extern const CGFloat HYWRed;
+</span><span class='line'>// extern const CGFloat HYWGreen;
+</span><span class='line'>// extern const CGFloat HYWBlue;
+</span><span class='line'>// extern const CGFloat HYWAlpha;
+</span><span class='line'>// extern const int HYWAge;
+</span><span class='line'>
+</span><span class='line'>为了装逼还可以写成
+</span><span class='line'>UIKIT_EXTERN const CGFloat HYWRed;
+</span><span class='line'>UIKIT_EXTERN const CGFloat HYWGreen;
+</span><span class='line'>UIKIT_EXTERN const CGFloat HYWBlue;
+</span><span class='line'>UIKIT_EXTERN const CGFloat HYWAlpha;
+</span><span class='line'>UIKIT_EXTERN const int HYWAge;
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>HYWConst.m文件中
+</span><span class='line'>// #import &lt;UIKit/UIKit.h&gt;
+</span><span class='line'>
+</span><span class='line'>const CGFloat HYWRed = 0.4;
+</span><span class='line'>const CGFloat HYWGreen = 0.6;
+</span><span class='line'>const CGFloat HYWBlue = 0.7;
+</span><span class='line'>const CGFloat HYWAlpha = 1.0;
+</span><span class='line'>const int HYWAge = 20;</span></code></pre></td></tr></table></div></figure>
+
+
+<h5>以后pch文件中需要引用,直接在pch文件中#import HYWConst.h既可</h5>
+
+<h5>常量指针和指针常量的区别</h5>
+
+<ul>
+<li>const int <em>p 等价于 int const </em>p</li>
+<li>int * const p</li>
+<li>常量指针和指针常量,哪个为常量,主要看const右边的值</li>
+<li>const *p意味着不能通过指针修改变量的值</li>
+<li>const p意味着指针地址不能修改,就在定义那一刻固定了指向的内存</li>
+</ul>
+
+
+<h5>在OC中定义常量字符串,应该在*号之后写const,引用的时候也应该注明</h5>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>NSString * const HYWName = @"jack";
+</span><span class='line'>
+</span><span class='line'>UIKIT_EXTERN NSString * const HYWName;
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h5>指针p + 1,相当于指针往下移一位,也就是地址值+ 1 * 指针类型所占的字节数</h5>
+
+<h5>数组名就是首地址,也是数组首元素的地址,也相当于指向数组首元素的指针</h5>
+
+<h5>&amp;数组名,是一个数组指针,指向数组的指针</h5>
+
+<ul>
+<li>数组名存储的是<code>数组首元素</code>的地址</li>
+<li>等价于:一个指向<code>数组首元素</code>的指针</li>
+<li><p><code>数组名 + 1</code> 的跨度：<code>数组首元素</code>的占用字节数</p></li>
+<li><p>&amp;数组名就是一个指向数组的指针,指针的跨度就是整个数组的跨度</p></li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>    int numbers[2][2][2] = {
+</span><span class='line'>        {
+</span><span class='line'>            {10, 20},
+</span><span class='line'>            {30, 40},
+</span><span class='line'>        },
+</span><span class='line'>        {
+</span><span class='line'>            {50, 60},
+</span><span class='line'>            {70, 80}
+</span><span class='line'>        }
+</span><span class='line'>    };
+</span><span class='line'>    
+</span><span class='line'>    // numbers[0][0] == &numbers[0][0][0],相当于是一个指向numbers[0][0][0]的指针
+</span><span class='line'>    // numbers[1] == &numbers[1][0],相当于是一个指向numbers[1][0]的指针
+</span><span class='line'>    // numbers == &numbers[0],相当于是一个指向numbers[0]的指针
+</span><span class='line'>    // &numbers == 相当于是一个指向numbers的指针</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014-06-05-fu-zi-kong-zhi-qi-de-zuo-yong/">父子控制器的作用</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-06-05T14:38:18+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>2:38 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>父子控制器的作用</h3>
+
+<ul>
+<li>父子控制器是一种关系,有了这种关系,父控制器会将屏幕旋转等重大事件传给子控制器</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>/**
+</span><span class='line'> * 屏幕即将旋转到某个方向时会调用这个方法
+</span><span class='line'> */
+</span><span class='line'>- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+</span><span class='line'>{
+</span><span class='line'>    NSLog(@"%@ willRotateToInterfaceOrientation", self.class);
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>通常B控制器的view成为了A控制器的view子视图,也要把B控制器添加为A控制器的子控制器</li>
+</ul>
+
+
+<h5>添加子控制器的方法</h5>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[self addChildViewController:[[HYWOneViewController alloc] init]];
+</span><span class='line'>[self addChildViewController:[[HYWTwoViewController alloc] init]];
+</span><span class='line'>[self addChildViewController:[[HYWThreeViewController alloc] init]];
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h5>将子控制器删除的方法</h5>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>// 将HYWOneViewController从childViewControllers数组中移除
+</span><span class='line'>//    [self.childViewControllers[0] removeFromParentViewController];</span></code></pre></td></tr></table></div></figure>
+
+
+<h5>子控制器之间成为代理,遵守协议要写在.h文件中</h5>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>HYWSubcategoryViewController *subcategoryVc = [[HYWSubcategoryViewController alloc] init];
+</span><span class='line'>subcategoryVc.view.frame = CGRectMake(width, 0, width, height);
+</span><span class='line'>[self addChildViewController:subcategoryVc];
+</span><span class='line'>[self.view addSubview:subcategoryVc.view];
+</span><span class='line'>
+</span><span class='line'>HYWCategoryViewController *categoryVc = [[HYWCategoryViewController alloc] init];
+</span><span class='line'>categoryVc.delegate = subcategoryVc;
+</span><span class='line'>categoryVc.view.frame = CGRectMake(0, 0, width, height);
+</span><span class='line'>[self addChildViewController:categoryVc];
+</span><span class='line'>[self.view addSubview:categoryVc.view];</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>让subcategory遵守category的代理协议</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>#import "HYWCategoryViewController.h"
+</span><span class='line'>
+</span><span class='line'>@interface HYWSubcategoryViewController : UITableViewController
+</span><span class='line'>                        &lt;HYWCategoryViewControllerDelegate&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<h5>Cell被选中的时候,Cell内部的子控件都会达到高亮状态</h5>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cell.imageView.image = [UIImage imageNamed:c.icon];
+</span><span class='line'>cell.imageView.highlightedImage = [UIImage imageNamed:c.highlighted_icon];</span></code></pre></td></tr></table></div></figure>
+
+
+<h5>返回TableView选中行号的方法</h5>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (NSIndexPath *)indexPathForSelectedRow;                                                // returns nil or index path representing section and row of selection.
+</span><span class='line'>
+</span><span class='line'>self.categoryTableView.indexPathForSelectedRow.row 获得当前tableView选中的行号
+</span><span class='line'>    // 获得对应的模型
+</span><span class='line'>    HYWCategory *c = self.categories[self.categoryTableView.indexPathForSelectedRow.row]
+</span><span class='line'>    </span></code></pre></td></tr></table></div></figure>
+
+
+<h5>导航控制器的子控制器会自动给view添加UIEdgeinset</h5>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (void)viewDidAppear:(BOOL)animated
+</span><span class='line'>{
+</span><span class='line'>    [super viewDidAppear:animated];
+</span><span class='line'>    
+</span><span class='line'>    NSLog(@"categoryTableView - %@", NSStringFromUIEdgeInsets(self.categoryTableView.contentInset));
+</span><span class='line'>    NSLog(@"subcategoryTableView - %@", NSStringFromUIEdgeInsets(self.subcategoryTableView.contentInset));
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>运行结果如下</li>
+</ul>
+
+
+<p><img src="/images/Snip20150705_1.png" alt="导航控制器子控制器view的UIEdgeinset" /></p>
+
+<h5>手动给导航控制器子控制器view添加UIEdgeinset</h5>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>//    self.subcategoryTableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);</span></code></pre></td></tr></table></div></figure>
+
+
+<h5>苹果官方自动给UIScrollView添加UIEdgeinset属性,如果不想让系统自动添加,修改为NO</h5>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>@property(nonatomic,assign) BOOL automaticallyAdjustsScrollViewInsets NS_AVAILABLE_IOS(7_0); // Defaults to YES</span></code></pre></td></tr></table></div></figure>
+
+
+<h5>storyboard中也可以这是自动添加边界属性</h5>
+
+<p><img src="/images/Snip20150705_2.png" alt="自动添加scrollView边界属性" /></p>
+
+<h5>static的作用</h5>
+
+<ul>
+<li>static修饰局部变量
+
+<ul>
+<li>让局部变量只初始化一次</li>
+<li>局部变量在程序只有一份内存</li>
+<li>让局部变量并不会马上销毁,直到程序结束,才会被销毁</li>
+<li>但是并不意味着改变作用域,作用域还是在大括号里面</li>
+</ul>
+</li>
+<li>static修饰全局变量
+
+<ul>
+<li>让全局变量,修改全局变量的作用域,仅限于当前文件</li>
+<li>修饰全局变量是位了安全考虑,让当前变量不能在任何地方访问,并且修改其值</li>
+</ul>
+</li>
+<li>extern修饰变量
+
+<ul>
+<li>是引用,去全文件找变量</li>
+</ul>
+</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014-05-28-ru-he-zai-kong-zhi-qi-dan-chu-%5B%3F%5D-ge-chuang-kou/">如何在控制器弹出一个窗口</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-05-28T11:15:46+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>28</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>11:15 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h4>添加左右两边的导航按钮</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>self.navigationItem.leftBarButtonItem = [UIBarButtonItem itemWithbg:@"CS50_activity_image" bgHighlighted:nil target:self action:@selector(activeViewShow)];
+</span><span class='line'>
+</span><span class='line'>self.navigationItem.rightBarButtonItem = [UIBarButtonItem itemWithbg:@"Development" bgHighlighted:nil target:self action:@selector(popMenu)];</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>自定义左边活动view并添加显示方法</h4>
+
+<p><img src="/images/Snip20150629_1.png" alt="自定义View用xib描述" /></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>+ (instancetype)actieMenu
+</span><span class='line'>{
+</span><span class='line'>    return [[[NSBundle mainBundle] loadNibNamed:NSStringFromClass(self) owner:nil options:nil] lastObject];
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>#pragma  mark - 显示菜单
+</span><span class='line'>+ (instancetype)showInPoint:(CGPoint)center
+</span><span class='line'>{
+</span><span class='line'>    HYWActieMenu *menu = [HYWActieMenu actieMenu];
+</span><span class='line'>    menu.center = center;
+</span><span class='line'>    [HYWKeyWindow addSubview:menu];
+</span><span class='line'>    return menu;
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img src="/images/Snip20150628_1.png" alt="显示菜单响应事件" /></p>
+
+<h4>隐藏方法设计:</h4>
+
+<ol>
+<li>隐藏缩放平移到一个点,这个点需要控制器传入,因此隐藏方法需要有一个CGPoint参数</li>
+<li>既然是由控制器传入,那么点击取消事件应该传给控制器,让控制器在按钮点击时把CGpoint传进来</li>
+<li>动画完成需要隐藏cover遮板,因此隐藏方法还需要传入一个block代码块</li>
+</ol>
+
+
+<p><img src="/images/Snip20150628_3.png" alt="按钮点击以后的思路" />
+<img src="/images/Snip20150628_4.png" alt="自定义view平移缩小消失动画" />
+<img src="/images/Snip20150629_2.png" alt="消失后遮盖也消失" /></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>+ (void)hideInPoint:(CGPoint)center completion:(void (^)())completion
+</span><span class='line'>{
+</span><span class='line'>    for (HYWActieMenu *menuView in HYWKeyWindow.subviews) {
+</span><span class='line'>        if ([menuView isKindOfClass:[HYWActieMenu class]]) {
+</span><span class='line'>            [UIView animateWithDuration:1 animations:^{
+</span><span class='line'>                menuView.transform = CGAffineTransformMakeTranslation(center.x - menuView.center.x  ,center.y - menuView.center.y);
+</span><span class='line'>                menuView.transform = CGAffineTransformScale(menuView.transform, 0.1, 0.1);
+</span><span class='line'>            } completion:^(BOOL finished) {
+</span><span class='line'>                [menuView removeFromSuperview];
+</span><span class='line'>                if (completion) {
+</span><span class='line'>                    completion();
+</span><span class='line'>                }
+</span><span class='line'>            }];
+</span><span class='line'>        }
+</span><span class='line'>    }
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>自定义view把button点击事件通过代理告诉控制器</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (IBAction)close:(UIButton *)sender {
+</span><span class='line'>//    [HYWActieMenu hideInPoint:CGPointMake(44, 44)];
+</span><span class='line'>    if ([self.delegate respondsToSelector:@selector(activeMenuDidClickCloseButton:)]) {
+</span><span class='line'>        [self.delegate activeMenuDidClickCloseButton:self];
+</span><span class='line'>    }
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>控制器中实现自定义View代理方法,并且将CGPoint传入,动画完成后隐藏cover的代码传入</h4>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>#pragma mark - HYWActiveMenu代理
+</span><span class='line'>- (void)activeMenuDidClickCloseButton:(HYWActieMenu *)activeMenu
+</span><span class='line'>{
+</span><span class='line'>    [HYWActieMenu hideInPoint:CGPointMake(44, 44) completion:^{
+</span><span class='line'>        [HYWCover hide];
+</span><span class='line'>    }];
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014-05-27-tu-pian-ca-chu-xiao-you-xi/">图片擦除小游戏</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-05-27T09:20:08+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>27</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>9:20 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h4>直接上两张游戏截屏图片</h4>
+
+<p><img src="/images/Snip20150626_9.png" alt="擦除前" />
+<img src="/images/Snip20150626_10.png" alt="擦除后" /></p>
+
+<ul>
+<li>实现思路
+
+<ol>
+<li>拖两个imageView控件,下面放的是擦除后图片,上面放擦除前图片</li>
+<li>开启图片上下文,上面图片全部渲染上去</li>
+<li>使用CGContextClearRect函数,在指定rect下擦除一部分上下文内容</li>
+<li>获得上下文图片重新赋值给上面控件的image属性</li>
+</ol>
+</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (void)pan:(UIPanGestureRecognizer *)pan
+</span><span class='line'>{
+</span><span class='line'>    // 获取当前点
+</span><span class='line'>    CGPoint curP = [pan locationInView:self.view];
+</span><span class='line'>    
+</span><span class='line'>    // 获取擦除的矩形范围
+</span><span class='line'>    CGFloat wh = 100;
+</span><span class='line'>    CGFloat x = curP.x - wh * 0.5;
+</span><span class='line'>    CGFloat y = curP.y - wh * 0.5;
+</span><span class='line'>    
+</span><span class='line'>    CGRect rect = CGRectMake(x, y, wh, wh);
+</span><span class='line'>    
+</span><span class='line'>    // 开启上下文
+</span><span class='line'>    UIGraphicsBeginImageContextWithOptions(self.view.bounds.size, NO, 0);
+</span><span class='line'>    
+</span><span class='line'>    CGContextRef ctx = UIGraphicsGetCurrentContext();
+</span><span class='line'>    
+</span><span class='line'>    // 控件的layer渲染上去
+</span><span class='line'>    [_imageView.layer renderInContext:ctx];
+</span><span class='line'>    
+</span><span class='line'>    // 擦除图片
+</span><span class='line'>    CGContextClearRect(ctx, rect);
+</span><span class='line'>    
+</span><span class='line'>    // 生成一张图片
+</span><span class='line'>    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+</span><span class='line'>    
+</span><span class='line'>    _imageView.image = image;
+</span><span class='line'>    
+</span><span class='line'>    // 关闭上下文
+</span><span class='line'>    UIGraphicsEndImageContext();
+</span><span class='line'>    
+</span><span class='line'>    
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014-05-27-zhuan-chang-dong-hua/">转场动画</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-05-27T08:55:35+08:00'><span class='date'><span class='date-month'>May</span> <span class='date-day'>27</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>8:55 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/Snip20150627_6.png" alt="转场动画1" />
+<img src="/images/Snip20150627_7.png" alt="转场动画2" />
+<img src="/images/Snip20150627_8.png" alt="转场动画3" />
+<img src="/images/Snip20150627_9.png" alt="转场动画4" /></p>
+
+<h5>CATransition是CAAnimation的子类，用于做转场动画，能够为层提供移出屏幕和移入屏幕的动画效果。</h5>
+
+<h5>UINavigationController就是通过CATransition实现了将控制器的视图推入屏幕的动画效果</h5>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+</span><span class='line'>{
+</span><span class='line'>    static int i = 1;
+</span><span class='line'>    NSString *imageN = [NSString stringWithFormat:@"%d",i];
+</span><span class='line'>    self.imageVIew.image = [UIImage imageNamed:imageN];
+</span><span class='line'>    i++;
+</span><span class='line'>    if (i == 4) {
+</span><span class='line'>        i = 1;
+</span><span class='line'>    }
+</span><span class='line'>    
+</span><span class='line'>    
+</span><span class='line'>    CATransition *anim = [CATransition animation];
+</span><span class='line'>//    anim.type = @"cube";
+</span><span class='line'>//    anim.type = @"rippleEffect";
+</span><span class='line'>    anim.type = @"suckEffect";
+</span><span class='line'>    anim.duration = 10;
+</span><span class='line'>    [self.imageVIew.layer addAnimation:anim forKey:nil];
+</span><span class='line'>    
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<h5>转场动画常见的类型</h5>
+
+<p><img src="/images/TransitionType.png" alt="转场动画常见类型" /></p>
+
+<h5>CABasicanimation的transform常见属性列表</h5>
+
+<p><img src="/images/transform%E7%9A%84%E5%B1%9E%E6%80%A7%E5%88%97%E8%A1%A8.png" alt="transform常见属性列表" /></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014-04-27-ru-he-zhi-zuo-%5B%3F%5D-ge-jian-dan-de-shi-zhong/">如何制作一个简单的时钟</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-04-27T08:06:04+08:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>27</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>8:06 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><img src="/images/Snip20150627_1.png" alt="时钟演示效果" /></p>
+
+<ul>
+<li>了解时钟由什么组成的，使用哪些控件。(UIImgeView,CALayer)</li>
+<li>由于时钟中的时针\分针\秒针都不需要监听事件,所以不使用UIView，而使用CALayer,性能更高</li>
+<li>给底图imageView添加三个layer</li>
+</ul>
+
+
+<p><img src="/images/Snip20150627_2.png" alt="底图" /></p>
+
+<ul>
+<li>根据现实生活中,按照顺序添加时针\分针\秒针</li>
+<li>并且三个layer的position都为imageView的中心点</li>
+<li>anchorPoint点设置是关键,时针\分针只需要伸出一小部分所以y轴设置0.95倍的旋转,秒针稍长设置为0.9倍的旋转</li>
+</ul>
+
+
+<h6>pragma mark - 添加秒针</h6>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (void)setUpSecondLayer
+</span><span class='line'>{
+</span><span class='line'>   CALayer *secondL = [CALayer layer];
+</span><span class='line'>    
+</span><span class='line'>    secondL.backgroundColor = [UIColor redColor].CGColor;
+</span><span class='line'>    
+</span><span class='line'>    // 设置锚点
+</span><span class='line'>    secondL.anchorPoint = CGPointMake(0.5, 0.9);
+</span><span class='line'>    
+</span><span class='line'>    secondL.position = CGPointMake(kClockW * 0.5, kClockW * 0.5);
+</span><span class='line'>    
+</span><span class='line'>    secondL.bounds = CGRectMake(0, 0, 1, kClockW * 0.5 - 20);
+</span><span class='line'>    
+</span><span class='line'>    
+</span><span class='line'>    
+</span><span class='line'>    [_clockView.layer addSublayer:secondL];
+</span><span class='line'>    
+</span><span class='line'>    _secondLayer = secondL;
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<h6>pragma mark - 添加分针</h6>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (void)setUpMinuteLayer
+</span><span class='line'>{
+</span><span class='line'>    CALayer *layer = [CALayer layer];
+</span><span class='line'>    
+</span><span class='line'>    layer.backgroundColor = [UIColor blackColor].CGColor;
+</span><span class='line'>    
+</span><span class='line'>    // 设置锚点
+</span><span class='line'>    layer.anchorPoint = CGPointMake(0.5, 0.95);
+</span><span class='line'>    
+</span><span class='line'>    layer.position = CGPointMake(kClockW * 0.5, kClockW * 0.5);
+</span><span class='line'>    
+</span><span class='line'>    layer.bounds = CGRectMake(0, 0, 4, kClockW * 0.5 - 20);
+</span><span class='line'>    
+</span><span class='line'>    layer.cornerRadius = 4;
+</span><span class='line'>    
+</span><span class='line'>    
+</span><span class='line'>    [_clockView.layer addSublayer:layer];
+</span><span class='line'>    
+</span><span class='line'>    _minuteLayer = layer;
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<h6>pragma mark - 添加时针</h6>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (void)setUpHourLayer
+</span><span class='line'>{
+</span><span class='line'>    CALayer *layer = [CALayer layer];
+</span><span class='line'>    
+</span><span class='line'>    layer.backgroundColor = [UIColor blackColor].CGColor;
+</span><span class='line'>    
+</span><span class='line'>    // 设置锚点
+</span><span class='line'>    layer.anchorPoint = CGPointMake(0.5, 0.95);
+</span><span class='line'>    
+</span><span class='line'>    layer.position = CGPointMake(kClockW * 0.5, kClockW * 0.5);
+</span><span class='line'>    
+</span><span class='line'>    layer.bounds = CGRectMake(0, 0, 4, kClockW * 0.5 - 40);
+</span><span class='line'>    
+</span><span class='line'>    layer.cornerRadius = 4;
+</span><span class='line'>    
+</span><span class='line'>    
+</span><span class='line'>    [_clockView.layer addSublayer:layer];
+</span><span class='line'>    
+</span><span class='line'>    _hourLayer = layer;
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>时针\分针\秒针使用一个定时器,每隔一秒执行一次监听方法</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>// 添加定时器
+</span><span class='line'>    [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timeChange) userInfo:nil repeats:YES];
+</span><span class='line'>    
+</span><span class='line'>    [self timeChange];</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>监听方法中对时针\分针\秒针进行设置旋转角度</li>
+<li>角度计算思路
+
+<ol>
+<li>通过NSCalendar获取当前日历对象</li>
+<li>通过NSCalendar的components:fromDate：获取日期的组件：时\分\秒</li>
+<li>分别计算时\分\秒对应旋转的角度</li>
+<li>转化为弧度值</li>
+<li>设置时针\分针\秒针的transform</li>
+</ol>
+</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (void)timeChange
+</span><span class='line'>{
+</span><span class='line'>    // 获取当前的系统的时间
+</span><span class='line'>    
+</span><span class='line'>    // 获取当前日历对象
+</span><span class='line'>    NSCalendar *calendar = [NSCalendar currentCalendar];
+</span><span class='line'>    
+</span><span class='line'>    // 获取日期的组件：年月日小时分秒
+</span><span class='line'>    // components:需要获取的日期组件
+</span><span class='line'>    // fromDate：获取哪个日期的组件
+</span><span class='line'>    // 枚举中有移位运算符，通常一般可以使用并运算（|）
+</span><span class='line'>    NSDateComponents  *cmp = [calendar components:NSCalendarUnitSecond | NSCalendarUnitMinute | NSCalendarUnitHour fromDate:[NSDate date]];
+</span><span class='line'>    
+</span><span class='line'>    // 获取秒
+</span><span class='line'>    NSInteger second = cmp.second;
+</span><span class='line'>    
+</span><span class='line'>    // 获取分
+</span><span class='line'>    NSInteger minute = cmp.minute;
+</span><span class='line'>    
+</span><span class='line'>    // 获取小时
+</span><span class='line'>    NSInteger hour = cmp.hour;
+</span><span class='line'>    
+</span><span class='line'>    // 计算秒针转多少度
+</span><span class='line'>    CGFloat secondA = second * perSecondA;
+</span><span class='line'>    
+</span><span class='line'>    // 计算分针转多少度
+</span><span class='line'>    CGFloat minuteA = minute * perMinuteA;
+</span><span class='line'>    
+</span><span class='line'>    // 计算时针转多少度
+</span><span class='line'>    CGFloat hourA = hour * perHourA + minute * perMinuteHourA;
+</span><span class='line'>    
+</span><span class='line'>    // 旋转秒针
+</span><span class='line'>    _secondLayer.transform = CATransform3DMakeRotation(angle2radion(secondA), 0, 0, 1);
+</span><span class='line'>    
+</span><span class='line'>    // 旋转分针
+</span><span class='line'>    _minuteLayer.transform = CATransform3DMakeRotation(angle2radion(minuteA), 0, 0, 1);
+</span><span class='line'>    
+</span><span class='line'>    // 旋转小时
+</span><span class='line'>    _hourLayer.transform = CATransform3DMakeRotation(angle2radion(hourA), 0, 0, 1);
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img src="/images/Snip20150627_3.png" alt="时针旋转结果图" /></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+      <a class="prev" href="/posts/5">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+    <a class="next" href="/posts/3">Newer &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015-09-15-ji-shi-tong-xun-ji-zhu/">即时通讯技术</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015-05-29-ioslan-ya-4-dot-0kai-fa/">iOS蓝牙4.0开发</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015-05-11-nsscannerchu-li-fu-wu-qi-shu-ju-yi-chang-,-shu-ju-chu-li/">NSScanner处理服务器数据异常、数据处理</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015-04-07-gcdde-di-ceng-yi-ji-gcdde-miao-yong/">GCD的底层以及GCD的妙用</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015-03-29-html5chang-yong-kuang-jia/">未来的技术 - HTML5</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015-02-27-shen-ru-yan-jiu-cadisplaylinkhe-nstimer/">深入研究CADisplayLink和NSTimer</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015-02-19-er-wei-ma-zhi-zuo/">二维码制作</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-30-shu-ju-jie-xi-mo-xing-she-zhi-de-ji-qiao/">数据解析模型设置的技巧</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-10-popmenucontrollerzhu-yi-shi-xiang/">popMenuController注意事项</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-08-zi-ding-yi-kong-jian-feng-zhuang-de-zhu-yi-shi-xiang/">自定义控件封装的注意事项</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-07-textfieldhe-textviewde-qu-bie/">Textfield和TextView的区别</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-06-appearancetong-%5B%3F%5D-she-zhi-zhu-ti-de-wen-ti/">Appearance统一设置主题的问题</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-05-webviewjia-zai-jin-du-tiao-de-bu-kai-fang-he-chang-jian-jie-jue-fang-an/">webView加载进度条的不开放和常见解决方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-05-bai-si-bu-de-jie-zong-jie-8yue-5ri/">Modal出来的控制器再modal一个控制器的问题</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-04-layer-dot-cornerradiusxing-neng-wen-ti-ji-jie-jue-fang-an/">layer.cornerRadius性能问题及解决方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-03-bai-si-bu-de-jie-xiang-mu-geng-duo-zong-jie/">让一个普通控件弹出menuController的步骤</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-02-bai-si-bu-de-jie-xiang-mu-zong-jie/">多组表格网络请求加载失败可能引发的小问题</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-07-30-bai-si-bu-de-jie-xiang-mu-zong-jie/">Facebook第三方框架pop动画</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-07-29-bai-si-bu-de-jie-xiang-mu-zong-jie/">Quartz实现image缩放的技巧</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-07-26-gao-fang-bai-si-bu-de-jie-zong-jie/">Textfield魔法效果实现</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Heew -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

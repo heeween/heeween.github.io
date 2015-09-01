@@ -1,0 +1,434 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>父子控制器的作用 - Heew’s iOS Blog</title>
+  <meta name="author" content="Heew">
+
+  
+  <meta name="description" content="父子控制器的作用 父子控制器是一种关系,有了这种关系,父控制器会将屏幕旋转等重大事件传给子控制器 1
+2
+3
+4
+5
+6
+7
+/** * 屏幕即将旋转到某个方向时会调用这个方法 */
+- (void)willRotateToInterfaceOrientation:( &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://heeween.github.io/blog/2014-06-05-fu-zi-kong-zhi-qi-de-zuo-yong/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Heew’s iOS Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Heew’s iOS Blog</a></h1>
+  
+    <h2>A personal blog accounting problems for iOS.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.baidu.com" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="heeween.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">父子控制器的作用</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-06-05T14:38:18+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>2:38 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h3>父子控制器的作用</h3>
+
+<ul>
+<li>父子控制器是一种关系,有了这种关系,父控制器会将屏幕旋转等重大事件传给子控制器</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>/**
+</span><span class='line'> * 屏幕即将旋转到某个方向时会调用这个方法
+</span><span class='line'> */
+</span><span class='line'>- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+</span><span class='line'>{
+</span><span class='line'>    NSLog(@"%@ willRotateToInterfaceOrientation", self.class);
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>通常B控制器的view成为了A控制器的view子视图,也要把B控制器添加为A控制器的子控制器</li>
+</ul>
+
+
+<h5>添加子控制器的方法</h5>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[self addChildViewController:[[HYWOneViewController alloc] init]];
+</span><span class='line'>[self addChildViewController:[[HYWTwoViewController alloc] init]];
+</span><span class='line'>[self addChildViewController:[[HYWThreeViewController alloc] init]];
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h5>将子控制器删除的方法</h5>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>// 将HYWOneViewController从childViewControllers数组中移除
+</span><span class='line'>//    [self.childViewControllers[0] removeFromParentViewController];</span></code></pre></td></tr></table></div></figure>
+
+
+<h5>子控制器之间成为代理,遵守协议要写在.h文件中</h5>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>HYWSubcategoryViewController *subcategoryVc = [[HYWSubcategoryViewController alloc] init];
+</span><span class='line'>subcategoryVc.view.frame = CGRectMake(width, 0, width, height);
+</span><span class='line'>[self addChildViewController:subcategoryVc];
+</span><span class='line'>[self.view addSubview:subcategoryVc.view];
+</span><span class='line'>
+</span><span class='line'>HYWCategoryViewController *categoryVc = [[HYWCategoryViewController alloc] init];
+</span><span class='line'>categoryVc.delegate = subcategoryVc;
+</span><span class='line'>categoryVc.view.frame = CGRectMake(0, 0, width, height);
+</span><span class='line'>[self addChildViewController:categoryVc];
+</span><span class='line'>[self.view addSubview:categoryVc.view];</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>让subcategory遵守category的代理协议</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>#import "HYWCategoryViewController.h"
+</span><span class='line'>
+</span><span class='line'>@interface HYWSubcategoryViewController : UITableViewController
+</span><span class='line'>                        &lt;HYWCategoryViewControllerDelegate&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<h5>Cell被选中的时候,Cell内部的子控件都会达到高亮状态</h5>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cell.imageView.image = [UIImage imageNamed:c.icon];
+</span><span class='line'>cell.imageView.highlightedImage = [UIImage imageNamed:c.highlighted_icon];</span></code></pre></td></tr></table></div></figure>
+
+
+<h5>返回TableView选中行号的方法</h5>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (NSIndexPath *)indexPathForSelectedRow;                                                // returns nil or index path representing section and row of selection.
+</span><span class='line'>
+</span><span class='line'>self.categoryTableView.indexPathForSelectedRow.row 获得当前tableView选中的行号
+</span><span class='line'>    // 获得对应的模型
+</span><span class='line'>    HYWCategory *c = self.categories[self.categoryTableView.indexPathForSelectedRow.row]
+</span><span class='line'>    </span></code></pre></td></tr></table></div></figure>
+
+
+<h5>导航控制器的子控制器会自动给view添加UIEdgeinset</h5>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (void)viewDidAppear:(BOOL)animated
+</span><span class='line'>{
+</span><span class='line'>    [super viewDidAppear:animated];
+</span><span class='line'>    
+</span><span class='line'>    NSLog(@"categoryTableView - %@", NSStringFromUIEdgeInsets(self.categoryTableView.contentInset));
+</span><span class='line'>    NSLog(@"subcategoryTableView - %@", NSStringFromUIEdgeInsets(self.subcategoryTableView.contentInset));
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>运行结果如下</li>
+</ul>
+
+
+<p><img src="/images/Snip20150705_1.png" alt="导航控制器子控制器view的UIEdgeinset" /></p>
+
+<h5>手动给导航控制器子控制器view添加UIEdgeinset</h5>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>//    self.subcategoryTableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);</span></code></pre></td></tr></table></div></figure>
+
+
+<h5>苹果官方自动给UIScrollView添加UIEdgeinset属性,如果不想让系统自动添加,修改为NO</h5>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>@property(nonatomic,assign) BOOL automaticallyAdjustsScrollViewInsets NS_AVAILABLE_IOS(7_0); // Defaults to YES</span></code></pre></td></tr></table></div></figure>
+
+
+<h5>storyboard中也可以这是自动添加边界属性</h5>
+
+<p><img src="/images/Snip20150705_2.png" alt="自动添加scrollView边界属性" /></p>
+
+<h5>static的作用</h5>
+
+<ul>
+<li>static修饰局部变量
+
+<ul>
+<li>让局部变量只初始化一次</li>
+<li>局部变量在程序只有一份内存</li>
+<li>让局部变量并不会马上销毁,直到程序结束,才会被销毁</li>
+<li>但是并不意味着改变作用域,作用域还是在大括号里面</li>
+</ul>
+</li>
+<li>static修饰全局变量
+
+<ul>
+<li>让全局变量,修改全局变量的作用域,仅限于当前文件</li>
+<li>修饰全局变量是位了安全考虑,让当前变量不能在任何地方访问,并且修改其值</li>
+</ul>
+</li>
+<li>extern修饰变量
+
+<ul>
+<li>是引用,去全文件找变量</li>
+</ul>
+</li>
+</ul>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Heew</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2014-06-05T14:38:18+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>5</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>2:38 pm</span></time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014-05-28-ru-he-zai-kong-zhi-qi-dan-chu-%5B%3F%5D-ge-chuang-kou/" title="Previous Post: 如何在控制器弹出一个窗口">&laquo; 如何在控制器弹出一个窗口</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2014-06-06-zi-ding-yi-dui-xiang-shu-xing-copy/" title="Next Post: 自定义对象属性copy">自定义对象属性copy &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015-09-15-ji-shi-tong-xun-ji-zhu/">即时通讯技术</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015-05-29-ioslan-ya-4-dot-0kai-fa/">iOS蓝牙4.0开发</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015-05-11-nsscannerchu-li-fu-wu-qi-shu-ju-yi-chang-,-shu-ju-chu-li/">NSScanner处理服务器数据异常、数据处理</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015-04-07-gcdde-di-ceng-yi-ji-gcdde-miao-yong/">GCD的底层以及GCD的妙用</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015-03-29-html5chang-yong-kuang-jia/">未来的技术 - HTML5</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015-02-27-shen-ru-yan-jiu-cadisplaylinkhe-nstimer/">深入研究CADisplayLink和NSTimer</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015-02-19-er-wei-ma-zhi-zuo/">二维码制作</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-30-shu-ju-jie-xi-mo-xing-she-zhi-de-ji-qiao/">数据解析模型设置的技巧</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-10-popmenucontrollerzhu-yi-shi-xiang/">popMenuController注意事项</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-08-zi-ding-yi-kong-jian-feng-zhuang-de-zhu-yi-shi-xiang/">自定义控件封装的注意事项</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-07-textfieldhe-textviewde-qu-bie/">Textfield和TextView的区别</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-06-appearancetong-%5B%3F%5D-she-zhi-zhu-ti-de-wen-ti/">Appearance统一设置主题的问题</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-05-webviewjia-zai-jin-du-tiao-de-bu-kai-fang-he-chang-jian-jie-jue-fang-an/">webView加载进度条的不开放和常见解决方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-05-bai-si-bu-de-jie-zong-jie-8yue-5ri/">Modal出来的控制器再modal一个控制器的问题</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-04-layer-dot-cornerradiusxing-neng-wen-ti-ji-jie-jue-fang-an/">layer.cornerRadius性能问题及解决方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-03-bai-si-bu-de-jie-xiang-mu-geng-duo-zong-jie/">让一个普通控件弹出menuController的步骤</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-02-bai-si-bu-de-jie-xiang-mu-zong-jie/">多组表格网络请求加载失败可能引发的小问题</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-07-30-bai-si-bu-de-jie-xiang-mu-zong-jie/">Facebook第三方框架pop动画</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-07-29-bai-si-bu-de-jie-xiang-mu-zong-jie/">Quartz实现image缩放的技巧</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-07-26-gao-fang-bai-si-bu-de-jie-zong-jie/">Textfield魔法效果实现</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Heew -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

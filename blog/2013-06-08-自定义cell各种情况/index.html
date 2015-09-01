@@ -1,0 +1,615 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>各种自定义cell的用法 - Heew’s iOS Blog</title>
+  <meta name="author" content="Heew">
+
+  
+  <meta name="description" content="自定义cell 等高的cell 一、storyboard自定义cell 1.创建一个继承自UITableViewCell的子类，比如HYWDealCell 2.在storyboard中 往cell里面增加需要用到的子控件 设置cell的重用标识 设置cell的class为HYWDealCell 3 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://heeween.github.io/blog/2013-06-08-%E8%87%AA%E5%AE%9A%E4%B9%89cell%E5%90%84%E7%A7%8D%E6%83%85%E5%86%B5/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Heew’s iOS Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Heew’s iOS Blog</a></h1>
+  
+    <h2>A personal blog accounting problems for iOS.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.baidu.com" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="heeween.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">各种自定义cell的用法</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2013-06-08T01:18:23+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>8</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>1:18 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h1>自定义cell</h1>
+
+<h2>等高的cell</h2>
+
+<h3>一、storyboard自定义cell</h3>
+
+<h4>1.创建一个继承自UITableViewCell的子类，比如HYWDealCell<br></h4>
+
+<p><img src="../../images/Snip20150602_305.png" alt="" /></p>
+
+<h4>2.在storyboard中</h4>
+
+<ul>
+<li> 往cell里面增加需要用到的子控件<br>
+<img src="../../images/Snip20150602_302.png" alt="" /></li>
+<li> 设置cell的重用标识<br>
+<img src="../../images/Snip20150602_303.png" alt="" /></li>
+<li> 设置cell的class为HYWDealCell<br>
+<img src="../../images/Snip20150602_304.png" alt="" />
+
+<h4>3.在控制器中</h4></li>
+<li> 利用重用标识找到cell</li>
+<li> 给cell传递模型数据<br>
+<img src="../../images/Snip20150602_301.png" alt="" />
+
+<h4>4.在HYWDealCell中</h4></li>
+<li> 将storyboard中的子控件连线到类扩展中<br>
+<img src="../../images/Snip20150602_299.png" alt="" /></li>
+<li> 需要提供一个模型属性，重写模型的set方法，在这个方法中设置模型数据到子控件上<br>
+<img src="../../images/Snip20150602_298.png" alt="" />
+<img src="../../images/Snip20150602_300.png" alt="" /></li>
+</ul>
+
+
+<h3>二、xib自定义cell</h3>
+
+<h4>1.创建一个继承自UITableViewCell的子类，比如HYWDealCell<br></h4>
+
+<h4>2.创建一个xib文件（文件名建议跟cell的类名一样），比如HYWDealCell.xib</h4>
+
+<ul>
+<li> 拖拽一个UITableViewCell出来</li>
+<li> 修改cell的class为HYWDealCell</li>
+<li> 设置cell的重用标识</li>
+<li> 往cell中添加需要用到的子控件</li>
+</ul>
+
+
+<h4>3.在控制器中</h4>
+
+<ul>
+<li>利用registerNib&hellip;方法注册xib文件</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>UINib *nib = [UINib nibWithNibName:@"HYWTgCell" bundle:nil];
+</span><span class='line'>[self.tableView registerNib:nib forCellReuseIdentifier:@"tuangou"];</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>利用重用标识找到cell（如果没有注册xib文件，就需要手动去加载xib文件）</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>HYWTgCell *cell = [tableView dequeueReusableCellWithIdentifier:@"tuangou"];
+</span><span class='line'>if (cell == nil) {
+</span><span class='line'>    cell = [[[NSBundle mainBundle] loadNibNamed:@"HYWTgCell" owner:nil options:nil] lastObject];
+</span><span class='line'>}
+</span><span class='line'>return cell;</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>4.在HYWDealCell中</h4>
+
+<ul>
+<li> 将xib中的子控件连线到类扩展中</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>@interface HYWTgCell()
+</span><span class='line'>@property (weak, nonatomic) IBOutlet UIImageView *iconView;
+</span><span class='line'>@property (weak, nonatomic) IBOutlet UILabel *butCountLabel;
+</span><span class='line'>@property (weak, nonatomic) IBOutlet UILabel *priceLabel;
+</span><span class='line'>@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+</span><span class='line'>
+</span><span class='line'>@end</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li> 需要提供一个模型属性，重写模型的set方法，在这个方法中设置模型数据到子控件上</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (void)setTg:(HYWTg *)tg
+</span><span class='line'>{
+</span><span class='line'>    _tg = tg;
+</span><span class='line'>    self.iconView.image = [UIImage imageNamed:tg.icon];
+</span><span class='line'>    self.butCountLabel.text = [NSString stringWithFormat:@"已有 %@人购买",tg.buyCount];
+</span><span class='line'>    self.priceLabel.text = [NSString stringWithFormat:@"价格:￥%@",tg.price];
+</span><span class='line'>    self.titleLabel.text = tg.title;</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li> 也可以将创建获得cell的代码封装起来（比如cellWithTableView:方法）</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>+ (HYWTgCell *)cellWithTableView:(UITableView *)tableView
+</span><span class='line'>{
+</span><span class='line'>    
+</span><span class='line'>    HYWTgCell *cell = [tableView dequeueReusableCellWithIdentifier:@"tuangou"];
+</span><span class='line'>    if (cell == nil) {
+</span><span class='line'>        cell = [[[NSBundle mainBundle] loadNibNamed:@"HYWTgCell" owner:nil options:nil] lastObject];
+</span><span class='line'>    }
+</span><span class='line'>    return cell;
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li> 给cell传递模型数据</li>
+</ul>
+
+
+<h3>三、代码自定义cell(使用frame)</h3>
+
+<h4>1.创建一个继承自UITableViewCell的子类，比如HYWDealCell</h4>
+
+<ul>
+<li> 在initWithStyle:reuseIdentifier:方法中
+
+<ul>
+<li> 添加子控件</li>
+<li> 设置子控件的初始化属性（比如文字颜色、字体）</li>
+</ul>
+</li>
+<li> 在layoutSubviews方法中设置子控件的frame</li>
+<li> 需要提供一个模型属性，重写模型的set方法，在这个方法中设置模型数据到子控件</li>
+</ul>
+
+
+<h4>2.在控制器中</h4>
+
+<ul>
+<li>利用registerClass&hellip;方法注册HYWDealCell类</li>
+<li>利用重用标识找到cell（如果没有注册类，就需要手动创建cell）</li>
+<li>给cell传递模型数据</li>
+<li>也可以将创建获得cell的代码封装起来（比如cellWithTableView:方法）</li>
+</ul>
+
+
+<h3>四、代码自定义cell(使用autolayout)</h3>
+
+<h4>1.创建一个继承自UITableViewCell的子类，比如HYWDealCell</h4>
+
+<ul>
+<li> 在initWithStyle:reuseIdentifier:方法中
+
+<ul>
+<li> 添加子控件</li>
+<li> 添加子控件的约束（建议使用**Masonry）</li>
+<li> 设置子控件的初始化属性（比如文字颜色、字体）</li>
+</ul>
+</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+</span><span class='line'>{
+</span><span class='line'>    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+</span><span class='line'>    if (self) {
+</span><span class='line'>        self.iconView = [[UIImageView alloc] init];
+</span><span class='line'>        [self.contentView addSubview:self.iconView];
+</span><span class='line'>        
+</span><span class='line'>        self.titleLabel = [[UILabel alloc] init];
+</span><span class='line'>        self.titleLabel.font = [UIFont systemFontOfSize:14];
+</span><span class='line'>        [self.contentView addSubview:self.titleLabel];
+</span><span class='line'>        
+</span><span class='line'>        self.priceLabel = [[UILabel alloc] init];
+</span><span class='line'>        self.priceLabel.font = [UIFont systemFontOfSize:16];
+</span><span class='line'>        self.priceLabel.textColor = [UIColor colorWithHue:( arc4random() % 256 / 256.0 )
+</span><span class='line'>                                               saturation:( arc4random() % 128 / 256.0 ) + 0.5
+</span><span class='line'>                                               brightness:( arc4random() % 128 / 256.0 ) + 0.5
+</span><span class='line'>                                                    alpha:1];
+</span><span class='line'>        [self.contentView addSubview:self.priceLabel];
+</span><span class='line'>        
+</span><span class='line'>        self.buyCountLabel = [[UILabel alloc] init];
+</span><span class='line'>        self.buyCountLabel.font = [UIFont systemFontOfSize:14];
+</span><span class='line'>        self.buyCountLabel.textAlignment = NSTextAlignmentRight;
+</span><span class='line'>        self.buyCountLabel.textColor = [UIColor grayColor];
+</span><span class='line'>        [self.contentView addSubview:self.buyCountLabel];
+</span><span class='line'>        
+</span><span class='line'>        [self.iconView makeConstraints:^(MASConstraintMaker *make) {
+</span><span class='line'>            make.left.top.equalTo(self.contentView).offset(10);
+</span><span class='line'>            make.bottom.equalTo(self.contentView.bottom).offset(-10);
+</span><span class='line'>            make.right.equalTo(self.titleLabel.left).offset(-10);
+</span><span class='line'>            make.width.equalTo(self.iconView.height).multipliedBy(1.65);
+</span><span class='line'>        }];
+</span><span class='line'>        [self.titleLabel makeConstraints:^(MASConstraintMaker *make) {
+</span><span class='line'>            make.top.equalTo(self.contentView).offset(10);
+</span><span class='line'>            make.bottom.equalTo(self.priceLabel.top).offset(-10);
+</span><span class='line'>        }];
+</span><span class='line'>        [self.priceLabel makeConstraints:^(MASConstraintMaker *make) {
+</span><span class='line'>            make.left.equalTo(self.titleLabel.left);
+</span><span class='line'>            make.bottom.equalTo(self.contentView.bottom).offset(-10);
+</span><span class='line'>            make.width.equalTo(120);
+</span><span class='line'>        }];
+</span><span class='line'>        [self.buyCountLabel makeConstraints:^(MASConstraintMaker *make) {
+</span><span class='line'>            make.left.equalTo(self.priceLabel.right).offset(10);
+</span><span class='line'>            make.right.equalTo(self.contentView.right).offset(-10);
+</span><span class='line'>            make.centerY.equalTo(self.priceLabel.centerY);
+</span><span class='line'>        }];
+</span><span class='line'>    }
+</span><span class='line'>    return self;
+</span><span class='line'>}
+</span><span class='line'>   </span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li> 需要提供一个模型属性，重写模型的set方法，在这个方法中设置模型数据到子控件</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (void)setTg:(HYWTg *)tg
+</span><span class='line'>{
+</span><span class='line'>    _tg = tg;
+</span><span class='line'>    self.iconView.image = [UIImage imageNamed:tg.icon];
+</span><span class='line'>    self.titleLabel.text = tg.title;
+</span><span class='line'>    self.priceLabel.text = [NSString stringWithFormat:@"价格:￥%@",tg.price];
+</span><span class='line'>    self.buyCountLabel.text = [NSString stringWithFormat:@"有%@个人购买",tg.buyCount];
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>2.在控制器中</h4>
+
+<ul>
+<li> 利用registerClass&hellip;方法注册HYWDealCell类</li>
+<li> 利用重用标识找到cell（如果没有注册类，就需要手动创建cell）</li>
+<li> 给cell传递模型数据</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+</span><span class='line'>{
+</span><span class='line'>    HYWTGCell *cell = [HYWTGCell cellWithTableView:tableView];
+</span><span class='line'>    cell.tg = self.tgs[indexPath.row];
+</span><span class='line'>    return cell;
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li> 也可以将创建获得cell的代码封装起来（比如cellWithTableView:方法）</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>+ (instancetype)cellWithTableView:(UITableView *)tableView
+</span><span class='line'>{
+</span><span class='line'>    static NSString *ID = @"tuangou";
+</span><span class='line'>    HYWTGCell *cell = [tableView dequeueReusableCellWithIdentifier:ID];
+</span><span class='line'>    if (cell == nil) {
+</span><span class='line'>            NSLog(@"%s",__func__);
+</span><span class='line'>        cell = [[self alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ID];
+</span><span class='line'>    }
+</span><span class='line'>    return cell;
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Heew</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2013-06-08T01:18:23+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>8</span><span class='date-suffix'>th</span>, <span class='date-year'>2013</span></span> <span class='time'>1:18 am</span></time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013-06-04-how-to-use-tableview/" title="Previous Post: TableView的常用方法">&laquo; TableView的常用方法</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2013-06-08-fei-deng-gao-cellde-tableviewyong-fa/" title="Next Post: 非等高cell的TableView用法">非等高cell的TableView用法 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015-09-15-ji-shi-tong-xun-ji-zhu/">即时通讯技术</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015-05-29-ioslan-ya-4-dot-0kai-fa/">iOS蓝牙4.0开发</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015-05-11-nsscannerchu-li-fu-wu-qi-shu-ju-yi-chang-,-shu-ju-chu-li/">NSScanner处理服务器数据异常、数据处理</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015-04-07-gcdde-di-ceng-yi-ji-gcdde-miao-yong/">GCD的底层以及GCD的妙用</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015-03-29-html5chang-yong-kuang-jia/">未来的技术 - HTML5</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015-02-27-shen-ru-yan-jiu-cadisplaylinkhe-nstimer/">深入研究CADisplayLink和NSTimer</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015-02-19-er-wei-ma-zhi-zuo/">二维码制作</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-30-shu-ju-jie-xi-mo-xing-she-zhi-de-ji-qiao/">数据解析模型设置的技巧</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-10-popmenucontrollerzhu-yi-shi-xiang/">popMenuController注意事项</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-08-zi-ding-yi-kong-jian-feng-zhuang-de-zhu-yi-shi-xiang/">自定义控件封装的注意事项</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-07-textfieldhe-textviewde-qu-bie/">Textfield和TextView的区别</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-06-appearancetong-%5B%3F%5D-she-zhi-zhu-ti-de-wen-ti/">Appearance统一设置主题的问题</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-05-webviewjia-zai-jin-du-tiao-de-bu-kai-fang-he-chang-jian-jie-jue-fang-an/">webView加载进度条的不开放和常见解决方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-05-bai-si-bu-de-jie-zong-jie-8yue-5ri/">Modal出来的控制器再modal一个控制器的问题</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-04-layer-dot-cornerradiusxing-neng-wen-ti-ji-jie-jue-fang-an/">layer.cornerRadius性能问题及解决方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-03-bai-si-bu-de-jie-xiang-mu-geng-duo-zong-jie/">让一个普通控件弹出menuController的步骤</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-02-bai-si-bu-de-jie-xiang-mu-zong-jie/">多组表格网络请求加载失败可能引发的小问题</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-07-30-bai-si-bu-de-jie-xiang-mu-zong-jie/">Facebook第三方框架pop动画</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-07-29-bai-si-bu-de-jie-xiang-mu-zong-jie/">Quartz实现image缩放的技巧</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-07-26-gao-fang-bai-si-bu-de-jie-zong-jie/">Textfield魔法效果实现</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Heew -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,326 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>SDWebImage解读 - Heew’s iOS Blog</title>
+  <meta name="author" content="Heew">
+
+  
+  <meta name="description" content="图片文件缓存的时间有多长：1周 _maxCacheAge ＝ kDefaultCacheMaxCacheAge SDWebImage 的内存缓存是用什么实现的？ NSCache！ SDWebImage 的最大并发数是多少？ maxConcurrentDownloads ＝ 6 是程序固定死了， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://heeween.github.io/blog/2014-07-11-sdwebimagejie-du/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Heew’s iOS Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Heew’s iOS Blog</a></h1>
+  
+    <h2>A personal blog accounting problems for iOS.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.baidu.com" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="heeween.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">SDWebImage解读</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-07-11T17:54:46+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>11</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>5:54 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><img src="/images/0711-%E5%B8%B8%E7%94%A8%E6%A1%86%E6%9E%B6.png" alt="常用框架" />
+<img src="/images/Snip20150711_4.png" alt="SDWebimage解读" /></p>
+
+<h4>图片文件缓存的时间有多长：1周</h4>
+
+<pre><code>_maxCacheAge ＝ kDefaultCacheMaxCacheAge
+</code></pre>
+
+<h4>SDWebImage 的内存缓存是用什么实现的？</h4>
+
+<pre><code>NSCache！
+</code></pre>
+
+<h4>SDWebImage 的最大并发数是多少？</h4>
+
+<pre><code>maxConcurrentDownloads ＝ 6 是程序固定死了，可以通过属性进行调整！
+</code></pre>
+
+<h4>SDWebImage 支持动图吗？GIF</h4>
+
+<pre><code>支持
+// #import &lt;ImageIO/ImageIO.h&gt;
+[UIImage animatedImageWithImages:images duration:duration];
+</code></pre>
+
+<h4>SDWebImage是如何区分不同格式的图像的</h4>
+
+<pre><code>根据图像数据第一个字节来判断的！
+
+PNG：压缩比没有JPG高，但是无损压缩，解压缩性能高，苹果推荐的图像格式！
+JPG：压缩比最高的一种图片格式，有损压缩！最多使用的场景，照相机！
+    解压缩的性能不好！
+GIF：序列桢动图，特点：只支持256种颜色！最流行的时候在1998～1999，有专利的！
+</code></pre>
+
+<h4>SDWebImage 缓存图片的名称是怎么确定的！</h4>
+
+<pre><code>www.baidu.com/logo.png
+
+如果单纯使用 文件名保存，重名的几率很高！
+
+使用 MD5 的散列函数！对完整的 URL 进行 md5，结果是一个 32 个字符长度的字符串！
+</code></pre>
+
+<h4>SDWebImage 的内存警告是如何处理的！</h4>
+
+<p><img src="/images/Snip20150711_5.png" alt="SDWebimage图片缓存" /></p>
+
+<h5>利用通知中心观察</h5>
+
+<pre><code>- UIApplicationDidReceiveMemoryWarningNotification 接收到内存警告的通知
+</code></pre>
+
+<h5>执行 clearMemory 方法，清理内存缓存！</h5>
+
+<pre><code>- UIApplicationWillTerminateNotification 接收到应用程序将要终止通知
+</code></pre>
+
+<h5>执行 cleanDisk 方法，清理磁盘缓存！</h5>
+
+<pre><code>- UIApplicationDidEnterBackgroundNotification 接收到应用程序进入后台通知
+</code></pre>
+
+<h5>执行 backgroundCleanDisk 方法，后台清理磁盘！</h5>
+
+<pre><code>通过以上退出的通知，能够保证缓存文件的大小始终在控制范围之内！
+</code></pre>
+
+<h4>clearDisk 清空磁盘缓存，将所有缓存目录中的文件，全部删除！实际工作，将缓存目录直接删除，再次创建一个同名空目录！</h4>
+
+<h3>位移枚举</h3>
+
+<ul>
+<li>利用位移枚举，可以通过按位或的方式，使用一个参数传递多个类型的组合！</li>
+<li>在所有 C 语言中，如果看到位移枚举做参数，第一个选项不是0</li>
+<li>暗示：传入 0 做参数，表示什么附加操作都不做！执行效率最高！</li>
+</ul>
+
+
+<p><img src="/images/Snip20150711_7.png" alt="位移操作" /></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Heew</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2014-07-11T17:54:46+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>11</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>5:54 pm</span></time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014-07-11-iosde-yan-shi-cun-chu/" title="Previous Post: iOS的延时存储">&laquo; iOS的延时存储</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2014-07-12-yun-xing-shi-jie-du/" title="Next Post: 运行时解读">运行时解读 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015-09-15-ji-shi-tong-xun-ji-zhu/">即时通讯技术</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015-05-29-ioslan-ya-4-dot-0kai-fa/">iOS蓝牙4.0开发</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015-05-11-nsscannerchu-li-fu-wu-qi-shu-ju-yi-chang-,-shu-ju-chu-li/">NSScanner处理服务器数据异常、数据处理</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015-04-07-gcdde-di-ceng-yi-ji-gcdde-miao-yong/">GCD的底层以及GCD的妙用</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015-03-29-html5chang-yong-kuang-jia/">未来的技术 - HTML5</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015-02-27-shen-ru-yan-jiu-cadisplaylinkhe-nstimer/">深入研究CADisplayLink和NSTimer</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015-02-19-er-wei-ma-zhi-zuo/">二维码制作</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-30-shu-ju-jie-xi-mo-xing-she-zhi-de-ji-qiao/">数据解析模型设置的技巧</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-10-popmenucontrollerzhu-yi-shi-xiang/">popMenuController注意事项</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-08-zi-ding-yi-kong-jian-feng-zhuang-de-zhu-yi-shi-xiang/">自定义控件封装的注意事项</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-07-textfieldhe-textviewde-qu-bie/">Textfield和TextView的区别</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-06-appearancetong-%5B%3F%5D-she-zhi-zhu-ti-de-wen-ti/">Appearance统一设置主题的问题</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-05-webviewjia-zai-jin-du-tiao-de-bu-kai-fang-he-chang-jian-jie-jue-fang-an/">webView加载进度条的不开放和常见解决方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-05-bai-si-bu-de-jie-zong-jie-8yue-5ri/">Modal出来的控制器再modal一个控制器的问题</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-04-layer-dot-cornerradiusxing-neng-wen-ti-ji-jie-jue-fang-an/">layer.cornerRadius性能问题及解决方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-03-bai-si-bu-de-jie-xiang-mu-geng-duo-zong-jie/">让一个普通控件弹出menuController的步骤</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-02-bai-si-bu-de-jie-xiang-mu-zong-jie/">多组表格网络请求加载失败可能引发的小问题</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-07-30-bai-si-bu-de-jie-xiang-mu-zong-jie/">Facebook第三方框架pop动画</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-07-29-bai-si-bu-de-jie-xiang-mu-zong-jie/">Quartz实现image缩放的技巧</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-07-26-gao-fang-bai-si-bu-de-jie-zong-jie/">Textfield魔法效果实现</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Heew -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
