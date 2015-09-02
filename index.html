@@ -9,8 +9,8 @@
   <meta name="author" content="Heew">
 
   
-  <meta name="description" content="一、CADisplayLink CADisplayLink 是一个定时器对象可以让你的应用以与显示器的刷新界面相同的频率进行绘图。
-应用如果想要创建 display link ，需要提供一个目标对象和一个当屏幕刷新时被调用的选择器方法。之后再将 display link 添加到主线程中。 &hellip;">
+  <meta name="description" content="1. SEL和IMP 最早我把SEL理解为函数指针，现在看来，不是这样的。 1.1 SEL类型 SEL类型的变量，可以通过@selector(方法名)来取得，当然了，Objective C的方法名，我们也知道了，多么恶心（比Java废话还多）。
+而它真正得到的，只要方法名一样，它的值就是一样的， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -66,6 +66,74 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015-03-02-selhe-impde-qu-bie/">SEL和IMP的区别</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-03-02T16:58:56+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2015</span></span> <span class='time'>4:58 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h4>1. SEL和IMP</h4>
+
+<p>最早我把SEL理解为函数指针，现在看来，不是这样的。</p>
+
+<h6>1.1 SEL类型</h6>
+
+<p>SEL类型的变量，可以通过@selector(方法名)来取得，当然了，Objective C的方法名，我们也知道了，多么恶心（比Java废话还多）。
+而它真正得到的，只要方法名一样，它的值就是一样的，不管这个方法定义于哪个类，是不是实例方法【再说了，@selector的时候，除了方法名也没有什么类啊，对象啊什么事情】。
+所以我现在把它理解为“方法名的某种映射结果”。（从C++程序员的眼光看，我觉得没啥可以对应的，既不是函数指针，也不是函数指针类型，像是函数指针类型的名字吧。）</p>
+
+<h6>1.2 IMP类型</h6>
+
+<p>这个才是函数指针，IMP可以从 对象 &amp; SEL的方法得到：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="kt">IMP</span> <span class="n">imp</span> <span class="o">=</span> <span class="p">[</span><span class="nb">self</span> <span class="nl">methodForSelector</span><span class="p">:</span><span class="n">selector</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这是IMP的定义：
+typedef id (*IMP)(id, SEL, );
+另外注意NSObject里面的这两个方法：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">IMP</span><span class="p">)</span><span class="nf">methodForSelector:</span><span class="p">(</span><span class="kt">SEL</span><span class="p">)</span><span class="nv">aSelector</span><span class="p">;</span>
+</span><span class='line'><span class="p">+</span> <span class="p">(</span><span class="kt">IMP</span><span class="p">)</span><span class="nf">instanceMethodForSelector:</span><span class="p">(</span><span class="kt">SEL</span><span class="p">)</span><span class="nv">aSelector</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>2. Objective C可以动态添加方法&hellip;</h4>
+
+<p>class_addMethod，用就行了，转到定义，可以看看其他的方法，也很动态（这也太动态了，Java，C#也不行啊）。
+&ldquo;定义于runtime.h&rdquo;</p>
+
+<h4>3. resolveInstanceMethod</h4>
+
+<p>这个方法挺BT的。
+我暂时个人理解为方法劫持吧，方法和属性的调用，都会先跑到这里来，具体看文档吧：
+<a href="http://www.apple.com.cn/developer/mac/library/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Articles/chapter_5_section_2.html">http://www.apple.com.cn/developer/mac/library/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Articles/chapter_5_section_2.html</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -925,147 +993,6 @@ CADisplayLink 不能被继承。</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014-08-04-layer-dot-cornerradiusxing-neng-wen-ti-ji-jie-jue-fang-an/">layer.cornerRadius性能问题及解决方案</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-08-04T11:30:42+08:00'><span class='date'><span class='date-month'>Aug</span> <span class='date-day'>4</span><span class='date-suffix'>th</span>, <span class='date-year'>2014</span></span> <span class='time'>11:30 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h2>圆角设置的性能问题layer.cornerRadius方法会造成程序卡顿,利用Quartz2D性能更好</h2>
-
-<p><img src="/images/Snip20150803_9.png" alt="" />
-* C语言绘图方式</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="bp">UIImage</span> <span class="o">*</span><span class="p">)</span><span class="nf">circleImage</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="c1">// NO代表透明</span>
-</span><span class='line'>    <span class="n">UIGraphicsBeginImageContextWithOptions</span><span class="p">(</span><span class="nb">self</span><span class="p">.</span><span class="n">size</span><span class="p">,</span> <span class="nb">NO</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">// 获得上下文</span>
-</span><span class='line'>    <span class="n">CGContextRef</span> <span class="n">ctx</span> <span class="o">=</span> <span class="n">UIGraphicsGetCurrentContext</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">// 添加一个圆</span>
-</span><span class='line'>    <span class="bp">CGRect</span> <span class="n">rect</span> <span class="o">=</span> <span class="n">CGRectMake</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">self</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="nb">self</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">CGContextAddEllipseInRect</span><span class="p">(</span><span class="n">ctx</span><span class="p">,</span> <span class="n">rect</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">// 裁剪</span>
-</span><span class='line'>    <span class="n">CGContextClip</span><span class="p">(</span><span class="n">ctx</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">// 将图片画上去</span>
-</span><span class='line'>    <span class="p">[</span><span class="nb">self</span> <span class="nl">drawInRect</span><span class="p">:</span><span class="n">rect</span><span class="p">];</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="bp">UIImage</span> <span class="o">*</span><span class="n">image</span> <span class="o">=</span> <span class="n">UIGraphicsGetImageFromCurrentImageContext</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">UIGraphicsEndImageContext</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">return</span> <span class="n">image</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>UIBezierPath绘图方式</li>
-</ul>
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="bp">UIImage</span> <span class="o">*</span><span class="p">)</span><span class="nf">clipImage</span>
-</span><span class='line'><span class="p">{</span>
-</span><span class='line'>    <span class="c1">// 1.开启位图上下文，跟图片尺寸一样大</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="bp">CGSize</span> <span class="n">imageSize</span> <span class="o">=</span> <span class="nb">self</span><span class="p">.</span><span class="n">size</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="n">UIGraphicsBeginImageContextWithOptions</span><span class="p">(</span><span class="n">imageSize</span><span class="p">,</span> <span class="nb">NO</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">// 2.设置圆形裁剪区域，正切与图片</span>
-</span><span class='line'>    <span class="bp">UIBezierPath</span> <span class="o">*</span><span class="n">path</span> <span class="o">=</span> <span class="p">[</span><span class="bp">UIBezierPath</span> <span class="nl">bezierPathWithOvalInRect</span><span class="p">:</span><span class="n">CGRectMake</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">imageSize</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="n">imageSize</span><span class="p">.</span><span class="n">height</span><span class="p">)];</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">// 2.2把路径设置为裁剪区域</span>
-</span><span class='line'>    <span class="p">[</span><span class="n">path</span> <span class="n">addClip</span><span class="p">];</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">// 3.绘制图片</span>
-</span><span class='line'>    <span class="p">[</span><span class="nb">self</span> <span class="nl">drawAtPoint</span><span class="p">:</span><span class="n">CGPointZero</span><span class="p">];</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">// 4.从上下文中获取图片</span>
-</span><span class='line'>    <span class="bp">UIImage</span> <span class="o">*</span><span class="n">clipImage</span> <span class="o">=</span> <span class="n">UIGraphicsGetImageFromCurrentImageContext</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1">// 5.关闭上下文</span>
-</span><span class='line'>    <span class="n">UIGraphicsEndImageContext</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">return</span> <span class="n">clipImage</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/2">&larr; Older</a>
@@ -1084,6 +1011,10 @@ CADisplayLink 不能被继承。</p>
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015-03-02-selhe-impde-qu-bie/">SEL和IMP的区别</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2015-02-27-shen-ru-yan-jiu-cadisplaylinkhe-nstimer/">深入研究CADisplayLink和NSTimer</a>
@@ -1159,10 +1090,6 @@ CADisplayLink 不能被继承。</p>
     
       <li class="post">
         <a href="/blog/2014-07-19-svnda-jian-he-shi-yong/">SVN搭建和使用</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014-07-18-dao-hang-lan-she-zhi-ji-qiao/">导航栏设置技巧</a>
       </li>
     
   </ul>

@@ -4,7 +4,7 @@
   <title><![CDATA[Heew’s iOS Blog]]></title>
   <link href="http://heeween.github.io/atom.xml" rel="self"/>
   <link href="http://heeween.github.io/"/>
-  <updated>2015-09-02T15:36:37+08:00</updated>
+  <updated>2015-09-02T17:01:44+08:00</updated>
   <id>http://heeween.github.io/</id>
   <author>
     <name><![CDATA[Heew]]></name>
@@ -12,6 +12,54 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[SEL和IMP的区别]]></title>
+    <link href="http://heeween.github.io/blog/2015-03-02-selhe-impde-qu-bie/"/>
+    <updated>2015-03-02T16:58:56+08:00</updated>
+    <id>http://heeween.github.io/blog/selhe-impde-qu-bie</id>
+    <content type="html"><![CDATA[<h4>1. SEL和IMP</h4>
+
+<p>最早我把SEL理解为函数指针，现在看来，不是这样的。</p>
+
+<h6>1.1 SEL类型</h6>
+
+<p>SEL类型的变量，可以通过@selector(方法名)来取得，当然了，Objective C的方法名，我们也知道了，多么恶心（比Java废话还多）。
+而它真正得到的，只要方法名一样，它的值就是一样的，不管这个方法定义于哪个类，是不是实例方法【再说了，@selector的时候，除了方法名也没有什么类啊，对象啊什么事情】。
+所以我现在把它理解为“方法名的某种映射结果”。（从C++程序员的眼光看，我觉得没啥可以对应的，既不是函数指针，也不是函数指针类型，像是函数指针类型的名字吧。）</p>
+
+<h6>1.2 IMP类型</h6>
+
+<p>这个才是函数指针，IMP可以从 对象 &amp; SEL的方法得到：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="kt">IMP</span> <span class="n">imp</span> <span class="o">=</span> <span class="p">[</span><span class="nb">self</span> <span class="nl">methodForSelector</span><span class="p">:</span><span class="n">selector</span><span class="p">];</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这是IMP的定义：
+typedef id (*IMP)(id, SEL, );
+另外注意NSObject里面的这两个方法：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">-</span> <span class="p">(</span><span class="kt">IMP</span><span class="p">)</span><span class="nf">methodForSelector:</span><span class="p">(</span><span class="kt">SEL</span><span class="p">)</span><span class="nv">aSelector</span><span class="p">;</span>
+</span><span class='line'><span class="p">+</span> <span class="p">(</span><span class="kt">IMP</span><span class="p">)</span><span class="nf">instanceMethodForSelector:</span><span class="p">(</span><span class="kt">SEL</span><span class="p">)</span><span class="nv">aSelector</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>2. Objective C可以动态添加方法&hellip;</h4>
+
+<p>class_addMethod，用就行了，转到定义，可以看看其他的方法，也很动态（这也太动态了，Java，C#也不行啊）。
+&ldquo;定义于runtime.h&rdquo;</p>
+
+<h4>3. resolveInstanceMethod</h4>
+
+<p>这个方法挺BT的。
+我暂时个人理解为方法劫持吧，方法和属性的调用，都会先跑到这里来，具体看文档吧：
+<a href="http://www.apple.com.cn/developer/mac/library/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Articles/chapter_5_section_2.html">http://www.apple.com.cn/developer/mac/library/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Articles/chapter_5_section_2.html</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[深入研究CADisplayLink和NSTimer]]></title>
@@ -1804,79 +1852,6 @@ CADisplayLink 不能被继承。</p>
 <h3>多人开发冲突如何解决</h3>
 
 <p><img src="http://heeween.github.io/images/Snip20150719_1.png" alt="" /></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[导航栏设置技巧]]></title>
-    <link href="http://heeween.github.io/blog/2014-07-18-dao-hang-lan-she-zhi-ji-qiao/"/>
-    <updated>2014-07-18T16:55:21+08:00</updated>
-    <id>http://heeween.github.io/blog/dao-hang-lan-she-zhi-ji-qiao</id>
-    <content type="html"><![CDATA[<h3>1：statusBar字体为白色</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="err">在</span><span class="n">plist</span><span class="err">里面设置</span><span class="n">View</span> <span class="n">controller</span><span class="o">-</span><span class="n">based</span> <span class="n">status</span> <span class="n">bar</span> <span class="n">appearance</span> <span class="err">为</span> <span class="nb">NO</span><span class="err">；设置</span><span class="n">statusBarStyle</span> <span class="err">为</span> <span class="n">UIStatusBarStyleLightContent</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>2:设置statusBar和navigationbar为一体</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[</span><span class="n">nav</span><span class="p">.</span><span class="n">navigationBar</span> <span class="nl">setBackgroundImage</span><span class="p">:[</span><span class="bp">UIImage</span> <span class="nl">imageNamed</span><span class="p">:</span><span class="s">@&quot;bg_navbar.png&quot;</span><span class="p">]</span> <span class="nl">forBarPosition</span><span class="p">:</span><span class="n">UIBarPositionTopAttached</span> <span class="nl">barMetrics</span><span class="p">:</span><span class="n">UIBarMetricsDefault</span><span class="p">];</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>3：tabBarItem被选中没效果，需要调用sdk7中的方法：</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">//兼容ios7以前</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">[</span><span class="n">viewController</span><span class="p">.</span><span class="n">tabBarItem</span> <span class="nl">setFinishedSelectedImage</span><span class="p">:</span><span class="n">actionMenu</span><span class="p">.</span><span class="n">selectedIcon</span> <span class="nl">withFinishedUnselectedImage</span><span class="p">:</span><span class="n">actionMenu</span><span class="p">.</span><span class="n">icon</span><span class="p">];</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">//ios7的方法</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">viewController</span><span class="p">.</span><span class="n">tabBarItem</span><span class="p">.</span><span class="n">selectedImage</span> <span class="o">=</span> <span class="n">actionMenu</span><span class="p">.</span><span class="n">selectedIcon</span><span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>4：刷新状态栏statusBar</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="p">[</span><span class="nb">self</span> <span class="n">setNeedsStatusBarAppearanceUpdate</span><span class="p">]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>5：navigationbar上面的BarButtonItem字看不见问题，backBarItem箭头没有，则需要</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">//ios7设置BarButtonItem字体颜色，则会显示出来，不包括返回箭头</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">[[</span><span class="bp">UIBarButtonItem</span> <span class="n">appearance</span><span class="p">]</span> <span class="nl">setBackButtonTitlePositionAdjustment</span><span class="p">:</span><span class="n">UIOffsetMake</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="nl">forBarMetrics</span><span class="p">:</span><span class="n">UIBarMetricsDefault</span><span class="p">];</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">//设置BarButtonItem颜色，包括返回箭头</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">[[</span><span class="bp">UINavigationBar</span> <span class="n">appearance</span><span class="p">]</span> <span class="nl">setTintColor</span><span class="p">:[</span><span class="bp">UIColor</span> <span class="n">whiteColor</span><span class="p">]];</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h3>6:取消ios7自带手势，比如navigationcontroller的右滑返回</h3>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="nb">self</span><span class="p">.</span><span class="n">navigationController</span><span class="p">.</span><span class="n">interactivePopGestureRecognizer</span><span class="p">.</span><span class="n">enabled</span> <span class="o">=</span> <span class="nb">NO</span> <span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
 ]]></content>
   </entry>
   
