@@ -9,8 +9,10 @@
   <meta name="author" content="Heew">
 
   
-  <meta name="description" content="
-">
+  <meta name="description" content="storyboard文件的认识 用来描述软件界面
+默认情况下，程序一启动就会加载Main.storyboard
+加载storyboard时，会首先创建和显示箭头所指的控制器界面 IBAction和IBOutlet IBAction： 本质就是void
+能让方法具备连线的功能 IBOutlet &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -72,6 +74,147 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2013-06-01-%E7%AC%AC%E4%B8%80%E4%B8%AAiOS%E7%A8%8B%E5%BA%8F/">第一个iOS程序</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2013-06-01T23:48:39+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>1</span><span class='date-suffix'>st</span>, <span class='date-year'>2013</span></span> <span class='time'>11:48 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>storyboard文件的认识</h2>
+
+<ul>
+<li>用来描述软件界面</li>
+<li>默认情况下，程序一启动就会加载Main.storyboard</li>
+<li>加载storyboard时，会首先创建和显示箭头所指的控制器界面</li>
+</ul>
+
+
+<h2>IBAction和IBOutlet</h2>
+
+<ul>
+<li>IBAction：
+
+<ul>
+<li>本质就是void</li>
+<li>能让方法具备连线的功能</li>
+</ul>
+</li>
+<li>IBOutlet
+
+<ul>
+<li>能让属性具备连线的功能</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>storyboard连线容易出现的问题</h2>
+
+<ul>
+<li>连接的方法代码被删掉，但是连线没有去掉
+
+<ul>
+<li>可能会出现方法找不到错误</li>
+<li>unrecognized selector sent to instance</li>
+</ul>
+</li>
+<li>连接的属性代码被删掉，但是连线没有去掉
+
+<ul>
+<li>setValue:forUndefinedKey:]: this class is not key value coding-compliant for the key</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>UIViewController（控制器）的认识</h2>
+
+<ul>
+<li>一个控制器负责管理一个大界面</li>
+<li>控制器负责界面的创建、事件处理等</li>
+</ul>
+
+
+<h2>类扩展</h2>
+
+<ul>
+<li>格式</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>@interface 类名()
+</span><span class='line'>/** 属性、方法的声明 */
+</span><span class='line'>@end
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>作用
+
+<ul>
+<li>为某个类增加额外的属性和方法声明</li>
+<li>可以写在.h和.m文件中</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>项目属性</h2>
+
+<ul>
+<li>Product Name
+
+<ul>
+<li>软件名称、产品名称、项目名称</li>
+</ul>
+</li>
+<li>Organization Name
+
+<ul>
+<li>公司名称、组织名称</li>
+</ul>
+</li>
+<li>Organization Identifier
+
+<ul>
+<li>公司的唯一标识</li>
+<li>一般是公司域名的反写，比如com.520it</li>
+</ul>
+</li>
+<li>Bundle Identifier
+
+<ul>
+<li>软件的唯一标识</li>
+<li>一般是Organization Identifier + Product Name</li>
+</ul>
+</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2013-04-01-my-first-octopress-blog/">My First Octopress Blog</a></h1>
     
     
@@ -114,6 +257,10 @@
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015-03-03-runtimepou-xi/">Runtime剖析</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2015-03-02-selhe-impde-qu-bie/">SEL和IMP的区别</a>
@@ -189,10 +336,6 @@
     
       <li class="post">
         <a href="/blog/2014-07-19-shi-yong-svnxie-tong-kai-fa-xcodexiang-mu/">使用SVN协同开发Xcode项目</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014-07-19-svnda-jian-he-shi-yong/">SVN搭建和使用</a>
       </li>
     
   </ul>

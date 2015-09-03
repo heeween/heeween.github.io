@@ -1,0 +1,452 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Runtime剖析 - Heew’s iOS Blog</title>
+  <meta name="author" content="Heew">
+
+  
+  <meta name="description" content="从C的面向过程到接触OC的对象、消息的过渡初期总会有知其然不知其所以然的纠结，相关的学习资源一般都是介绍有什么、使用步骤一二三四的套路，这样就很难知道知道本质是什么，能干什么不能干什么，为什么要选择用它。而实际开发过程，都是先有什么要解决，再努力找到实现方法。人脑的容易接受的信息， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://heeween.github.io/blog/2015-03-03-runtimepou-xi/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Heew’s iOS Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.useso.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.useso.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Heew’s iOS Blog</a></h1>
+  
+    <h2>A personal blog accounting problems for iOS.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.baidu.com" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="heeween.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">首页</a></li>
+  <li><a href="/blog/archives">所有文章</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Runtime剖析</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-03-03T13:42:38+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>3</span><span class='date-suffix'>rd</span>, <span class='date-year'>2015</span></span> <span class='time'>1:42 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><img src="./images/runtime%E7%AE%80%E4%BB%8B" alt="" /></p>
+
+<p>从C的面向过程到接触OC的对象、消息的过渡初期总会有知其然不知其所以然的纠结，相关的学习资源一般都是介绍有什么、使用步骤一二三四的套路，这样就很难知道知道本质是什么，能干什么不能干什么，为什么要选择用它。而实际开发过程，都是先有什么要解决，再努力找到实现方法。人脑的容易接受的信息，也多是主干到分枝的思维导图，纲举目张。所以，试着以自己的粗浅理解来写一点关于OC类和Runtime的东西。</p>
+
+<h3>runtime主要思想</h3>
+
+<p>代码的思想，大概是把重复且不变的东西封装成可以重复利用的共性，把变化的东西细化为具体独立松耦合的变量。这些可以是数据类型，也可以是实现的方法代码片段。类也是封装的产物和可封装的对象。被封装的东西，需要找到里面内容来具体地实现，就需要给里面内容加个关联的映射标识，比如索引（数组）、字符串（字典）、指针、SEL（方法的代号）、isa（对象）等等。大概来说就是用类和对象来封装父类指针和方法列表，用映射来找到实现方法的代码片段。</p>
+
+<h3>OC代码转运行时代码思路</h3>
+
+<p>实例对象由isa指针找到所属类，类维护一个运行时可接收的消息列表；分发表中的每个入口是一个方法(Method)，其中key是一个特定名称，即选择器(SEL)，其对应一个实现(IMP)，即指向底层C实现函数的指针。核心是msgSend函数。</p>
+
+<h3>OC对象的本质</h3>
+
+<p>对象就是一个含isa指针的结构体。实例对象的isa指针指向类，类的isa指针指向其元类（metaClass）。</p>
+
+<h3>OC对象调用方法的消息机制</h3>
+
+<p>向一个Objective-C对象发送消息时，运行时库会根据实例对象的isa指针找到这个实例对象所属的类。Runtime库会在类的方法列表由super_class指针找到父类的方法列表直至根类NSObject中去寻找与消息对应的selector指向的方法。找到后即运行这个方法。</p>
+
+<p><img src="./images/666982-2a3d1f3bbe21c32c" alt="" /></p>
+
+<h3>class_：</h3>
+
+<p>get: 类名，父类，元类；实例变量，成员变量；属性；实例方法，类方法，方法实现；</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// 获取类的类名</span>
+</span><span class='line'><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="nf">class_getName</span> <span class="p">(</span> <span class="kt">Class</span> <span class="n">cls</span> <span class="p">);</span>
+</span><span class='line'><span class="c1">// 获取类的父类</span>
+</span><span class='line'><span class="kt">Class</span> <span class="nf">class_getSuperclass</span> <span class="p">(</span> <span class="kt">Class</span> <span class="n">cls</span> <span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// 获取实例大小</span>
+</span><span class='line'><span class="kt">size_t</span> <span class="nf">class_getInstanceSize</span> <span class="p">(</span> <span class="kt">Class</span> <span class="n">cls</span> <span class="p">);</span>
+</span><span class='line'><span class="c1">// 获取类中指定名称实例成员变量的信息</span>
+</span><span class='line'><span class="n">Ivar</span> <span class="nf">class_getInstanceVariable</span> <span class="p">(</span> <span class="kt">Class</span> <span class="n">cls</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">name</span> <span class="p">);</span>
+</span><span class='line'><span class="c1">// 获取类成员变量的信息</span>
+</span><span class='line'><span class="n">Ivar</span> <span class="nf">class_getClassVariable</span> <span class="p">(</span> <span class="kt">Class</span> <span class="n">cls</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">name</span> <span class="p">);</span>
+</span><span class='line'><span class="c1">// 获取指定的属性</span>
+</span><span class='line'><span class="kt">objc_property_t</span> <span class="nf">class_getProperty</span> <span class="p">(</span> <span class="kt">Class</span> <span class="n">cls</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">name</span> <span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// 获取实例方法</span>
+</span><span class='line'><span class="n">Method</span> <span class="nf">class_getInstanceMethod</span> <span class="p">(</span> <span class="kt">Class</span> <span class="n">cls</span><span class="p">,</span> <span class="kt">SEL</span> <span class="n">name</span> <span class="p">);</span>
+</span><span class='line'><span class="c1">// 获取类方法</span>
+</span><span class='line'><span class="n">Method</span> <span class="nf">class_getClassMethod</span> <span class="p">(</span> <span class="kt">Class</span> <span class="n">cls</span><span class="p">,</span> <span class="kt">SEL</span> <span class="n">name</span> <span class="p">);</span>
+</span><span class='line'><span class="c1">// 获取方法的具体实现</span>
+</span><span class='line'><span class="kt">IMP</span> <span class="nf">class_getMethodImplementation</span> <span class="p">(</span> <span class="kt">Class</span> <span class="n">cls</span><span class="p">,</span> <span class="kt">SEL</span> <span class="n">name</span> <span class="p">);</span>
+</span><span class='line'><span class="kt">IMP</span> <span class="nf">class_getMethodImplementation_stret</span> <span class="p">(</span> <span class="kt">Class</span> <span class="n">cls</span><span class="p">,</span> <span class="kt">SEL</span> <span class="n">name</span> <span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>copy: 成员变量列表；属性列表；方法列表；协议列表；</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// 获取整个成员变量列表</span>
+</span><span class='line'><span class="n">Ivar</span> <span class="o">*</span> <span class="nf">class_copyIvarList</span> <span class="p">(</span> <span class="kt">Class</span> <span class="n">cls</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="o">*</span><span class="n">outCount</span> <span class="p">);</span>
+</span><span class='line'><span class="c1">// 获取属性列表</span>
+</span><span class='line'><span class="kt">objc_property_t</span> <span class="o">*</span> <span class="nf">class_copyPropertyList</span> <span class="p">(</span> <span class="kt">Class</span> <span class="n">cls</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="o">*</span><span class="n">outCount</span> <span class="p">);</span>
+</span><span class='line'><span class="c1">// 获取所有方法的列表</span>
+</span><span class='line'><span class="n">Method</span> <span class="o">*</span> <span class="nf">class_copyMethodList</span> <span class="p">(</span> <span class="kt">Class</span> <span class="n">cls</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="o">*</span><span class="n">outCount</span> <span class="p">);</span>
+</span><span class='line'><span class="c1">// 获取类实现的协议列表</span>
+</span><span class='line'><span class="n">Protocol</span> <span class="o">*</span> <span class="nf">class_copyProtocolList</span> <span class="p">(</span> <span class="kt">Class</span> <span class="n">cls</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="o">*</span><span class="n">outCount</span> <span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>add: 成员变量；属性；方法；协议；(添加成员变量只能在运行时创建的类，且不能为元类)</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// 添加成员变量</span>
+</span><span class='line'><span class="kt">BOOL</span> <span class="nf">class_addIvar</span> <span class="p">(</span> <span class="kt">Class</span> <span class="n">cls</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">name</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">size</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">alignment</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">types</span> <span class="p">);</span>
+</span><span class='line'><span class="c1">// 添加属性</span>
+</span><span class='line'><span class="kt">BOOL</span> <span class="nf">class_addProperty</span> <span class="p">(</span> <span class="kt">Class</span> <span class="n">cls</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">name</span><span class="p">,</span> <span class="k">const</span> <span class="kt">objc_property_attribute_t</span> <span class="o">*</span><span class="n">attributes</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">attributeCount</span> <span class="p">);</span>
+</span><span class='line'><span class="c1">// 添加方法</span>
+</span><span class='line'><span class="kt">BOOL</span> <span class="nf">class_addMethod</span> <span class="p">(</span> <span class="kt">Class</span> <span class="n">cls</span><span class="p">,</span> <span class="kt">SEL</span> <span class="n">name</span><span class="p">,</span> <span class="kt">IMP</span> <span class="n">imp</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">types</span> <span class="p">);</span>
+</span><span class='line'><span class="c1">// 添加协议</span>
+</span><span class='line'><span class="kt">BOOL</span> <span class="nf">class_addProtocol</span> <span class="p">(</span> <span class="kt">Class</span> <span class="n">cls</span><span class="p">,</span> <span class="n">Protocol</span> <span class="o">*</span><span class="n">protocol</span> <span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>replace：属性；方法；</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="c1">// 替换类的属性</span>
+</span><span class='line'><span class="kt">void</span> <span class="nf">class_replaceProperty</span> <span class="p">(</span> <span class="kt">Class</span> <span class="n">cls</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">name</span><span class="p">,</span> <span class="k">const</span> <span class="kt">objc_property_attribute_t</span> <span class="o">*</span><span class="n">attributes</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">attributeCount</span> <span class="p">);</span>
+</span><span class='line'><span class="c1">// 替代方法的实现</span>
+</span><span class='line'><span class="kt">IMP</span> <span class="nf">class_replaceMethod</span> <span class="p">(</span> <span class="kt">Class</span> <span class="n">cls</span><span class="p">,</span> <span class="kt">SEL</span> <span class="n">name</span><span class="p">,</span> <span class="kt">IMP</span> <span class="n">imp</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">types</span> <span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>SEL的理解</h4>
+
+<p>SEL又叫选择器，是表示一个方法的selector的指针,映射方法的名字。Objective-C在编译时，会依据每一个方法的名字、参数序列，生成一个唯一的整型标识(Int类型的地址)，这个标识就是SEL。
+SEL的作用是作为IMP的KEY，存储在NSSet中，便于hash快速查询方法。SEL不能相同，对应方法可以不同。所以在Objective-C同一个类(及类的继承体系)中，不能存在2个同名的方法，就算参数类型不同。多个方法可以有同一个SEL。
+不同的类可以有相同的方法名。不同类的实例对象执行相同的selector时，会在各自的方法列表中去根据selector去寻找自己对应的IMP。</p>
+
+<h4>IMP的理解</h4>
+
+<p>IMP是指向实现函数的指针，通过SEL取得IMP后，我们就获得了最终要找的实现函数的入口.</p>
+
+<h4>Method的理解</h4>
+
+<p>这个结构体相当于在SEL和IMP之间作了一个映射。有了SEL，我们便可以找到对应的IMP，从而调用方法的实现代码。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='objc'><span class='line'><span class="k">struct</span> <span class="n">objc_method</span> <span class="p">{</span>
+</span><span class='line'>    <span class="kt">SEL</span> <span class="n">method_name</span>                 <span class="n">OBJC2_UNAVAILABLE</span><span class="p">;</span>  <span class="c1">// 方法名</span>
+</span><span class='line'>    <span class="kt">char</span> <span class="o">*</span><span class="n">method_types</span>                  <span class="n">OBJC2_UNAVAILABLE</span><span class="p">;</span>
+</span><span class='line'>    <span class="kt">IMP</span> <span class="n">method_imp</span>                      <span class="n">OBJC2_UNAVAILABLE</span><span class="p">;</span>  <span class="c1">// 方法实现</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>方法缓存</h4>
+
+<p>方法调用最先是在方法缓存里找的，方法调用是懒调用，第一次调用时加载后加到缓存池里。（引申：+load方法和+initialize方法。load方法是首次加载类时调用，绝对只调用一次；initialize方法是首次给类发消息时调用，通常只调用一次，但如果它的子类初始化时未定义initialize方法，则会再调用一次它的initialize方法）。</p>
+
+<h4>msgSend函数(在运行时才将SEL和IMP绑定)</h4>
+
+<h5>0.1-检查target是否为nil。如果为nil，直接cleanup，然后return。(这就是我们可以向nil发送消息的原因。)</h5>
+
+<h5>0.2-如果target非nil，在target的Class中根据Selector去找IMP。（因为同一个方法可能在不同的类中有不同的实现，所以我们需要依赖于接收者的类来找到的确切的实现）。</h5>
+
+<h5>1-首先它找到selector对应的方法实现:</h5>
+
+<h6>1.1-在target类的方法缓存列表里检查有没有对应的方法实现，有的话，直接调用。</h6>
+
+<h6>1.2-比较请求的selector和类方法列表中的selector，对应的话，直接调用。</h6>
+
+<h6>1.3-比较请求的selector和父类方法列表，父类的父类，直至根类，如果有对应，则直接调用。</h6>
+
+<h5>2-调用方法实现，并将接收者对象及方法的所有参数传给它。</h5>
+
+<h5>3-最后，将实现函数的返回值作为自己的返回值。</h5>
+
+<h5>如果以上类或对象中没有找到对应的selector还可以利用消息转发机制依次执行以下流程</h5>
+
+<ul>
+<li><p>Method Resolution（动态方法解析）：
+用所属类的类方法+（BOOL）resolveInstanceMethod:(实例方法)或者+（BOOL）resolveClassMethod:(类方法),在此方法里添加class_addMethod函数。一般用于@dynamic动态属性。（当一个属性声明为@dynamic，就是向编译器保证现在找不到实现，但是会在运行时实现）。</p></li>
+<li><p>Fast Forwarding （快速消息转发）：
+如果上一步无法响应消息，调用- (id)forwardingTargetForSelector:(SEL)aSelector方法，将消息接受者转发到另一个对象（不能为self，否则死循环）。</p></li>
+<li><p>Normal Forwarding（普通消息转发）：
+如果上一步无法响应消息：
+调用方法签名- (NSMethodSignature )methodSignatureForSelector:(SEL)aSelector；
+如果返回非nil，则创建一个NSInvocation对象封装未被处理的消息，作为参数传递给- (void)forwardInvocation:(NSInvocation )anInvocation。
+这一步比较耗时。</p></li>
+</ul>
+
+
+<h5>如果以上步骤（消息传递和消息转发）还是不能响应消息，则调动doesNotRecognizeSelector：方法，抛出异常。</h5>
+
+<h4>动态实现：</h4>
+
+<ul>
+<li>Method Swizzling;
+Method Swizzling可以在运行时通过修改类的方法列表中selector对应的函数或者设置交换方法实现，来动态修改方法。可以重写某个方法而不用继承，同时还可以调用原先的实现。通常应用于在category中添加一个方法。
+为保证改变方法引起冲突，确保方法混用只能一次性：
+比如，在+load方法或者dispatch_once中执行。</li>
+<li>ISA Swizzling；
+ISA Swizzling可以动态修改对象的isa指针，改变对象的类，类似于创建子类实现相同的功能。KVO即是同过ISA Swizzling实现的。</li>
+</ul>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Heew</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2015-03-03T13:42:38+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>3</span><span class='date-suffix'>rd</span>, <span class='date-year'>2015</span></span> <span class='time'>1:42 pm</span></time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2015-03-02-selhe-impde-qu-bie/" title="Previous Post: SEL和IMP的区别">&laquo; SEL和IMP的区别</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>关于我</h1>
+  <p>慢慢来比较快,随遇而安</p>
+  <img src="/images/icon.png" />
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015-03-03-runtimepou-xi/">Runtime剖析</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015-03-02-selhe-impde-qu-bie/">SEL和IMP的区别</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015-02-27-shen-ru-yan-jiu-cadisplaylinkhe-nstimer/">深入研究CADisplayLink和NSTimer</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015-02-19-er-wei-ma-zhi-zuo/">二维码制作</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-30-shu-ju-jie-xi-mo-xing-she-zhi-de-ji-qiao/">数据解析模型设置的技巧</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-10-popmenucontrollerzhu-yi-shi-xiang/">popMenuController注意事项</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-08-zi-ding-yi-kong-jian-feng-zhuang-de-zhu-yi-shi-xiang/">自定义控件封装的注意事项</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-07-textfieldhe-textviewde-qu-bie/">Textfield和TextView的区别</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-06-appearancetong-%5B%3F%5D-she-zhi-zhu-ti-de-wen-ti/">Appearance统一设置主题的问题</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-05-webviewjia-zai-jin-du-tiao-de-bu-kai-fang-he-chang-jian-jie-jue-fang-an/">webView加载进度条的不开放和常见解决方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-05-bai-si-bu-de-jie-zong-jie-8yue-5ri/">Modal出来的控制器再modal一个控制器的问题</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-04-layer-dot-cornerradiusxing-neng-wen-ti-ji-jie-jue-fang-an/">layer.cornerRadius性能问题及解决方案</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-03-bai-si-bu-de-jie-xiang-mu-geng-duo-zong-jie/">让一个普通控件弹出menuController的步骤</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-08-02-bai-si-bu-de-jie-xiang-mu-zong-jie/">多组表格网络请求加载失败可能引发的小问题</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-07-30-bai-si-bu-de-jie-xiang-mu-zong-jie/">Facebook第三方框架pop动画</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-07-29-bai-si-bu-de-jie-xiang-mu-zong-jie/">Quartz实现image缩放的技巧</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-07-26-gao-fang-bai-si-bu-de-jie-zong-jie/">Textfield魔法效果实现</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-07-23-gao-fang-bai-si-bu-de-jie-xiang-mu-zong-jie/">自定义键盘与数组使用的坑</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-07-22-bai-si-bu-de-qi-jie-xiang-mu-zong-jie/">主流框架搭建常用技巧</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014-07-19-shi-yong-svnxie-tong-kai-fa-xcodexiang-mu/">使用SVN协同开发Xcode项目</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Heew -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
