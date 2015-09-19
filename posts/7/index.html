@@ -9,10 +9,12 @@
   <meta name="author" content="Heew">
 
   
-  <meta name="description" content="storyboard文件的认识 用来描述软件界面
-默认情况下，程序一启动就会加载Main.storyboard
-加载storyboard时，会首先创建和显示箭头所指的控制器界面 IBAction和IBOutlet IBAction： 本质就是void
-能让方法具备连线的功能 IBOutlet &hellip;">
+  <meta name="description" content="九宫格计算思路 利用控件的索引index计算出控件所在的行号和列号
+利用列号计算控件的x值
+利用行号计算控件的y值 HUD 其他说法：指示器、遮盖、蒙板
+半透明HUD的做法 背景色设置为半透明颜色 定时任务 方法1：performSelector 1
+2
+// 1. &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -68,6 +70,140 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013-06-02-iOS%E7%9A%84%E5%9F%BA%E7%A1%80%E6%8E%A7%E4%BB%B6/">iOS的基础控件</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2013-06-02T23:48:39+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>2</span><span class='date-suffix'>nd</span>, <span class='date-year'>2013</span></span> <span class='time'>11:48 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>九宫格计算思路</h2>
+
+<ul>
+<li>利用控件的索引index计算出控件所在的行号和列号</li>
+<li>利用列号计算控件的x值</li>
+<li>利用行号计算控件的y值</li>
+</ul>
+
+
+<h2>HUD</h2>
+
+<ul>
+<li>其他说法：指示器、遮盖、蒙板</li>
+<li>半透明HUD的做法
+
+<ul>
+<li>背景色设置为半透明颜色</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>定时任务</h2>
+
+<ul>
+<li>方法1：performSelector</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>// 1.5s后自动调用self的hideHUD方法
+</span><span class='line'>[self performSelector:@selector(hideHUD) withObject:nil afterDelay:1.5];</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>方法2：GCD</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+</span><span class='line'>    // 1.5s后自动执行这个block里面的代码
+</span><span class='line'>    self.hud.alpha = 0.0;
+</span><span class='line'>});</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>方法3：NSTimer</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>// 1.5s后自动调用self的hideHUD方法
+</span><span class='line'>[NSTimer scheduledTimerWithTimeInterval:1.5 target:self selector:@selector(hideHUD) userInfo:nil repeats:NO];
+</span><span class='line'>// repeats如果为YES，意味着每隔1.5s都会调用一次self的hidHUD方法</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>常见问题</h2>
+
+<ul>
+<li>项目里面的某个.m文件无法使用
+
+<ul>
+<li>检查：Build Phases -> Compile Sources</li>
+</ul>
+</li>
+<li>项目里面的某个资源文件（比如plist、音频等）无法使用
+
+<ul>
+<li>检查：Build Phases -> Copy Bundle Resources</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>模型</h2>
+
+<ul>
+<li>什么是模型？
+
+<ul>
+<li>专门用来存放数据的对象</li>
+<li>一般都是一些直接继承自NSObject的纯对象</li>
+<li>内部会提供一些属性来存放数据</li>
+</ul>
+</li>
+</ul>
+
+
+<h2>一个控件看不见有哪些可能？</h2>
+
+<ul>
+<li>宽度或者高度其实为0</li>
+<li>位置不对（比如是个负数或者超大的数，已经超出屏幕）</li>
+<li>hidden == YES</li>
+<li>alpha &lt;= 0.01</li>
+<li>没有设置背景色、没有设置内容</li>
+<li>可能是文字颜色和背景色一样</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -259,6 +395,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015-09-19-di-ia-si-da-ke-jia-fa/">地i阿斯达克加法</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015-03-03-runtimepou-xi/">Runtime剖析</a>
       </li>
     
@@ -332,10 +472,6 @@
     
       <li class="post">
         <a href="/blog/2014-07-22-bai-si-bu-de-qi-jie-xiang-mu-zong-jie/">主流框架搭建常用技巧</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014-07-19-shi-yong-svnxie-tong-kai-fa-xcodexiang-mu/">使用SVN协同开发Xcode项目</a>
       </li>
     
   </ul>

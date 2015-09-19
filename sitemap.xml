@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://heeween.github.io/blog/2015-09-19-di-ia-si-da-ke-jia-fa/</loc>
+    <lastmod>2015-09-19T23:53:17+08:00</lastmod>
+  </url>
+  <url>
     <loc>http://heeween.github.io/blog/2015-03-03-runtimepou-xi/</loc>
     <lastmod>2015-03-03T13:42:38+08:00</lastmod>
   </url>
@@ -253,23 +257,5 @@
   </url>
   <url>
     <loc>http://heeween.github.io/</loc>
-  </url>
-  <url>
-    <loc>http://heeween.github.io/posts/2/</loc>
-  </url>
-  <url>
-    <loc>http://heeween.github.io/posts/3/</loc>
-  </url>
-  <url>
-    <loc>http://heeween.github.io/posts/4/</loc>
-  </url>
-  <url>
-    <loc>http://heeween.github.io/posts/5/</loc>
-  </url>
-  <url>
-    <loc>http://heeween.github.io/posts/6/</loc>
-  </url>
-  <url>
-    <loc>http://heeween.github.io/posts/7/</loc>
   </url>
 </urlset>
