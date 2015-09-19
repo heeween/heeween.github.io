@@ -4,7 +4,7 @@
   <title><![CDATA[Heew’s iOS Blog]]></title>
   <link href="http://heeween.github.io/atom.xml" rel="self"/>
   <link href="http://heeween.github.io/"/>
-  <updated>2015-09-19T23:53:50+08:00</updated>
+  <updated>2015-09-19T23:56:45+08:00</updated>
   <id>http://heeween.github.io/</id>
   <author>
     <name><![CDATA[Heew]]></name>
@@ -12,17 +12,6 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
-  
-  <entry>
-    <title type="html"><![CDATA[地i阿斯达克加法]]></title>
-    <link href="http://heeween.github.io/blog/2015-09-19-di-ia-si-da-ke-jia-fa/"/>
-    <updated>2015-09-19T23:53:17+08:00</updated>
-    <id>http://heeween.github.io/blog/di-ia-si-da-ke-jia-fa</id>
-    <content type="html"><![CDATA[<p>阿斯顿f是阿斯顿f开始搭建f</p>
-
-<p>阿斯顿发送到</p>
-]]></content>
-  </entry>
   
   <entry>
     <title type="html"><![CDATA[Runtime剖析]]></title>
@@ -1966,6 +1955,53 @@ CADisplayLink 不能被继承。</p>
 <h2>在navigation控制器的push方法可以统一设置子控制器某些特性</h2>
 
 <p><img src="http://heeween.github.io/images/Snip20150722_8.png" alt="" /></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[使用SVN协同开发Xcode项目]]></title>
+    <link href="http://heeween.github.io/blog/2014-07-19-shi-yong-svnxie-tong-kai-fa-xcodexiang-mu/"/>
+    <updated>2014-07-19T16:05:57+08:00</updated>
+    <id>http://heeween.github.io/blog/shi-yong-svnxie-tong-kai-fa-xcodexiang-mu</id>
+    <content type="html"><![CDATA[<h3>使用Cornerstone创建代码仓库,协同开发</h3>
+
+<ul>
+<li>使用Cornerstone提交代码</li>
+</ul>
+
+
+<p><img src="http://heeween.github.io/images/Snip20150719_30.png" alt="" /></p>
+
+<ul>
+<li>使用Xcode提交代码</li>
+</ul>
+
+
+<p><img src="http://heeween.github.io/images/Snip20150719_31.png" alt="" /></p>
+
+<ul>
+<li>Xcode提交会提交很多额外的,不需要提交给同事的内容</li>
+</ul>
+
+
+<p><img src="http://heeween.github.io/images/Snip20150719_32.png" alt="" /></p>
+
+<ul>
+<li><p>Cornerstone可以选择提交</p></li>
+<li><p>Xcode需要忽略的文件和不可以忽略的文件</p></li>
+</ul>
+
+
+<p><img src="http://heeween.github.io/images/Snip20150719_33.png" alt="" />
+<img src="http://heeween.github.io/images/Snip20150719_34.png" alt="" /></p>
+
+<ul>
+<li>Xcode的冲突</li>
+</ul>
+
+
+<p><img src="http://heeween.github.io/images/Snip20150719_35.png" alt="" />
+<img src="http://heeween.github.io/images/Snip20150719_36.png" alt="" /></p>
 ]]></content>
   </entry>
   
