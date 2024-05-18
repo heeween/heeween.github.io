@@ -1,7 +1,11 @@
-Reason of [FAIL. Reason: log != expected log] in Foundry Test 
---------------------------------------------------------------
+---
+layout: post
+title:  "reason of error [FAIL. Reason: log != expected log]"
+date:   2024-05-18 09:13:29 +0800
+categories: jekyll update
+---
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+```solidity
 contract RaffleTest is Test {
  /** */
  event EnterRaffle(address indexed player);
@@ -24,13 +28,13 @@ contract Raffle is VRFConsumerBaseV2 {
  emit EnterRaffle(msg.sender);
  }
 }
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+```
 
 when run the code above with forge test --match-test testEmitsEventOnEntrance
 
 the test will fail and throw alarm like this
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+```solidity
 [⠊] Compiling...
 [⠃] Compiling 38 files with Solc 0.8.19
 [⠒] Solc 0.8.19 finished in 1.93s
@@ -39,21 +43,21 @@ Compiler run successful!
 Ran 1 test for test/RaffleTest.t.sol:RaffleTest
 [FAIL. Reason: log != expected log] testEmitsEventOnEntrance() (gas: 68450)
 Suite result: FAILED. 0 passed; 1 failed; 0 skipped; finished in 6.44ms (506.96µs CPU time)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+```
 
  
 
 the reason is that event in RaffleTest is
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+```solidity
 event EnterRaffle(address indexed player);
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+```
 
 event in Raffle is
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+```solidity
 event EnterRaffle(address player);
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+```
 
  
 
