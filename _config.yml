@@ -24,7 +24,7 @@ description: >- # this means to ignore newlines until "baseurl:"
   I used to be an iOS developer for seven years. From 2021 i started transfer to front end and then web3 development.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
-twitter_username: jekyllrb
+twitter_username: heyanwen
 github_username: heeween
 
 # Build settings
