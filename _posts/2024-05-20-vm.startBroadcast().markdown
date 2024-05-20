@@ -1,0 +1,75 @@
+---
+layout: post
+title:  "vm.startBroadcast() useing tx.origin for subsequent calls"
+date:   2024-05-18 09:13:29 +0800
+categories: jekyll update
+---
+
+the startBroadcast funtion is described in Foundry document like this:
+
+> Using the address that calls the test contract or the address / private key provided as the sender, has all subsequent calls (at this call depth only and excluding cheatcode calls) create transactions that can later be signed and sent onchain.
+
+In foundry test case, we make a transaction to call funtion in Test contract, Test contract call Deploy contract. Deploy contract call the final business contract. So how can we set msg.sender in Test contract to our final business contract across the Deploy separate. It seems that `vm.startBroadcast()` can do this. But i'm curous about the reason.
+As in documentation mentioned, it didn't describe what address are using if no parameter was passed.
+So I create a demo project to find out the reason of it.
+
+```solidity
+contract MyTokenTest is Test {
+    function setUp() public {
+        deployer = new DeployMyToken();
+        console.log("msg.sender in Test     ", msg.sender);
+        console.log("MyTokenTest            ", address(this));
+        myToken = deployer.run();
+        vm.prank(msg.sender);
+        myToken.transfer(bob, STARTING_BALANCE);
+    }
+    function testTransfer() public {
+        vm.prank(bob);
+        myToken.transfer(alice, 100);
+        assertEq(myToken.balanceOf(alice), 100);
+    }
+}
+contract DeployMyToken is Script {
+    uint256 initialSupply = 1000 ether;
+    function run() external returns (MyToken) {
+        console.log("msg.sender in Deploy   ", msg.sender);
+        console.log("DeployMyToken          ", address(this));
+        console.log("tx.origin              ", tx.origin);
+        vm.startBroadcast();
+        MyToken token = new MyToken(initialSupply);
+        vm.stopBroadcast();
+        address owner = token.getOwner();
+        console.log("owner:                 ", owner);
+        return token;
+    }
+}
+
+contract MyToken is ERC20 {
+    address private owner;
+    constructor(uint256 _initialSupply) ERC20("MyToken", "MT") {
+        _mint(msg.sender, _initialSupply);
+        owner = msg.sender;
+    }
+    function getOwner() public view returns (address) {
+        return owner;
+    }
+}
+```
+
+And if i run `forge test --match-test testTransfer -vv`. The terminal will prompt this message.
+
+```
+an 1 test for test/MyTokenTest.t.sol:MyTokenTest
+[PASS] testTransfer() (gas: 43431)
+Logs:
+  msg.sender in Test      0x1804c8AB1F12E6bbf3894d4083f33e07309d1f38
+  MyTokenTest             0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496
+  msg.sender in Deploy    0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496
+  DeployMyToken           0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f
+  tx.origin               0x1804c8AB1F12E6bbf3894d4083f33e07309d1f38
+  owner:                  0x1804c8AB1F12E6bbf3894d4083f33e07309d1f38
+```
+I log the `msg.sender of Test contract`,`address of Test contract`,`msg.sender of Deploy contract`,`address of Deploy contract`,`tx.origin`
+In my code, after `vm.startBroadcast()` the MyToken contract store `msg.sender` in varible `owner`.
+ 
+As log shown in the terminal, we can see that owner is equal to `msg.sender of Test contract` and `tx.origin`. So we can infer that `vm.startBroadcast()` set the `tx.origin`. That makes sense.

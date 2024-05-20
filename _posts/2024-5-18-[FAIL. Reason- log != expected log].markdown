@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "reason of error [FAIL. Reason: log != expected log]"
-date:   2024-05-18 09:13:29 +0800
+date:   2024-05-18 09:15:29 +0800
 categories: jekyll update
 ---
 
