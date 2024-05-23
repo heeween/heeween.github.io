@@ -1,0 +1,17 @@
+---
+layout: post
+title:  "Two Ways To Create Contracts"
+date:   2024-05-20 22:00:29 +0800
+categories: jekyll update
+---
+
+### Number one, creating contracts by deploy
+We know mostly we can transfer from External Outside Account to 0x0 to create a new contract. The code in this transaction will be executed on Ethereum Virtual Machine. And the contract address will be logged in the state tree.
+
+![What](images/20240520deployContract.png)
+
+### Number two, creating contracts by invoke functions in one contract
+There are also another way to create a new contract. We can use `new` keyword in a contract function to create a new contract. We can just send a transaction to the contract. And invoke the function to create a new contract.
+
+```
+```
