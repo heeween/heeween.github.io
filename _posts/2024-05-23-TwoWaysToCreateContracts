@@ -14,4 +14,10 @@ We know mostly we can transfer from External Outside Account to 0x0 to create a 
 There are also another way to create a new contract. We can use `new` keyword in a contract function to create a new contract. We can just send a transaction to the contract. And invoke the function to create a new contract.
 
 ```
+    function createAccount(address _owner) external payable  {
+        Account account = new Account{value:111}(_owner);
+        accounts.push(account);
+    }
 ```
+
+By this way, the account contract will also be logged in the state tree. But this address will not be displayed in the transaction. So We can save the account contract address and access the account contract content directly by address.
