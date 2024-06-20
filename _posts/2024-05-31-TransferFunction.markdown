@@ -11,4 +11,4 @@ As a ERC20 contract, we can call the transfer function in the smart contract lik
 
 But be aware that these two line codes are very different. `token.transfer(msg.sender,amount)` is to transfer the ERC20 token from the contract to the msg.sender.
 
-And `address(token).transfer(amount)` is using to transfer ethereum coins from the contract to the token account.
+And `address(token).transfer(amount)` is using to transfer ethereum coins from the contract to the token account. If the 

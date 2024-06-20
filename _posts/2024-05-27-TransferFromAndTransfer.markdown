@@ -18,7 +18,7 @@ I come across an user case when i exercises writing CrownFund smart contract.
         emit Pledge(_id, msg.sender, _amount);
     }
 ```
-When people are pledging a campaign. They should transfer some amount of tokens to the contract. In this line code `token.transferFrom(msg.sender, address(this), _amount);`, They call the function pledge in `CrownFund` contract. Then the `CrownFund` contract call the `transferFrom` function through directly call contract. In the `transferFrom` function the msg.sender should be the address of the CrownFund contract. And the receivor for the token is also the CrownFund. So the pledgor have to approve the contract. And then the contract can call the `transferFrom` function to transfer to itself.
+When people are pledging a campaign. They should transfer some amount of tokens to the contract. In this line code `token.transferFrom(msg.sender, address(this), _amount);`, They call the function `pledge` in `CrownFund` contract. Then the `CrownFund` contract call the `transferFrom` function through directly call contract. In the `transferFrom` function the msg.sender should be the address of the CrownFund contract. And the receivor for the token is also the CrownFund. So the pledgor have to approve the contract. And then the contract can call the `transferFrom` function to transfer to itself.
 
 And in many cases like one Externally Owned Account want to transfer token to a contract. At first the EOA call one function in the contract. And the contract call token contract to execute the token transaction. So we should use the `transferFrom` function to approve the contract allowance. Then the contract use the algorithm to transfer itself the token. 
 
