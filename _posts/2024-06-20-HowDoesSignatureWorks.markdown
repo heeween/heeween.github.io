@@ -18,4 +18,4 @@ Today i will explain how does the signature works by using the pirvate key and p
 2. authenticator get the message and the signature. Then use the standard algorithm function. This function needs two arguments, the message and the signature.
 3. compare the result got in second step and the public key. If it is same then we can know this message is signed by the signer.
 
-In this process we must keep the private key in our local machine. we just explo
+In this process we must keep the private key in our local machine. We just send the message and the signature. And the other people can use those data to decrypt them and get the publicKey. Pulickey is public to everyone. So by this idea other people can know it is the sender send the message.
