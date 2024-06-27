@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "How does signature works"
+title: "What's the difference between Approve And Permit"
 date: 2024-06-21 15:34:29 +0800
 categories: jekyll update
 ---
@@ -15,11 +15,11 @@ categories: jekyll update
 Any account call the function in the bid contract. First call the premit function in the ERC20PermitToken to approve allowence to the account.
 Then call the `transferFrom` function from the owner to the bid contract. Here the `msg.sender` is the account, so the transaction call be successful.
 
-| Approve          | Permit          |
-| ---------------- | --------------- |
-| two transactions | one transaction |
-| higt gas cost    | low gas cost    |
-| have expire time | no limitation for time|
-| have usage nonce | no explicit times used|
+| Approve          | Permit                 |
+| ---------------- | ---------------------- |
+| two transactions | one transaction        |
+| higt gas cost    | low gas cost           |
+| have expire time | no limitation for time |
+| have usage nonce | no explicit times used |
 
 the only thing in the permit transaction the owner should give is the signature of the permit transaction. It is quite easy for the owner to send a transaction for multiple contracts that compatible with the `ERC20Permit` protocol.
